@@ -5,7 +5,23 @@ A multi-timeframe Bitcoin price prediction model using machine learning (SVR and
 
 ## Recent Changes (October 24, 2025)
 
-### Advanced Features Enhancement (Latest)
+### Time Series Cross-Validation Implementation (Latest - Oct 24)
+- **5-Fold Time Series Cross-Validation**: Robust validation with TimeSeriesSplit
+  - Gap parameter set to 3 to prevent data leakage from lagged features (t-1, t-2, t-3)
+  - Multiple out-of-sample performance estimates (more reliable than single split)
+  - CV score std dev: ±0.0001 shows excellent stability across time periods
+- **Pipeline Architecture**: Fixed critical data leakage issue
+  - StandardScaler now wrapped in Pipeline
+  - Scaling happens independently within each CV fold
+  - Ensures no future data contamination in training
+- **Comprehensive Progress Tracking**: Real-time feedback during training
+  - Start/end timestamps for full session
+  - Per-model training duration (RF: 21 min, XGB: 8 min)
+  - Per-fold completion times with verbose GridSearchCV output
+  - Total training time: 29.66 minutes
+- **Performance Maintained**: 0.29% RMSE ($229.90) with leak-free validation
+
+### Advanced Features Enhancement
 - **Expanded Features**: 20 → **95 features** (4.75x increase!)
   - RSI (Relative Strength Index) - 7 & 14-period momentum indicators
   - MACD (Moving Average Convergence Divergence) - line, signal, histogram
@@ -14,7 +30,6 @@ A multi-timeframe Bitcoin price prediction model using machine learning (SVR and
 - **95% Confidence Intervals**: Worst case | Most likely | Best case predictions
   - Using ensemble variance between RandomForest & XGBoost models
   - Provides uncertainty quantification for 12-hour forecast
-- **Further Accuracy Improvement**: $238.40 → **$229.96 RMSE** (3.5% better!)
 
 ### Ensemble Model Implementation
 - **Upgraded to Ensemble Model**: Now combining RandomForest + XGBoost with equal weighting
@@ -68,16 +83,18 @@ A multi-timeframe Bitcoin price prediction model using machine learning (SVR and
 2. **Fetch Data** - Runs fetch_data.py to update historical data
 
 ## Current Performance Metrics (October 24, 2025)
-- **Test Set Return RMSE: 0.002926 (0.29%)** ⬇️ 3.5% improvement!
-- **Approximate Price RMSE: $229.96** ⬇️ from $238.40
+- **Test Set Return RMSE: 0.002925 (0.29%)**
+- **Approximate Price RMSE: $229.90**
 - **Model: Ensemble of RandomForest + XGBoost (equal weighting)**
 - **Total Features: 95** (expanded from 20)
+- **Cross-Validation**: 5-fold Time Series CV with gap=3 (leak-free!)
 - Training Samples: 14,001
 - Test Samples: 3,501
+- Training Time: 29.66 minutes (RF: 21 min, XGB: 8 min)
 - Prediction horizon: 12 hours ahead with 95% confidence intervals
-- Last prediction: From $111,496 → $112,620 (most likely)
-  - Range: $112,351 (worst) to $112,889 (best)
-  - 12-hour outlook: +0.77% to +1.25% (most likely: +1.01%)
+- Last prediction: From $111,496 → $113,499 (most likely)
+  - Range: $113,268 (worst) to $113,729 (best)
+  - 12-hour outlook: +1.59% to +2.00% (most likely: +1.80%)
 
 ## Known Issues & TODOs
 
@@ -91,8 +108,10 @@ A multi-timeframe Bitcoin price prediction model using machine learning (SVR and
   - [x] MACD (Moving Average Convergence Divergence) - line, signal, histogram
   - [x] Volume-weighted indicators - MA, trend, ratios
   - [x] Lagged price features (t-1, t-2, t-3) + lagged returns
-- [ ] Implement proper time series cross-validation (TimeSeriesSplit)
-- [ ] Add validation set monitoring
+- [x] Implement proper time series cross-validation (TimeSeriesSplit) - **COMPLETED**
+  - [x] 5-fold CV with gap=3 for lagged features
+  - [x] Pipeline architecture to prevent data leakage
+  - [x] Comprehensive progress tracking and timing
 - [ ] Expand GridSearch hyperparameter ranges
 - [ ] Fix ATR calculation to use actual High/Low data (currently using price proxy)
 - [ ] Consider RSI epsilon clamping for numerical stability
@@ -112,6 +131,9 @@ A multi-timeframe Bitcoin price prediction model using machine learning (SVR and
 - User wants comprehensive analysis of model performance
 - Focus on improving prediction accuracy
 - Interest in understanding what console output reveals about model quality
+- Planning to migrate to local GPU execution (CUDA) for 3-5x speedup
+- Interested in expanding to multi-asset trading (ETH, SOL, SPY, etc.)
+- Future goals: LSTM models, real-time trading, backtesting framework
 
 ## Dependencies
 - pandas
@@ -127,7 +149,27 @@ A multi-timeframe Bitcoin price prediction model using machine learning (SVR and
 ## Notes
 - Yahoo Finance data preferred over Coinbase data (has High/Low for proper ATR calculation)
 - Model currently training on full 17,502 sample dataset
-- GridSearchCV may take several minutes with large dataset (2-3 minutes per ensemble training)
+- GridSearchCV takes ~30 minutes on CPU (RF: 21 min, XGB: 8 min)
 - Ensemble uses equal weighting between RandomForest and XGBoost predictions
 - LightGBM cannot be used in this environment (missing libgomp.so.1 system library)
 - BTC_90day_data.csv is no longer needed when using Yahoo Finance data (USE_YAHOO_FINANCE = True)
+
+## GPU Migration Guide (For Local Execution)
+See `/tmp/gpu_training_example.py` and `/tmp/export_instructions.md` for complete migration guide.
+
+### Quick Start
+1. Install CUDA Toolkit 12.1+ from nvidia.com
+2. Install PyTorch with CUDA: `pip install torch --index-url https://download.pytorch.org/whl/cu121`
+3. Modify `main.py` line ~330: Change `tree_method='hist'` to `tree_method='gpu_hist', predictor='gpu_predictor'`
+4. Run: `python main.py`
+
+### Expected Performance Gains
+- **CPU (Replit)**: ~30 minutes total training time
+- **GPU (RTX 3080)**: ~8-10 minutes total training time
+- **Speedup**: 3-5x faster (XGBoost benefits most)
+- **With LSTM**: Add ~5 minutes for deep learning model
+
+### Hardware Recommendations
+- **Minimum**: NVIDIA GTX 1060 (6GB), 16GB RAM
+- **Recommended**: RTX 3060/3070 (12GB), 32GB RAM  
+- **Ideal**: RTX 4080/4090 (16GB+), 64GB RAM
