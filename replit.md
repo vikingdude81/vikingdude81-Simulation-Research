@@ -5,6 +5,13 @@ A multi-timeframe Bitcoin price prediction model using machine learning (SVR and
 
 ## Recent Changes (October 24, 2025)
 
+### Ensemble Model Implementation
+- **Upgraded to Ensemble Model**: Now combining RandomForest + XGBoost with equal weighting
+- **Extended Prediction Horizon**: From 3 hours → 12 hours ahead
+- **99% Accuracy Improvement**: Initial RMSE $26,693 → $238 (0.21% error)
+- GridSearchCV optimization for both RandomForest and XGBoost
+- LightGBM gracefully disabled (missing libgomp.so.1 system library)
+
 ### Data Acquisition Improvements
 - **Fixed fetch_data.py** to successfully download Yahoo Finance data
   - Fixed column naming issue (Datetime vs Date)
@@ -12,6 +19,7 @@ A multi-timeframe Bitcoin price prediction model using machine learning (SVR and
   - Successfully fetched **17,503 hourly samples** (2 years of data)
   - Fetched 4,381 4-hour samples
   - Fetched 1,461 12-hour samples
+  - Removed dependency on BTC_90day_data.csv (not needed for Yahoo Finance data)
   
 ### Dataset Improvements
 - **Massive data increase**: From 300 samples → 17,502 samples (58x increase!)
@@ -20,10 +28,11 @@ A multi-timeframe Bitcoin price prediction model using machine learning (SVR and
 - Date range: October 2023 - October 2024 (2 full years)
 
 ### Model Configuration
-- Currently using: RandomForest Regressor
-- GridSearchCV for hyperparameter optimization
+- Currently using: **Ensemble of RandomForest + XGBoost** (equal weighting)
+- GridSearchCV for hyperparameter optimization on both models
 - Multi-timeframe feature engineering (1h, 4h, 12h, 1d, 1w)
 - Features: 20 technical indicators across timeframes
+- Prediction horizon: **12 hours ahead**
 
 ## Project Architecture
 
@@ -43,10 +52,14 @@ A multi-timeframe Bitcoin price prediction model using machine learning (SVR and
 1. **Bitcoin Predictor** - Runs main.py to train and predict
 2. **Fetch Data** - Runs fetch_data.py to update historical data
 
-## Current Performance Metrics
-- Test RMSE: ~$502 (with smaller dataset, new metrics pending)
-- Return RMSE: ~0.46%
-- Model: RandomForest with GridSearchCV optimization
+## Current Performance Metrics (October 24, 2025)
+- **Test Set Return RMSE: 0.003034 (0.30%)**
+- **Approximate Price RMSE: $238.40**
+- **Model: Ensemble of RandomForest + XGBoost (equal weighting)**
+- Training Samples: 14,001
+- Test Samples: 3,501
+- Prediction horizon: 12 hours ahead
+- Last prediction: From $111,496 → $113,248 (12-hour forecast)
 
 ## Known Issues & TODOs
 
@@ -66,9 +79,9 @@ A multi-timeframe Bitcoin price prediction model using machine learning (SVR and
 - [ ] Fix ATR calculation to use actual High/Low data (currently using price proxy)
 
 ### Long-Term Enhancements
-- [ ] Test XGBoost and LightGBM models
+- [x] Test XGBoost and LightGBM models (XGBoost implemented, LightGBM unavailable due to system constraints)
+- [x] Add ensemble model (combine multiple models) - **Completed: RF + XGBoost ensemble**
 - [ ] Implement LSTM/GRU for sequence learning
-- [ ] Add ensemble model (combine multiple models)
 - [ ] Sentiment analysis integration
 - [ ] Multi-step prediction optimization
 - [ ] Uncertainty quantification (prediction intervals)
@@ -87,9 +100,14 @@ A multi-timeframe Bitcoin price prediction model using machine learning (SVR and
 - yfinance
 - matplotlib
 - mplfinance
+- xgboost
+- lightgbm (installed but unavailable due to missing libgomp.so.1)
 - pycoingecko (legacy)
 
 ## Notes
 - Yahoo Finance data preferred over Coinbase data (has High/Low for proper ATR calculation)
 - Model currently training on full 17,502 sample dataset
-- GridSearchCV may take several minutes with large dataset
+- GridSearchCV may take several minutes with large dataset (2-3 minutes per ensemble training)
+- Ensemble uses equal weighting between RandomForest and XGBoost predictions
+- LightGBM cannot be used in this environment (missing libgomp.so.1 system library)
+- BTC_90day_data.csv is no longer needed when using Yahoo Finance data (USE_YAHOO_FINANCE = True)

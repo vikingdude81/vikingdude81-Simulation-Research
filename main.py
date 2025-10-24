@@ -453,7 +453,8 @@ if __name__ == "__main__":
         # Display results
         print("\n" + "="*60)
         if USE_ENSEMBLE:
-            print("🎯 ENSEMBLE MODEL SUMMARY (RF + XGBoost + LightGBM)")
+            model_list = "RF + XGBoost + LightGBM" if HAS_LIGHTGBM else "RF + XGBoost"
+            print(f"🎯 ENSEMBLE MODEL SUMMARY ({model_list})")
         else:
             print("MULTI-TIMEFRAME MODEL SUMMARY")
         print("="*60)
