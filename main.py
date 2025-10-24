@@ -14,8 +14,10 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 # --- CONFIGURATION ---
 FILE_PATH_90DAY = './DATA/BTC_90day_data.csv'
 FILE_PATH_1H = './attached_assets/COINBASE_BTCUSD, 60_5c089_1761289206450.csv'
+FILE_PATH_4H = './attached_assets/COINBASE_BTCUSD, 240_739cb_1761290157184.csv'
+FILE_PATH_12H = './attached_assets/COINBASE_BTCUSD, 720_c69cd_1761290157184.csv'
 FILE_PATH_1D = './attached_assets/COINBASE_BTCUSD, 1D_87ac3_1761289206450.csv'
-FILE_PATH_1M = './attached_assets/COINBASE_BTCUSD, 1M_256d1_1761289206449.csv'
+FILE_PATH_1W = './attached_assets/COINBASE_BTCUSD, 1W_9771c_1761290157184.csv'
 TEST_SIZE = 0.2
 PREDICT_STEPS = 3
 
@@ -33,18 +35,28 @@ def load_multi_timeframe_data():
         df_1h['time'] = pd.to_datetime(df_1h['time'], unit='s')
         df_1h.set_index('time', inplace=True)
         
+        # Load 4-hour data with indicators
+        df_4h = pd.read_csv(FILE_PATH_4H)
+        df_4h['time'] = pd.to_datetime(df_4h['time'], unit='s')
+        df_4h.set_index('time', inplace=True)
+        
+        # Load 12-hour data with indicators
+        df_12h = pd.read_csv(FILE_PATH_12H)
+        df_12h['time'] = pd.to_datetime(df_12h['time'], unit='s')
+        df_12h.set_index('time', inplace=True)
+        
         # Load 1-day data with indicators
         df_1d = pd.read_csv(FILE_PATH_1D)
         df_1d['time'] = pd.to_datetime(df_1d['time'], unit='s')
         df_1d.set_index('time', inplace=True)
         
-        # Load 1-month data with indicators
-        df_1m = pd.read_csv(FILE_PATH_1M)
-        df_1m['time'] = pd.to_datetime(df_1m['time'], unit='s')
-        df_1m.set_index('time', inplace=True)
+        # Load 1-week data with indicators
+        df_1w = pd.read_csv(FILE_PATH_1W)
+        df_1w['time'] = pd.to_datetime(df_1w['time'], unit='s')
+        df_1w.set_index('time', inplace=True)
         
         logging.info("All timeframe data loaded successfully")
-        return df_90day, df_1h, df_1d, df_1m
+        return df_90day, df_1h, df_4h, df_12h, df_1d, df_1w
         
     except FileNotFoundError as e:
         logging.error(f"File not found: {e}")
@@ -99,13 +111,15 @@ def extract_indicator_features(df, prefix=''):
     
     return pd.DataFrame(features)
 
-def combine_multi_timeframe_features(df_90day, df_1h, df_1d, df_1m):
+def combine_multi_timeframe_features(df_90day, df_1h, df_4h, df_12h, df_1d, df_1w):
     """Combine features from all timeframes using forward-fill for alignment."""
     
     logging.info(f"90-day data shape: {df_90day.shape}, date range: {df_90day.index.min()} to {df_90day.index.max()}")
     logging.info(f"1h data shape: {df_1h.shape}, date range: {df_1h.index.min()} to {df_1h.index.max()}")
+    logging.info(f"4h data shape: {df_4h.shape}, date range: {df_4h.index.min()} to {df_4h.index.max()}")
+    logging.info(f"12h data shape: {df_12h.shape}, date range: {df_12h.index.min()} to {df_12h.index.max()}")
     logging.info(f"1d data shape: {df_1d.shape}, date range: {df_1d.index.min()} to {df_1d.index.max()}")
-    logging.info(f"1m data shape: {df_1m.shape}, date range: {df_1m.index.min()} to {df_1m.index.max()}")
+    logging.info(f"1w data shape: {df_1w.shape}, date range: {df_1w.index.min()} to {df_1w.index.max()}")
     
     # Use 1-day data as the base timeline since it has the most recent and comprehensive coverage
     combined = df_1d[['close']].copy()
@@ -113,24 +127,37 @@ def combine_multi_timeframe_features(df_90day, df_1h, df_1d, df_1m):
     
     # Extract features from each timeframe
     features_1h = extract_indicator_features(df_1h, prefix='1h_')
+    features_4h = extract_indicator_features(df_4h, prefix='4h_')
+    features_12h = extract_indicator_features(df_12h, prefix='12h_')
     features_1d = extract_indicator_features(df_1d, prefix='1d_')
-    features_1m = extract_indicator_features(df_1m, prefix='1m_')
+    features_1w = extract_indicator_features(df_1w, prefix='1w_')
     
-    # Resample hourly to match daily frequency with forward fill
+    # Resample hourly to match daily frequency with forward fill (limit to 7 days)
     features_1h_resampled = features_1h.resample('1D').last()
     features_1h_resampled = features_1h_resampled.reindex(combined.index)
-    features_1h_resampled = features_1h_resampled.ffill(limit=30)  # Forward fill up to 30 days
+    features_1h_resampled = features_1h_resampled.ffill(limit=7)
     
-    # Daily features already match, just concat
+    # Resample 4-hourly to match daily frequency (limit to 7 days)
+    features_4h_resampled = features_4h.resample('1D').last()
+    features_4h_resampled = features_4h_resampled.reindex(combined.index)
+    features_4h_resampled = features_4h_resampled.ffill(limit=7)
+    
+    # Resample 12-hourly to match daily frequency (limit to 7 days)
+    features_12h_resampled = features_12h.resample('1D').last()
+    features_12h_resampled = features_12h_resampled.reindex(combined.index)
+    features_12h_resampled = features_12h_resampled.ffill(limit=7)
+    
+    # Daily features already match, just use them
     features_1d_resampled = features_1d
     
-    # Resample monthly to match daily frequency with forward fill
-    features_1m_resampled = features_1m.resample('1D').last()
-    features_1m_resampled = features_1m_resampled.reindex(combined.index)
-    features_1m_resampled = features_1m_resampled.ffill(limit=60)  # Forward fill up to 60 days
+    # Resample weekly to match daily frequency (limit to 14 days)
+    features_1w_resampled = features_1w.resample('1D').last()
+    features_1w_resampled = features_1w_resampled.reindex(combined.index)
+    features_1w_resampled = features_1w_resampled.ffill(limit=14)
     
     # Combine all features
-    combined = pd.concat([combined, features_1h_resampled, features_1d_resampled, features_1m_resampled], axis=1)
+    combined = pd.concat([combined, features_1h_resampled, features_4h_resampled, 
+                         features_12h_resampled, features_1d_resampled, features_1w_resampled], axis=1)
     
     # Add original features from 90-day data
     combined['pct_change'] = combined['price'].pct_change()
@@ -243,10 +270,10 @@ def predict_next_steps(model, df_last_rows, scaler, features, steps=3):
 if __name__ == "__main__":
     try:
         # Load all timeframe data
-        df_90day, df_1h, df_1d, df_1m = load_multi_timeframe_data()
+        df_90day, df_1h, df_4h, df_12h, df_1d, df_1w = load_multi_timeframe_data()
         
         # Combine features from all timeframes
-        combined_df = combine_multi_timeframe_features(df_90day, df_1h, df_1d, df_1m)
+        combined_df = combine_multi_timeframe_features(df_90day, df_1h, df_4h, df_12h, df_1d, df_1w)
         
         # Prepare data
         df_final, X, y, features = prepare_data(combined_df)
