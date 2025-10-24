@@ -116,14 +116,18 @@ def combine_multi_timeframe_features(df_90day, df_1h, df_1d, df_1m):
     features_1d = extract_indicator_features(df_1d, prefix='1d_')
     features_1m = extract_indicator_features(df_1m, prefix='1m_')
     
-    # Resample hourly to match daily frequency and forward fill
-    features_1h_resampled = features_1h.resample('1D').last().reindex(combined.index, method='ffill')
+    # Resample hourly to match daily frequency with forward fill
+    features_1h_resampled = features_1h.resample('1D').last()
+    features_1h_resampled = features_1h_resampled.reindex(combined.index)
+    features_1h_resampled = features_1h_resampled.ffill(limit=30)  # Forward fill up to 30 days
     
     # Daily features already match, just concat
     features_1d_resampled = features_1d
     
-    # Resample monthly to match daily frequency and forward fill
-    features_1m_resampled = features_1m.resample('1D').last().reindex(combined.index, method='ffill')
+    # Resample monthly to match daily frequency with forward fill
+    features_1m_resampled = features_1m.resample('1D').last()
+    features_1m_resampled = features_1m_resampled.reindex(combined.index)
+    features_1m_resampled = features_1m_resampled.ffill(limit=60)  # Forward fill up to 60 days
     
     # Combine all features
     combined = pd.concat([combined, features_1h_resampled, features_1d_resampled, features_1m_resampled], axis=1)
@@ -138,13 +142,18 @@ def combine_multi_timeframe_features(df_90day, df_1h, df_1d, df_1m):
     # Target variable
     combined['target_price'] = combined['price'].shift(-1)
     
-    logging.info(f"Combined features before dropna: {combined.shape}")
+    logging.info(f"Combined features before cleanup: {combined.shape}")
+    logging.info(f"NaN counts per column:\n{combined.isna().sum()}")
     
-    # Drop NaN values
-    combined.dropna(inplace=True)
+    # Fill remaining NaN values with 0 for multi-timeframe features, but drop rows where core features are missing
+    # First, drop rows where target_price is NaN (last row)
+    combined = combined[combined['target_price'].notna()]
     
-    logging.info(f"Combined features shape after dropna: {combined.shape}")
-    logging.info(f"Available features: {combined.columns.tolist()}")
+    # Then fill NaN in non-critical features with 0
+    combined = combined.fillna(0)
+    
+    logging.info(f"Combined features shape after cleanup: {combined.shape}")
+    logging.info(f"Remaining NaN counts: {combined.isna().sum().sum()}")
     
     return combined
 
