@@ -6,6 +6,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
+import xgboost as xgb
+import lightgbm as lgb
 import logging
 
 # Set up basic logging
@@ -28,7 +30,8 @@ YF_FILE_PATH_1W = './DATA/yf_btc_1w.csv'
 
 USE_YAHOO_FINANCE = True  # Set to True to use YF data instead
 TEST_SIZE = 0.2
-PREDICT_STEPS = 3
+PREDICT_STEPS = 12  # Predict next 12 hours
+USE_ENSEMBLE = True  # Use ensemble of RF + XGBoost + LightGBM
 
 # Load and preprocess multi-timeframe data
 def load_multi_timeframe_data():
@@ -249,6 +252,20 @@ def train_model(X_train, y_train, model_name='SVR'):
             'n_estimators': [50, 100, 200],
             'max_depth': [10, 20, 30]
         }
+    elif model_name == 'XGB':
+        model = xgb.XGBRegressor(random_state=42, tree_method='hist')
+        param_grid = {
+            'n_estimators': [100, 200],
+            'max_depth': [5, 10, 15],
+            'learning_rate': [0.01, 0.1]
+        }
+    elif model_name == 'LGB':
+        model = lgb.LGBMRegressor(random_state=42, verbose=-1)
+        param_grid = {
+            'n_estimators': [100, 200],
+            'max_depth': [5, 10, 15],
+            'learning_rate': [0.01, 0.1]
+        }
     else:
         raise ValueError(f"Unknown model: {model_name}")
     
@@ -259,11 +276,50 @@ def train_model(X_train, y_train, model_name='SVR'):
     logging.info(f"Best {model_name} Parameters: {grid_search.best_params_}")
     return grid_search.best_estimator_
 
+def train_ensemble(X_train, y_train):
+    """Train ensemble of RF, XGBoost, and LightGBM models."""
+    models = {}
+    
+    logging.info("Training RandomForest model...")
+    models['RF'] = train_model(X_train, y_train, 'RF')
+    
+    logging.info("Training XGBoost model...")
+    models['XGB'] = train_model(X_train, y_train, 'XGB')
+    
+    logging.info("Training LightGBM model...")
+    models['LGB'] = train_model(X_train, y_train, 'LGB')
+    
+    logging.info("Ensemble training complete!")
+    return models
+
+def ensemble_predict(models, X):
+    """Make predictions using ensemble of models with equal weighting."""
+    predictions = []
+    
+    for name, model in models.items():
+        pred = model.predict(X)
+        predictions.append(pred)
+    
+    # Average predictions from all models
+    ensemble_pred = np.mean(predictions, axis=0)
+    return ensemble_pred
+
 def predict_next_steps(model, df_last_row_full, scaler, features, steps=3):
-    """Multi-step prediction carrying forward multi-timeframe features."""
+    """Multi-step prediction carrying forward multi-timeframe features.
+    
+    Args:
+        model: Either a single model or dict of models (ensemble)
+        df_last_row_full: Last row of data with all features
+        scaler: Fitted StandardScaler
+        features: List of feature names
+        steps: Number of steps to predict
+    """
     predictions = []
     prices = [df_last_row_full['price']]
     current_features = df_last_row_full.copy()
+    
+    # Check if using ensemble
+    is_ensemble = isinstance(model, dict)
     
     for i in range(steps):
         # Build feature vector from current state
@@ -277,8 +333,11 @@ def predict_next_steps(model, df_last_row_full, scaler, features, steps=3):
         X_pred = np.array(feature_vector).reshape(1, -1)
         X_pred_scaled = scaler.transform(X_pred)
         
-        # Predict percentage return
-        predicted_return = model.predict(X_pred_scaled)[0]
+        # Predict percentage return using ensemble or single model
+        if is_ensemble:
+            predicted_return = ensemble_predict(model, X_pred_scaled)[0]
+        else:
+            predicted_return = model.predict(X_pred_scaled)[0]
         
         # Convert return to price
         current_price = prices[-1]
@@ -336,14 +395,31 @@ if __name__ == "__main__":
         X_train_scaled = scaler.fit_transform(X_train)
         X_test_scaled = scaler.transform(X_test)
         
-        # Train model - RF handles complex features better than SVR
-        model = train_model(X_train_scaled, y_train, model_name='RF')
+        # Train model(s)
+        if USE_ENSEMBLE:
+            logging.info("="*50)
+            logging.info("Training Ensemble (RF + XGBoost + LightGBM)")
+            logging.info("="*50)
+            model = train_ensemble(X_train_scaled, y_train)
+            
+            # Evaluate ensemble
+            y_pred = ensemble_predict(model, X_test_scaled)
+            
+            # Individual model performance
+            logging.info("\nIndividual Model Performance:")
+            for name, m in model.items():
+                y_pred_individual = m.predict(X_test_scaled)
+                mse_individual = mean_squared_error(y_test, y_pred_individual)
+                logging.info(f"  {name} RMSE: {np.sqrt(mse_individual):.6f}")
+        else:
+            # Train single model - RF handles complex features better than SVR
+            model = train_model(X_train_scaled, y_train, model_name='RF')
+            y_pred = model.predict(X_test_scaled)
         
-        # Evaluate
-        y_pred = model.predict(X_test_scaled)
+        # Ensemble/final model evaluation
         mse = mean_squared_error(y_test, y_pred)
-        logging.info(f"Model Test MSE: {mse:.4f}")
-        logging.info(f"Model Test RMSE: {np.sqrt(mse):.4f}")
+        logging.info(f"\nEnsemble Test MSE: {mse:.4f}")
+        logging.info(f"Ensemble Test RMSE: {np.sqrt(mse):.4f}")
         
         # Predict next steps using the full last row with all features
         last_row_full = df_final.iloc[-1]
@@ -360,22 +436,34 @@ if __name__ == "__main__":
         price_rmse = np.sqrt(mse) * avg_price
         
         # Display results
-        print("\n" + "="*50)
-        print("ENHANCED MULTI-TIMEFRAME MODEL SUMMARY")
-        print("="*50)
+        print("\n" + "="*60)
+        if USE_ENSEMBLE:
+            print("🎯 ENSEMBLE MODEL SUMMARY (RF + XGBoost + LightGBM)")
+        else:
+            print("MULTI-TIMEFRAME MODEL SUMMARY")
+        print("="*60)
         print(f"Total Features Used: {len(features)}")
-        print(f"Training Samples: {len(X_train)}")
-        print(f"Model: RandomForest with best params")
-        print(f"Test Set Return RMSE: {np.sqrt(mse):.6f} ({np.sqrt(mse)*100:.2f}%)")
+        print(f"Training Samples: {len(X_train):,}")
+        print(f"Test Samples: {len(X_test):,}")
+        
+        if USE_ENSEMBLE:
+            print(f"Model: Ensemble (3 models with equal weighting)")
+            print(f"  - RandomForest")
+            print(f"  - XGBoost")
+            print(f"  - LightGBM")
+        else:
+            print(f"Model: RandomForest")
+        
+        print(f"\nTest Set Return RMSE: {np.sqrt(mse):.6f} ({np.sqrt(mse)*100:.2f}%)")
         print(f"Approximate Price RMSE: ${price_rmse:.2f}")
         print(f"\n--- Last Actual Price ---")
         print(f"{last_row_full.name.strftime('%Y-%m-%d %H:%M')}: ${last_row_full['price']:.2f}")
-        print("\n--- Predicted Prices for Next 3 Hours ---")
+        print(f"\n--- Predicted Prices for Next {PREDICT_STEPS} Hours ---")
         for date, row in prediction_df.iterrows():
             print(f"{date.strftime('%Y-%m-%d %H:%M')}: ${row['price']:.2f}")
         print("\n--- Last 7 Data Points (Actual) ---")
         print(df_final[['price']].tail(7))
-        print("="*50)
+        print("="*60)
         
     except Exception as e:
         logging.error(f"An error occurred: {e}")
