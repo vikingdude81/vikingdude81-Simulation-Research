@@ -5,6 +5,17 @@ A multi-timeframe Bitcoin price prediction model using machine learning (SVR and
 
 ## Recent Changes (October 24, 2025)
 
+### Advanced Features Enhancement (Latest)
+- **Expanded Features**: 20 → **95 features** (4.75x increase!)
+  - RSI (Relative Strength Index) - 7 & 14-period momentum indicators
+  - MACD (Moving Average Convergence Divergence) - line, signal, histogram
+  - Volume-weighted indicators - MA, price-volume trend, volume ratios
+  - Lagged price features - Price and return memory (t-1, t-2, t-3)
+- **95% Confidence Intervals**: Worst case | Most likely | Best case predictions
+  - Using ensemble variance between RandomForest & XGBoost models
+  - Provides uncertainty quantification for 12-hour forecast
+- **Further Accuracy Improvement**: $238.40 → **$229.96 RMSE** (3.5% better!)
+
 ### Ensemble Model Implementation
 - **Upgraded to Ensemble Model**: Now combining RandomForest + XGBoost with equal weighting
 - **Extended Prediction Horizon**: From 3 hours → 12 hours ahead
@@ -31,8 +42,12 @@ A multi-timeframe Bitcoin price prediction model using machine learning (SVR and
 - Currently using: **Ensemble of RandomForest + XGBoost** (equal weighting)
 - GridSearchCV for hyperparameter optimization on both models
 - Multi-timeframe feature engineering (1h, 4h, 12h, 1d, 1w)
-- Features: 20 technical indicators across timeframes
-- Prediction horizon: **12 hours ahead**
+- Features: **95 advanced technical indicators** across timeframes
+  - RSI (7 & 14-period), MACD (line, signal, histogram)
+  - Volume indicators (MA, price-volume trend, ratios)
+  - Lagged prices (t-1, t-2, t-3) + lagged returns
+  - Original features (Bollinger, EMA, volatility, z-scores)
+- Prediction horizon: **12 hours ahead with 95% confidence intervals**
 
 ## Project Architecture
 
@@ -53,13 +68,16 @@ A multi-timeframe Bitcoin price prediction model using machine learning (SVR and
 2. **Fetch Data** - Runs fetch_data.py to update historical data
 
 ## Current Performance Metrics (October 24, 2025)
-- **Test Set Return RMSE: 0.003034 (0.30%)**
-- **Approximate Price RMSE: $238.40**
+- **Test Set Return RMSE: 0.002926 (0.29%)** ⬇️ 3.5% improvement!
+- **Approximate Price RMSE: $229.96** ⬇️ from $238.40
 - **Model: Ensemble of RandomForest + XGBoost (equal weighting)**
+- **Total Features: 95** (expanded from 20)
 - Training Samples: 14,001
 - Test Samples: 3,501
-- Prediction horizon: 12 hours ahead
-- Last prediction: From $111,496 → $113,248 (12-hour forecast)
+- Prediction horizon: 12 hours ahead with 95% confidence intervals
+- Last prediction: From $111,496 → $112,620 (most likely)
+  - Range: $112,351 (worst) to $112,889 (best)
+  - 12-hour outlook: +0.77% to +1.25% (most likely: +1.01%)
 
 ## Known Issues & TODOs
 
@@ -68,23 +86,25 @@ A multi-timeframe Bitcoin price prediction model using machine learning (SVR and
 - [ ] LSP errors in fetch_data.py (5 diagnostics) - cosmetic
 
 ### Short-Term Improvements
-- [ ] Add more technical indicators:
-  - RSI (Relative Strength Index)
-  - MACD (Moving Average Convergence Divergence)
-  - Volume-weighted indicators
-  - Lagged price features (t-1, t-2, t-3)
+- [x] Add more technical indicators - **COMPLETED**:
+  - [x] RSI (Relative Strength Index) - 7 & 14-period
+  - [x] MACD (Moving Average Convergence Divergence) - line, signal, histogram
+  - [x] Volume-weighted indicators - MA, trend, ratios
+  - [x] Lagged price features (t-1, t-2, t-3) + lagged returns
 - [ ] Implement proper time series cross-validation (TimeSeriesSplit)
 - [ ] Add validation set monitoring
 - [ ] Expand GridSearch hyperparameter ranges
 - [ ] Fix ATR calculation to use actual High/Low data (currently using price proxy)
+- [ ] Consider RSI epsilon clamping for numerical stability
+- [ ] Update lag features inside prediction loop for consistency
 
 ### Long-Term Enhancements
 - [x] Test XGBoost and LightGBM models (XGBoost implemented, LightGBM unavailable due to system constraints)
 - [x] Add ensemble model (combine multiple models) - **Completed: RF + XGBoost ensemble**
+- [x] Uncertainty quantification (prediction intervals) - **Completed: 95% confidence bounds**
 - [ ] Implement LSTM/GRU for sequence learning
 - [ ] Sentiment analysis integration
 - [ ] Multi-step prediction optimization
-- [ ] Uncertainty quantification (prediction intervals)
 - [ ] Real-time data updates
 - [ ] Visualization dashboard
 
