@@ -105,19 +105,24 @@ def combine_multi_timeframe_features(df_90day, df_1h, df_1d, df_1m):
     # Use 90-day data as the base timeline
     combined = df_90day[['price']].copy()
     
+    logging.info(f"90-day data shape: {df_90day.shape}, date range: {df_90day.index.min()} to {df_90day.index.max()}")
+    logging.info(f"1h data shape: {df_1h.shape}, date range: {df_1h.index.min()} to {df_1h.index.max()}")
+    logging.info(f"1d data shape: {df_1d.shape}, date range: {df_1d.index.min()} to {df_1d.index.max()}")
+    logging.info(f"1m data shape: {df_1m.shape}, date range: {df_1m.index.min()} to {df_1m.index.max()}")
+    
     # Extract features from each timeframe
     features_1h = extract_indicator_features(df_1h, prefix='1h_')
     features_1d = extract_indicator_features(df_1d, prefix='1d_')
     features_1m = extract_indicator_features(df_1m, prefix='1m_')
     
     # Resample hourly to match 90-day frequency and forward fill
-    features_1h_resampled = features_1h.resample('1H').last().reindex(combined.index, method='ffill')
+    features_1h_resampled = features_1h.resample('1h').last().reindex(combined.index, method='ffill')
     
     # Resample daily to match 90-day frequency and forward fill
     features_1d_resampled = features_1d.resample('1D').last().reindex(combined.index, method='ffill')
     
     # Resample monthly to match 90-day frequency and forward fill
-    features_1m_resampled = features_1m.resample('1M').last().reindex(combined.index, method='ffill')
+    features_1m_resampled = features_1m.resample('1ME').last().reindex(combined.index, method='ffill')
     
     # Combine all features
     combined = pd.concat([combined, features_1h_resampled, features_1d_resampled, features_1m_resampled], axis=1)
@@ -132,10 +137,12 @@ def combine_multi_timeframe_features(df_90day, df_1h, df_1d, df_1m):
     # Target variable
     combined['target_price'] = combined['price'].shift(-1)
     
+    logging.info(f"Combined features before dropna: {combined.shape}")
+    
     # Drop NaN values
     combined.dropna(inplace=True)
     
-    logging.info(f"Combined features shape: {combined.shape}")
+    logging.info(f"Combined features shape after dropna: {combined.shape}")
     logging.info(f"Available features: {combined.columns.tolist()}")
     
     return combined
