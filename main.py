@@ -6,6 +6,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
+from sklearn.pipeline import Pipeline
 import xgboost as xgb
 import logging
 import time
@@ -296,44 +297,55 @@ def prepare_data(combined_df):
 def train_model(X_train, y_train, model_name='SVR', tscv=None):
     """Train model with GridSearchCV and Time Series Cross-Validation.
     
+    Uses Pipeline to ensure StandardScaler is fit separately within each CV fold,
+    preventing data leakage from future folds.
+    
     Args:
-        X_train: Training features
+        X_train: Training features (unscaled)
         y_train: Training target
         model_name: Name of the model ('SVR', 'RF', 'XGB', 'LGB')
         tscv: TimeSeriesSplit object for cross-validation (default: 5-fold)
     
     Returns:
-        Trained model (best estimator from GridSearchCV)
+        Trained pipeline (scaler + best estimator from GridSearchCV)
     """
+    # Define model and parameter grid
     if model_name == 'SVR':
         model = SVR()
         param_grid = {
-            'C': [0.1, 1, 10],
-            'gamma': ['scale', 0.1, 1],
-            'kernel': ['rbf']
+            'model__C': [0.1, 1, 10],
+            'model__gamma': ['scale', 0.1, 1],
+            'model__kernel': ['rbf']
         }
     elif model_name == 'RF':
         model = RandomForestRegressor(random_state=42)
         param_grid = {
-            'n_estimators': [50, 100, 200],
-            'max_depth': [10, 20, 30]
+            'model__n_estimators': [50, 100, 200],
+            'model__max_depth': [10, 20, 30]
         }
     elif model_name == 'XGB':
         model = xgb.XGBRegressor(random_state=42, tree_method='hist')
         param_grid = {
-            'n_estimators': [100, 200],
-            'max_depth': [5, 10, 15],
-            'learning_rate': [0.01, 0.1]
+            'model__n_estimators': [100, 200],
+            'model__max_depth': [5, 10, 15],
+            'model__learning_rate': [0.01, 0.1]
         }
     elif model_name == 'LGB':
         model = lgb.LGBMRegressor(random_state=42, verbose=-1)
         param_grid = {
-            'n_estimators': [100, 200],
-            'max_depth': [5, 10, 15],
-            'learning_rate': [0.01, 0.1]
+            'model__n_estimators': [100, 200],
+            'model__max_depth': [5, 10, 15],
+            'model__learning_rate': [0.01, 0.1]
         }
     else:
         raise ValueError(f"Unknown model: {model_name}")
+    
+    # Create pipeline with StandardScaler + Model
+    # This ensures scaling happens INSIDE each CV fold
+    pipeline = Pipeline([
+        ('scaler', StandardScaler()),
+        ('model', model)
+    ])
     
     # Use TimeSeriesSplit if provided, otherwise default 3-fold CV
     if tscv is None:
@@ -350,10 +362,11 @@ def train_model(X_train, y_train, model_name='SVR', tscv=None):
     logging.info(f"   • Testing {total_combinations} parameter combinations")
     logging.info(f"   • Using {n_folds}-fold time series cross-validation")
     logging.info(f"   • Total model fits: {total_fits}")
+    logging.info(f"   • Scaling applied within each fold (no data leakage)")
     
     start_time = time.time()
     grid_search = GridSearchCV(
-        model, 
+        pipeline,  # Use pipeline instead of raw model
         param_grid, 
         cv=tscv, 
         scoring='neg_mean_squared_error', 
@@ -361,7 +374,7 @@ def train_model(X_train, y_train, model_name='SVR', tscv=None):
         n_jobs=-1,
         return_train_score=True
     )
-    grid_search.fit(X_train, y_train)
+    grid_search.fit(X_train, y_train)  # Fit on unscaled data
     elapsed_time = time.time() - start_time
     
     # Display CV results
@@ -373,7 +386,7 @@ def train_model(X_train, y_train, model_name='SVR', tscv=None):
     logging.info(f"   Best CV Score (RMSE): {np.sqrt(-grid_search.best_score_):.6f}")
     logging.info(f"   Std Dev across folds: ±{cv_results['std_test_score'][best_index]:.6f}")
     
-    return grid_search.best_estimator_
+    return grid_search.best_estimator_  # Returns the full pipeline
 
 def train_ensemble(X_train, y_train, tscv=None):
     """Train ensemble of RF, XGBoost, and optionally LightGBM models with time series CV.
@@ -458,9 +471,9 @@ def predict_next_steps(model, df_last_row_full, scaler, features, steps=3, confi
     """Multi-step prediction with confidence intervals.
     
     Args:
-        model: Either a single model or dict of models (ensemble)
+        model: Either a single pipeline/model or dict of pipelines (ensemble)
         df_last_row_full: Last row of data with all features
-        scaler: Fitted StandardScaler
+        scaler: Fitted StandardScaler (can be None if model is a pipeline)
         features: List of feature names
         steps: Number of steps to predict
         confidence_level: Multiplier for std (1.96 = 95% confidence)
@@ -488,7 +501,12 @@ def predict_next_steps(model, df_last_row_full, scaler, features, steps=3, confi
                 feature_vector.append(0)
         
         X_pred = np.array(feature_vector).reshape(1, -1)
-        X_pred_scaled = scaler.transform(X_pred)
+        
+        # Scaling handled by pipeline if scaler is None
+        if scaler is not None:
+            X_pred_scaled = scaler.transform(X_pred)
+        else:
+            X_pred_scaled = X_pred  # Pipeline will handle scaling
         
         # Predict percentage return using ensemble or single model
         if is_ensemble:
@@ -597,32 +615,30 @@ if __name__ == "__main__":
         for i, (train_idx, test_idx) in enumerate(tscv.split(X_train)):
             logging.info(f"   Fold {i+1}: Train={len(train_idx):,} samples, Test={len(test_idx):,} samples")
         
-        # Scale data
-        scaler = StandardScaler()
-        X_train_scaled = scaler.fit_transform(X_train)
-        X_test_scaled = scaler.transform(X_test)
+        # NOTE: Scaling is now handled INSIDE the Pipeline within each CV fold
+        # This prevents data leakage from future folds
         
         # Train model(s)
         if USE_ENSEMBLE:
             model_list = "RF + XGBoost + LightGBM" if HAS_LIGHTGBM else "RF + XGBoost"
             logging.info(f"\n🎯 Starting Ensemble Training ({model_list})...")
-            model = train_ensemble(X_train_scaled, y_train, tscv=tscv)
+            model = train_ensemble(X_train, y_train, tscv=tscv)  # Pass unscaled data
             
-            # Evaluate ensemble
-            y_pred = ensemble_predict(model, X_test_scaled)
+            # Evaluate ensemble (models are now pipelines with built-in scaling)
+            y_pred = ensemble_predict(model, X_test)
             
             # Individual model performance
             logging.info("\nIndividual Model Performance:")
             for name, m in model.items():
-                y_pred_individual = m.predict(X_test_scaled)
+                y_pred_individual = m.predict(X_test)  # Pipeline handles scaling
                 mse_individual = mean_squared_error(y_test, y_pred_individual)
                 logging.info(f"  {name} RMSE: {np.sqrt(mse_individual):.6f}")
         else:
             # Train single model - RF handles complex features better than SVR
             logging.info(f"\n🎯 Training single RandomForest model...")
             tscv_single = TimeSeriesSplit(n_splits=n_splits, gap=3)
-            model = train_model(X_train_scaled, y_train, model_name='RF', tscv=tscv_single)
-            y_pred = model.predict(X_test_scaled)
+            model = train_model(X_train, y_train, model_name='RF', tscv=tscv_single)  # Unscaled data
+            y_pred = model.predict(X_test)  # Pipeline handles scaling
         
         # Ensemble/final model evaluation
         mse = mean_squared_error(y_test, y_pred)
@@ -630,11 +646,12 @@ if __name__ == "__main__":
         logging.info(f"Ensemble Test RMSE: {np.sqrt(mse):.4f}")
         
         # Predict next steps using the full last row with all features
+        # Note: model is either a single pipeline or dict of pipelines (ensemble)
         last_row_full = df_final.iloc[-1]
         predictions, prediction_df = predict_next_steps(
             model=model,
             df_last_row_full=last_row_full,
-            scaler=scaler,
+            scaler=None,  # Scaling handled by pipeline
             features=features,
             steps=PREDICT_STEPS
         )
