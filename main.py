@@ -127,11 +127,18 @@ def predict_next_steps(model, df_last_row, scaler, features, steps=3):
     This requires re-calculating the features at each step.
     """
     predictions = []
-    current_df = df_last_row.copy()
-    last_price = current_df['price'].iloc[-1]
     
     # Store history for feature re-calculation (using only 'price' and 'timestamp')
-    prediction_history = current_df[['price']].copy()
+    prediction_history = df_last_row[['price']].copy()
+    
+    # Calculate initial features on the historical data
+    current_df = calculate_features(df_last_row.copy())
+    current_df['pct_change'] = current_df['price'].pct_change()
+    current_df['rolling_mean'] = current_df['price'].rolling(window=5).mean()
+    current_df['rolling_std'] = current_df['price'].rolling(window=5).std()
+    current_df.dropna(inplace=True)
+    
+    last_price = current_df['price'].iloc[-1]
     
     for i in range(steps):
         # 1. Calculate features for the last known/predicted price point
@@ -156,6 +163,12 @@ def predict_next_steps(model, df_last_row, scaler, features, steps=3):
         # 5. Re-calculate ALL rolling/lagged features on the updated history
         # This is the key difference from the original code!
         temp_df = calculate_features(prediction_history.copy())
+        
+        # Calculate the additional features from prepare_data
+        temp_df['pct_change'] = temp_df['price'].pct_change()
+        temp_df['rolling_mean'] = temp_df['price'].rolling(window=5).mean()
+        temp_df['rolling_std'] = temp_df['price'].rolling(window=5).std()
+        temp_df.dropna(inplace=True)
         
         # The new current_df must contain the *newly calculated features* for the latest predicted price
         current_df = temp_df.tail(1).copy()
