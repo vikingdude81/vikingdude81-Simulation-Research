@@ -12,181 +12,229 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # --- CONFIGURATION ---
-FILE_PATH = './DATA/BTC_90day_data.csv'
-TEST_SIZE = 0.2  # 20% for testing (maintains time series order)
+FILE_PATH_90DAY = './DATA/BTC_90day_data.csv'
+FILE_PATH_1H = './attached_assets/COINBASE_BTCUSD, 60_5c089_1761289206450.csv'
+FILE_PATH_1D = './attached_assets/COINBASE_BTCUSD, 1D_87ac3_1761289206450.csv'
+FILE_PATH_1M = './attached_assets/COINBASE_BTCUSD, 1M_256d1_1761289206449.csv'
+TEST_SIZE = 0.2
 PREDICT_STEPS = 3
 
-# Load Data from CSV
-def load_data(file_path):
-    """Loads data, ensures 'timestamp' is datetime index, and checks for necessary columns."""
+# Load and preprocess multi-timeframe data
+def load_multi_timeframe_data():
+    """Loads all timeframe data and returns them as dataframes."""
     try:
-        df = pd.read_csv(file_path)
-    except FileNotFoundError:
-        logging.error(f"File not found at {file_path}. Please check the path.")
+        # Load 90-day baseline data
+        df_90day = pd.read_csv(FILE_PATH_90DAY)
+        df_90day['timestamp'] = pd.to_datetime(df_90day['timestamp'])
+        df_90day.set_index('timestamp', inplace=True)
+        
+        # Load 1-hour data with indicators
+        df_1h = pd.read_csv(FILE_PATH_1H)
+        df_1h['time'] = pd.to_datetime(df_1h['time'], unit='s')
+        df_1h.set_index('time', inplace=True)
+        
+        # Load 1-day data with indicators
+        df_1d = pd.read_csv(FILE_PATH_1D)
+        df_1d['time'] = pd.to_datetime(df_1d['time'], unit='s')
+        df_1d.set_index('time', inplace=True)
+        
+        # Load 1-month data with indicators
+        df_1m = pd.read_csv(FILE_PATH_1M)
+        df_1m['time'] = pd.to_datetime(df_1m['time'], unit='s')
+        df_1m.set_index('time', inplace=True)
+        
+        logging.info("All timeframe data loaded successfully")
+        return df_90day, df_1h, df_1d, df_1m
+        
+    except FileNotFoundError as e:
+        logging.error(f"File not found: {e}")
+        raise
+    except Exception as e:
+        logging.error(f"Error loading data: {e}")
         raise
 
-    if 'timestamp' not in df.columns:
-        raise ValueError("DataFrame must contain a 'timestamp' column.")
-    if 'price' not in df.columns:
-        raise ValueError("DataFrame must contain a 'price' column.")
+def extract_indicator_features(df, prefix=''):
+    """Extract key technical indicators from chart data."""
+    features = {}
+    
+    # Price action
+    if 'close' in df.columns:
+        features[f'{prefix}close'] = df['close']
+        features[f'{prefix}price_change'] = df['close'].pct_change()
+    
+    # Bollinger Bands
+    if all(col in df.columns for col in ['BB Upper', 'BB Basis', 'BB Lower']):
+        features[f'{prefix}bb_width'] = (df['BB Upper'] - df['BB Lower']) / df['BB Basis']
+        features[f'{prefix}bb_position'] = (df['close'] - df['BB Lower']) / (df['BB Upper'] - df['BB Lower'])
+    
+    # Volume indicators
+    if 'Volume Band (Close)' in df.columns:
+        features[f'{prefix}volume'] = df['Volume Band (Close)']
+    
+    # Momentum indicators
+    if 'QAO' in df.columns:
+        features[f'{prefix}qao'] = df['QAO']
+    
+    # Z-scores for overbought/oversold
+    if all(col in df.columns for col in ['z20', 'z50', 'z100']):
+        features[f'{prefix}z20'] = df['z20']
+        features[f'{prefix}z50'] = df['z50']
+        features[f'{prefix}z100'] = df['z100']
+    
+    # Composite Z
+    if 'Composite Z (smoothed)' in df.columns:
+        features[f'{prefix}composite_z'] = df['Composite Z (smoothed)']
+    
+    # EMA trends
+    if all(col in df.columns for col in ['GMA fast', 'GMA slow']):
+        features[f'{prefix}ema_fast'] = df['GMA fast']
+        features[f'{prefix}ema_slow'] = df['GMA slow']
+        features[f'{prefix}ema_cross'] = df['GMA fast'] - df['GMA slow']
+    
+    # Volatility
+    if 'volatility' in df.columns:
+        features[f'{prefix}volatility'] = df['volatility']
+    elif 'close' in df.columns:
+        features[f'{prefix}volatility'] = df['close'].pct_change().rolling(window=7).std()
+    
+    return pd.DataFrame(features)
 
-    df['timestamp'] = pd.to_datetime(df['timestamp'])
-    df.set_index('timestamp', inplace=True)
-    return df
+def combine_multi_timeframe_features(df_90day, df_1h, df_1d, df_1m):
+    """Combine features from all timeframes using forward-fill for alignment."""
+    
+    # Use 90-day data as the base timeline
+    combined = df_90day[['price']].copy()
+    
+    # Extract features from each timeframe
+    features_1h = extract_indicator_features(df_1h, prefix='1h_')
+    features_1d = extract_indicator_features(df_1d, prefix='1d_')
+    features_1m = extract_indicator_features(df_1m, prefix='1m_')
+    
+    # Resample hourly to match 90-day frequency and forward fill
+    features_1h_resampled = features_1h.resample('1H').last().reindex(combined.index, method='ffill')
+    
+    # Resample daily to match 90-day frequency and forward fill
+    features_1d_resampled = features_1d.resample('1D').last().reindex(combined.index, method='ffill')
+    
+    # Resample monthly to match 90-day frequency and forward fill
+    features_1m_resampled = features_1m.resample('1M').last().reindex(combined.index, method='ffill')
+    
+    # Combine all features
+    combined = pd.concat([combined, features_1h_resampled, features_1d_resampled, features_1m_resampled], axis=1)
+    
+    # Add original features from 90-day data
+    combined['pct_change'] = combined['price'].pct_change()
+    combined['rolling_mean_5'] = combined['price'].rolling(window=5).mean()
+    combined['rolling_std_5'] = combined['price'].rolling(window=5).std()
+    combined['rolling_mean_20'] = combined['price'].rolling(window=20).mean()
+    combined['rolling_std_20'] = combined['price'].rolling(window=20).std()
+    
+    # Target variable
+    combined['target_price'] = combined['price'].shift(-1)
+    
+    # Drop NaN values
+    combined.dropna(inplace=True)
+    
+    logging.info(f"Combined features shape: {combined.shape}")
+    logging.info(f"Available features: {combined.columns.tolist()}")
+    
+    return combined
 
-# Calculate Features: Enhanced Indicators
-def calculate_features(df):
-    """Calculates necessary technical indicators for prediction."""
+def prepare_data(combined_df):
+    """Prepare X and y from combined dataframe."""
+    
+    # Select features (exclude price and target)
+    feature_cols = [col for col in combined_df.columns if col not in ['price', 'target_price']]
+    
+    X = combined_df[feature_cols].values
+    y = combined_df['target_price'].values
+    
+    logging.info(f"Feature count: {len(feature_cols)}")
+    logging.info(f"Sample count: {len(X)}")
+    
+    return combined_df, X, y, feature_cols
 
-    df['returns'] = df['price'].pct_change()
-    df['volatility'] = df['returns'].rolling(window=7).std()
-
-    # --- ATR Calculation Note ---
-    # ATR typically requires 'High' and 'Low' prices. Since they are missing,
-    # we use 'price' as a proxy, which is technically inaccurate for True Range,
-    # but maintains the original code's structure.
-    # RECOMMENDATION: Use actual High/Low/Close data for better ATR.
-    df['high'] = df.get('high', df['price'])
-    df['low'] = df.get('low', df['price'])
-    df['prev_close'] = df['price'].shift(1)
-
-    df['tr'] = df[['high', 'low', 'prev_close']].apply(
-        lambda x: max(x['high'] - x['low'],
-                      abs(x['high'] - x['prev_close']),
-                      abs(x['low'] - x['prev_close'])),
-        axis=1
-    )
-    df['atr'] = df['tr'].rolling(window=14).mean()
-
-    # Trend-based features (EMAs)
-    df['ema_10'] = df['price'].ewm(span=10, adjust=False).mean()  # 10-period EMA
-    df['ema_30'] = df['price'].ewm(span=30, adjust=False).mean()  # 30-period EMA
-    df['ema_diff'] = df['ema_10'] - df['ema_30']  # Difference between short-term and long-term EMA
-
-    # Drop intermediate columns
-    df.drop(columns=['high', 'low', 'prev_close', 'tr'], errors='ignore', inplace=True)
-
-    df.dropna(inplace=True)
-    return df
-
-# Prepare Dataset for Model
-def prepare_data(df):
-    """Generates final features and target variable."""
-    # Generate additional features that rely on 'price'
-    df['pct_change'] = df['price'].pct_change()
-    df['rolling_mean'] = df['price'].rolling(window=5).mean()
-    df['rolling_std'] = df['price'].rolling(window=5).std()
-
-    # The target is the price one period ahead (tomorrow's price)
-    # This introduces the shift/lag needed for prediction.
-    df['target_price'] = df['price'].shift(-1)
-
-    # Drop any remaining NaNs after feature creation and shift
-    df.dropna(inplace=True)
-
-    # Define features and target based on the cleaned data
-    features = ['pct_change', 'rolling_mean', 'rolling_std', 'volatility', 'atr', 'ema_diff', 'ema_10', 'ema_30']
-    X = df[features].values
-    y = df['target_price'].values
-
-    # We must ensure X and y are perfectly aligned
-    # X includes the features up to time T
-    # y includes the price at time T+1 (the target)
-    return df, X, y, features
-
-# Train and Optimize Model using Grid Search
 def train_model(X_train, y_train, model_name='SVR'):
-    """Performs Grid Search for hyperparameter optimization."""
+    """Train model with GridSearchCV."""
     if model_name == 'SVR':
         model = SVR()
         param_grid = {
             'C': [0.1, 1, 10],
             'gamma': ['scale', 0.1, 1],
-            'kernel': ['rbf'] # RBF is usually sufficient for SVR time series
+            'kernel': ['rbf']
         }
     elif model_name == 'RF':
         model = RandomForestRegressor(random_state=42)
         param_grid = {
-            'n_estimators': [50, 100],
-            'max_depth': [5, 10]
+            'n_estimators': [50, 100, 200],
+            'max_depth': [10, 20, 30]
         }
     else:
-        raise ValueError(f"Unknown model name: {model_name}")
-
+        raise ValueError(f"Unknown model: {model_name}")
+    
     logging.info(f"Starting GridSearchCV for {model_name}...")
     grid_search = GridSearchCV(model, param_grid, cv=3, scoring='neg_mean_squared_error', verbose=0, n_jobs=-1)
     grid_search.fit(X_train, y_train)
-
+    
     logging.info(f"Best {model_name} Parameters: {grid_search.best_params_}")
     return grid_search.best_estimator_
 
-# --- CRITICAL IMPROVEMENT: ROLLING PREDICTION LOGIC ---
-def predict_next_steps(model, df_last_row, scaler, features, steps=3):
-    """
-    Performs multi-step-ahead prediction using the model's output as the input for the next step.
-    This requires re-calculating the features at each step.
-    """
+def predict_next_steps(model, df_last_rows, scaler, features, steps=3):
+    """Multi-step prediction with feature recalculation."""
     predictions = []
-    
-    # Store history for feature re-calculation (using only 'price' and 'timestamp')
-    prediction_history = df_last_row[['price']].copy()
-    
-    # Calculate initial features on the historical data
-    current_df = calculate_features(df_last_row.copy())
-    current_df['pct_change'] = current_df['price'].pct_change()
-    current_df['rolling_mean'] = current_df['price'].rolling(window=5).mean()
-    current_df['rolling_std'] = current_df['price'].rolling(window=5).std()
-    current_df.dropna(inplace=True)
-    
-    last_price = current_df['price'].iloc[-1]
+    prediction_history = df_last_rows[['price']].copy()
     
     for i in range(steps):
-        # 1. Calculate features for the last known/predicted price point
-        current_features = current_df.tail(1)[features].values
-        
-        # 2. Scale the features
-        X_pred = scaler.transform(current_features)
-        
-        # 3. Predict the next price
-        predicted_price = model.predict(X_pred)[0]
-        
-        predictions.append(predicted_price)
-        
-        # 4. Update the history DataFrame with the new prediction
-        # Get the timestamp of the next day/period
-        next_timestamp = current_df.index[-1] + pd.Timedelta(days=1) # Assuming daily data
-        
-        # Create a new row for the predicted price
-        new_row = pd.Series({'price': predicted_price}, name=next_timestamp)
-        prediction_history = pd.concat([prediction_history, new_row.to_frame().T])
-        
-        # 5. Re-calculate ALL rolling/lagged features on the updated history
-        # This is the key difference from the original code!
-        temp_df = calculate_features(prediction_history.copy())
-        
-        # Calculate the additional features from prepare_data
+        # Recalculate features for the last row
+        temp_df = prediction_history.copy()
         temp_df['pct_change'] = temp_df['price'].pct_change()
-        temp_df['rolling_mean'] = temp_df['price'].rolling(window=5).mean()
-        temp_df['rolling_std'] = temp_df['price'].rolling(window=5).std()
+        temp_df['rolling_mean_5'] = temp_df['price'].rolling(window=5).mean()
+        temp_df['rolling_std_5'] = temp_df['price'].rolling(window=5).std()
+        temp_df['rolling_mean_20'] = temp_df['price'].rolling(window=20).mean()
+        temp_df['rolling_std_20'] = temp_df['price'].rolling(window=20).std()
         temp_df.dropna(inplace=True)
         
-        # The new current_df must contain the *newly calculated features* for the latest predicted price
-        current_df = temp_df.tail(1).copy()
+        if len(temp_df) == 0:
+            logging.warning("Not enough data for prediction")
+            break
         
+        # Get the last row features that exist in the model
+        current_features = []
+        last_row = temp_df.iloc[-1]
+        
+        for feat in features:
+            if feat in temp_df.columns:
+                current_features.append(last_row[feat])
+            else:
+                # Use 0 for missing features (they'll be from other timeframes)
+                current_features.append(0)
+        
+        X_pred = np.array(current_features).reshape(1, -1)
+        X_pred_scaled = scaler.transform(X_pred)
+        
+        predicted_price = model.predict(X_pred_scaled)[0]
+        predictions.append(predicted_price)
+        
+        # Add predicted price to history
+        next_timestamp = temp_df.index[-1] + pd.Timedelta(hours=1)
+        new_row = pd.Series({'price': predicted_price}, name=next_timestamp)
+        prediction_history = pd.concat([prediction_history, new_row.to_frame().T])
+    
     return predictions, prediction_history.iloc[-steps:]
 
-
-# Main Execution
+# Main execution
 if __name__ == "__main__":
     try:
-        # Step 1: Load and preprocess data
-        df = load_data(FILE_PATH)
-        df_processed = calculate_features(df.copy()) # Use a copy to avoid side effects
-
-        # Step 2: Prepare data
-        df_final, X, y, features = prepare_data(df_processed.copy())
+        # Load all timeframe data
+        df_90day, df_1h, df_1d, df_1m = load_multi_timeframe_data()
         
-        # Step 3: Time Series Split (maintains order)
+        # Combine features from all timeframes
+        combined_df = combine_multi_timeframe_features(df_90day, df_1h, df_1d, df_1m)
+        
+        # Prepare data
+        df_final, X, y, features = prepare_data(combined_df)
+        
+        # Time series split
         n_samples = len(X)
         split_point = int(n_samples * (1 - TEST_SIZE))
         
@@ -195,52 +243,47 @@ if __name__ == "__main__":
         y_train = y[:split_point]
         y_test = y[split_point:]
         
-        # Keep the unscaled training data for feature calculations during prediction
-        df_train = df_final.iloc[:split_point]
-        df_test = df_final.iloc[split_point:]
-
         logging.info(f"Training set size: {len(X_train)}, Test set size: {len(X_test)}")
         
-        # Step 4: Scale Data (fit only on training data)
+        # Scale data
         scaler = StandardScaler()
         X_train_scaled = scaler.fit_transform(X_train)
         X_test_scaled = scaler.transform(X_test)
         
-        # Step 5: Train Model (using SVR as in original)
+        # Train model
         model = train_model(X_train_scaled, y_train, model_name='SVR')
-
-        # Step 6: Evaluate Model on Test Set (using un-shuffled data)
+        
+        # Evaluate
         y_pred = model.predict(X_test_scaled)
         mse = mean_squared_error(y_test, y_pred)
         logging.info(f"Model Test MSE: {mse:.4f}")
         logging.info(f"Model Test RMSE: {np.sqrt(mse):.4f}")
-
-        # Step 7: Predict Next Steps (3 days)
-        # We need the last N rows of the FULL processed DataFrame to correctly calculate
-        # the rolling features for the first prediction step. N must be >= max window size (e.g., 30 for EMA)
-        last_N_rows = df_final.tail(35)[['price']].copy() # Get enough data for re-calculation
-
+        
+        # Predict next steps
+        last_N_rows = df_final.tail(50)[['price']].copy()
         predictions, prediction_history = predict_next_steps(
-            model=model, 
-            df_last_row=last_N_rows, 
-            scaler=scaler, 
-            features=features, 
+            model=model,
+            df_last_rows=last_N_rows,
+            scaler=scaler,
+            features=features,
             steps=PREDICT_STEPS
         )
-
-        # Step 8: Display Results
+        
+        # Display results
         print("\n" + "="*50)
-        print("MODEL SUMMARY")
+        print("ENHANCED MULTI-TIMEFRAME MODEL SUMMARY")
         print("="*50)
-        print(f"Features Used: {', '.join(features)}")
-        print(f"Model: SVR with best params: {model.get_params()}")
-        print(f"Test Set RMSE: {np.sqrt(mse):.4f} (Lower is better)")
-        print("\n--- Predicted Prices for Next 3 Days ---")
+        print(f"Total Features Used: {len(features)}")
+        print(f"Model: SVR with params: {model.get_params()}")
+        print(f"Test Set RMSE: {np.sqrt(mse):.4f}")
+        print("\n--- Predicted Prices for Next 3 Periods ---")
         for date, price in prediction_history['price'].items():
-            print(f"{date.strftime('%Y-%m-%d')}: {price:.2f}")
-        print("\n--- Last 7 Days of Data (Actual) ---")
+            print(f"{date.strftime('%Y-%m-%d %H:%M')}: ${price:.2f}")
+        print("\n--- Last 7 Data Points (Actual) ---")
         print(df_final[['price']].tail(7))
         print("="*50)
-
+        
     except Exception as e:
-        logging.error(f"An error occurred in the main execution block: {e}")
+        logging.error(f"An error occurred: {e}")
+        import traceback
+        traceback.print_exc()
