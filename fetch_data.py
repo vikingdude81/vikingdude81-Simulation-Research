@@ -31,9 +31,9 @@ def fetch_and_save_data():
                 logging.warning(f"No data retrieved for {tf_name}")
                 continue
             
-            # Resample if needed for 4h and 12h
+            # Resample if needed for 4h and 12h (before renaming columns)
             if tf_name == '4h':
-                df = df.resample('4H').agg({
+                df = df.resample('4h').agg({
                     'Open': 'first',
                     'High': 'max',
                     'Low': 'min',
@@ -41,7 +41,7 @@ def fetch_and_save_data():
                     'Volume': 'sum'
                 }).dropna()
             elif tf_name == '12h':
-                df = df.resample('12H').agg({
+                df = df.resample('12h').agg({
                     'Open': 'first',
                     'High': 'max',
                     'Low': 'min',
@@ -51,8 +51,10 @@ def fetch_and_save_data():
             
             # Reset index to make timestamp a column
             df.reset_index(inplace=True)
+            
+            # Rename columns (yfinance uses 'Datetime' as index name)
             df.rename(columns={
-                'Date': 'time',
+                'Datetime': 'time',
                 'Open': 'open',
                 'High': 'high',
                 'Low': 'low',
