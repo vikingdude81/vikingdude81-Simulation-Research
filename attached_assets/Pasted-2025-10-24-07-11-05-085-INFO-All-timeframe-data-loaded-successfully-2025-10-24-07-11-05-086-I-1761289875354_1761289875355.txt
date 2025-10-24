@@ -1,0 +1,37 @@
+2025-10-24 07:11:05,085 - INFO - All timeframe data loaded successfully
+2025-10-24 07:11:05,086 - INFO - 90-day data shape: (2159, 56), date range: 2024-08-27 03:00:52.327000 to 2024-11-25 02:30:55
+2025-10-24 07:11:05,086 - INFO - 1h data shape: (301, 66), date range: 2025-10-11 18:00:00 to 2025-10-24 06:00:00
+2025-10-24 07:11:05,086 - INFO - 1d data shape: (300, 66), date range: 2024-12-29 00:00:00 to 2025-10-24 00:00:00
+2025-10-24 07:11:05,086 - INFO - 1m data shape: (131, 66), date range: 2014-12-01 00:00:00 to 2025-10-01 00:00:00
+2025-10-24 07:11:05,109 - INFO - Combined features before dropna: (300, 49)
+2025-10-24 07:11:05,110 - INFO - Combined features shape after dropna: (0, 49)
+2025-10-24 07:11:05,110 - INFO - Available features: ['price', '1h_close', '1h_price_change', '1h_bb_width', '1h_bb_position', '1h_volume', '1h_qao', '1h_z20', '1h_z50', '1h_z100', '1h_composite_z', '1h_ema_fast', '1h_ema_slow', '1h_ema_cross', '1h_volatility', '1d_close', '1d_price_change', '1d_bb_width', '1d_bb_position', '1d_volume', '1d_qao', '1d_z20', '1d_z50', '1d_z100', '1d_composite_z', '1d_ema_fast', '1d_ema_slow', '1d_ema_cross', '1d_volatility', '1m_close', '1m_price_change', '1m_bb_width', '1m_bb_position', '1m_volume', '1m_qao', '1m_z20', '1m_z50', '1m_z100', '1m_composite_z', '1m_ema_fast', '1m_ema_slow', '1m_ema_cross', '1m_volatility', 'pct_change', 'rolling_mean_5', 'rolling_std_5', 'rolling_mean_20', 'rolling_std_20', 'target_price']
+2025-10-24 07:11:05,111 - INFO - Feature count: 47
+2025-10-24 07:11:05,111 - INFO - Sample count: 0
+2025-10-24 07:11:05,111 - INFO - Training set size: 0, Test set size: 0
+2025-10-24 07:11:05,112 - ERROR - An error occurred: Found array with 0 sample(s) (shape=(0, 47)) while a minimum of 1 is required by StandardScaler.
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 258, in <module>
+    X_train_scaled = scaler.fit_transform(X_train)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sklearn/base.py", line 1098, in fit_transform
+    return self.fit(X, **fit_params).transform(X)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sklearn/preprocessing/_data.py", line 878, in fit
+    return self.partial_fit(X, y, sample_weight)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sklearn/base.py", line 1473, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sklearn/preprocessing/_data.py", line 914, in partial_fit
+    X = self._validate_data(
+        ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sklearn/base.py", line 633, in _validate_data
+    out = check_array(X, input_name="X", **check_params)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sklearn/utils/validation.py", line 1087, in check_array
+    raise ValueError(
+ValueError: Found array with 0 sample(s) (shape=(0, 47)) while a minimum of 1 is required by StandardScaler.
