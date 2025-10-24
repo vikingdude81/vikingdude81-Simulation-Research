@@ -26,7 +26,7 @@ YF_FILE_PATH_12H = './DATA/yf_btc_12h.csv'
 YF_FILE_PATH_1D = './DATA/yf_btc_1d.csv'
 YF_FILE_PATH_1W = './DATA/yf_btc_1w.csv'
 
-USE_YAHOO_FINANCE = True  # Set to True to use YF data instead
+USE_YAHOO_FINANCE = False  # Set to True to use YF data instead
 TEST_SIZE = 0.2
 PREDICT_STEPS = 3
 
