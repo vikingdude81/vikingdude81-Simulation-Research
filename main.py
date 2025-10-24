@@ -3,11 +3,13 @@ import pandas as pd
 import numpy as np
 from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
 import xgboost as xgb
 import logging
+import time
+from datetime import datetime
 
 # Try to import LightGBM, but continue without it if unavailable
 try:
@@ -291,8 +293,18 @@ def prepare_data(combined_df):
     
     return combined_df, X, y, feature_cols
 
-def train_model(X_train, y_train, model_name='SVR'):
-    """Train model with GridSearchCV."""
+def train_model(X_train, y_train, model_name='SVR', tscv=None):
+    """Train model with GridSearchCV and Time Series Cross-Validation.
+    
+    Args:
+        X_train: Training features
+        y_train: Training target
+        model_name: Name of the model ('SVR', 'RF', 'XGB', 'LGB')
+        tscv: TimeSeriesSplit object for cross-validation (default: 5-fold)
+    
+    Returns:
+        Trained model (best estimator from GridSearchCV)
+    """
     if model_name == 'SVR':
         model = SVR()
         param_grid = {
@@ -323,30 +335,95 @@ def train_model(X_train, y_train, model_name='SVR'):
     else:
         raise ValueError(f"Unknown model: {model_name}")
     
-    logging.info(f"Starting GridSearchCV for {model_name}...")
-    grid_search = GridSearchCV(model, param_grid, cv=3, scoring='neg_mean_squared_error', verbose=0, n_jobs=-1)
-    grid_search.fit(X_train, y_train)
+    # Use TimeSeriesSplit if provided, otherwise default 3-fold CV
+    if tscv is None:
+        tscv = 3
     
-    logging.info(f"Best {model_name} Parameters: {grid_search.best_params_}")
+    # Count total combinations for progress tracking
+    total_combinations = 1
+    for param_values in param_grid.values():
+        total_combinations *= len(param_values)
+    n_folds = tscv.n_splits if hasattr(tscv, 'n_splits') else tscv
+    total_fits = total_combinations * n_folds
+    
+    logging.info(f"⏱️  Starting GridSearchCV for {model_name}...")
+    logging.info(f"   • Testing {total_combinations} parameter combinations")
+    logging.info(f"   • Using {n_folds}-fold time series cross-validation")
+    logging.info(f"   • Total model fits: {total_fits}")
+    
+    start_time = time.time()
+    grid_search = GridSearchCV(
+        model, 
+        param_grid, 
+        cv=tscv, 
+        scoring='neg_mean_squared_error', 
+        verbose=2,  # Show progress: 1=minimal, 2=detailed
+        n_jobs=-1,
+        return_train_score=True
+    )
+    grid_search.fit(X_train, y_train)
+    elapsed_time = time.time() - start_time
+    
+    # Display CV results
+    cv_results = grid_search.cv_results_
+    best_index = grid_search.best_index_
+    
+    logging.info(f"✅ {model_name} GridSearchCV completed in {elapsed_time:.1f}s ({elapsed_time/60:.2f} min)")
+    logging.info(f"   Best Parameters: {grid_search.best_params_}")
+    logging.info(f"   Best CV Score (RMSE): {np.sqrt(-grid_search.best_score_):.6f}")
+    logging.info(f"   Std Dev across folds: ±{cv_results['std_test_score'][best_index]:.6f}")
+    
     return grid_search.best_estimator_
 
-def train_ensemble(X_train, y_train):
-    """Train ensemble of RF, XGBoost, and optionally LightGBM models."""
+def train_ensemble(X_train, y_train, tscv=None):
+    """Train ensemble of RF, XGBoost, and optionally LightGBM models with time series CV.
+    
+    Args:
+        X_train: Training features
+        y_train: Training target
+        tscv: TimeSeriesSplit object for cross-validation
+    
+    Returns:
+        Dictionary of trained models
+    """
     models = {}
+    ensemble_start = time.time()
     
-    logging.info("Training RandomForest model...")
-    models['RF'] = train_model(X_train, y_train, 'RF')
+    logging.info("\n" + "="*70)
+    logging.info("🚀 STARTING ENSEMBLE TRAINING WITH TIME SERIES CROSS-VALIDATION")
+    logging.info("="*70)
     
-    logging.info("Training XGBoost model...")
-    models['XGB'] = train_model(X_train, y_train, 'XGB')
+    # Train RandomForest
+    logging.info("\n[1/2] Training RandomForest model...")
+    rf_start = time.time()
+    models['RF'] = train_model(X_train, y_train, 'RF', tscv=tscv)
+    rf_time = time.time() - rf_start
+    logging.info(f"   RandomForest total time: {rf_time:.1f}s ({rf_time/60:.2f} min)")
     
+    # Train XGBoost
+    logging.info("\n[2/2] Training XGBoost model...")
+    xgb_start = time.time()
+    models['XGB'] = train_model(X_train, y_train, 'XGB', tscv=tscv)
+    xgb_time = time.time() - xgb_start
+    logging.info(f"   XGBoost total time: {xgb_time:.1f}s ({xgb_time/60:.2f} min)")
+    
+    # Optional: Train LightGBM
     if HAS_LIGHTGBM:
-        logging.info("Training LightGBM model...")
-        models['LGB'] = train_model(X_train, y_train, 'LGB')
+        logging.info("\n[3/3] Training LightGBM model...")
+        lgb_start = time.time()
+        models['LGB'] = train_model(X_train, y_train, 'LGB', tscv=tscv)
+        lgb_time = time.time() - lgb_start
+        logging.info(f"   LightGBM total time: {lgb_time:.1f}s ({lgb_time/60:.2f} min)")
     else:
-        logging.info("LightGBM not available, using RF + XGBoost ensemble")
+        logging.info("\n   LightGBM not available, using RF + XGBoost ensemble")
     
-    logging.info(f"Ensemble training complete with {len(models)} models!")
+    total_ensemble_time = time.time() - ensemble_start
+    logging.info("\n" + "="*70)
+    logging.info(f"✅ ENSEMBLE TRAINING COMPLETE!")
+    logging.info(f"   Total models trained: {len(models)}")
+    logging.info(f"   Total training time: {total_ensemble_time:.1f}s ({total_ensemble_time/60:.2f} min)")
+    logging.info("="*70 + "\n")
+    
     return models
 
 def ensemble_predict(models, X, return_std=False):
@@ -465,16 +542,34 @@ def predict_next_steps(model, df_last_row_full, scaler, features, steps=3, confi
 # Main execution
 if __name__ == "__main__":
     try:
+        # Start overall timer
+        overall_start_time = time.time()
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        print("\n" + "="*70)
+        print(f"🤖 BITCOIN PRICE PREDICTOR - TRAINING SESSION")
+        print(f"   Started: {current_time}")
+        print("="*70)
+        
         # Load all timeframe data
+        logging.info("\n📊 Loading multi-timeframe data...")
+        data_start = time.time()
         df_90day, df_1h, df_4h, df_12h, df_1d, df_1w = load_multi_timeframe_data()
+        data_time = time.time() - data_start
+        logging.info(f"   Data loading completed in {data_time:.1f}s")
         
         # Combine features from all timeframes
+        logging.info("\n🔧 Engineering features from multiple timeframes...")
+        feature_start = time.time()
         combined_df = combine_multi_timeframe_features(df_90day, df_1h, df_4h, df_12h, df_1d, df_1w)
+        feature_time = time.time() - feature_start
+        logging.info(f"   Feature engineering completed in {feature_time:.1f}s")
         
         # Prepare data
+        logging.info("\n🎯 Preparing training and test datasets...")
         df_final, X, y, features = prepare_data(combined_df)
         
-        # Time series split
+        # Time series split for train/test
         n_samples = len(X)
         split_point = int(n_samples * (1 - TEST_SIZE))
         
@@ -483,7 +578,24 @@ if __name__ == "__main__":
         y_train = y[:split_point]
         y_test = y[split_point:]
         
-        logging.info(f"Training set size: {len(X_train)}, Test set size: {len(X_test)}")
+        logging.info(f"   Training samples: {len(X_train):,}")
+        logging.info(f"   Test samples: {len(X_test):,}")
+        logging.info(f"   Total features: {len(features)}")
+        
+        # Create TimeSeriesSplit for cross-validation
+        # gap=3 to prevent data leakage from lagged features (t-1, t-2, t-3)
+        n_splits = 5
+        tscv = TimeSeriesSplit(n_splits=n_splits, gap=3)
+        
+        logging.info(f"\n⏱️  Time Series Cross-Validation Configuration:")
+        logging.info(f"   • Number of folds: {n_splits}")
+        logging.info(f"   • Gap between train/test: 3 hours (prevents leakage from lagged features)")
+        logging.info(f"   • Fold structure: Expanding window (each fold trains on all past data)")
+        
+        # Show fold sizes
+        logging.info(f"\n   Fold breakdown:")
+        for i, (train_idx, test_idx) in enumerate(tscv.split(X_train)):
+            logging.info(f"   Fold {i+1}: Train={len(train_idx):,} samples, Test={len(test_idx):,} samples")
         
         # Scale data
         scaler = StandardScaler()
@@ -492,11 +604,9 @@ if __name__ == "__main__":
         
         # Train model(s)
         if USE_ENSEMBLE:
-            logging.info("="*50)
             model_list = "RF + XGBoost + LightGBM" if HAS_LIGHTGBM else "RF + XGBoost"
-            logging.info(f"Training Ensemble ({model_list})")
-            logging.info("="*50)
-            model = train_ensemble(X_train_scaled, y_train)
+            logging.info(f"\n🎯 Starting Ensemble Training ({model_list})...")
+            model = train_ensemble(X_train_scaled, y_train, tscv=tscv)
             
             # Evaluate ensemble
             y_pred = ensemble_predict(model, X_test_scaled)
@@ -509,7 +619,9 @@ if __name__ == "__main__":
                 logging.info(f"  {name} RMSE: {np.sqrt(mse_individual):.6f}")
         else:
             # Train single model - RF handles complex features better than SVR
-            model = train_model(X_train_scaled, y_train, model_name='RF')
+            logging.info(f"\n🎯 Training single RandomForest model...")
+            tscv_single = TimeSeriesSplit(n_splits=n_splits, gap=3)
+            model = train_model(X_train_scaled, y_train, model_name='RF', tscv=tscv_single)
             y_pred = model.predict(X_test_scaled)
         
         # Ensemble/final model evaluation
@@ -531,6 +643,10 @@ if __name__ == "__main__":
         avg_price = df_final['price'].mean()
         price_rmse = np.sqrt(mse) * avg_price
         
+        # Calculate total execution time
+        total_execution_time = time.time() - overall_start_time
+        end_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
         # Display results
         print("\n" + "="*60)
         if USE_ENSEMBLE:
@@ -539,22 +655,30 @@ if __name__ == "__main__":
         else:
             print("MULTI-TIMEFRAME MODEL SUMMARY")
         print("="*60)
-        print(f"Total Features Used: {len(features)}")
-        print(f"Training Samples: {len(X_train):,}")
-        print(f"Test Samples: {len(X_test):,}")
+        print(f"⏱️  TRAINING TIME")
+        print(f"   Started: {current_time}")
+        print(f"   Ended: {end_time}")
+        print(f"   Total Duration: {total_execution_time:.1f}s ({total_execution_time/60:.2f} min)")
+        print(f"\n📊 DATASET INFO")
+        print(f"   Total Features Used: {len(features)}")
+        print(f"   Training Samples: {len(X_train):,}")
+        print(f"   Test Samples: {len(X_test):,}")
+        print(f"   Cross-Validation: {n_splits}-fold Time Series CV with gap=3")
         
+        print(f"\n🤖 MODEL ARCHITECTURE")
         if USE_ENSEMBLE:
             num_models = 3 if HAS_LIGHTGBM else 2
-            print(f"Model: Ensemble ({num_models} models with equal weighting)")
-            print(f"  - RandomForest")
-            print(f"  - XGBoost")
+            print(f"   Ensemble ({num_models} models with equal weighting)")
+            print(f"   • RandomForest")
+            print(f"   • XGBoost")
             if HAS_LIGHTGBM:
-                print(f"  - LightGBM")
+                print(f"   • LightGBM")
         else:
-            print(f"Model: RandomForest")
+            print(f"   RandomForest")
         
-        print(f"\nTest Set Return RMSE: {np.sqrt(mse):.6f} ({np.sqrt(mse)*100:.2f}%)")
-        print(f"Approximate Price RMSE: ${price_rmse:.2f}")
+        print(f"\n📈 MODEL PERFORMANCE")
+        print(f"   Test Set Return RMSE: {np.sqrt(mse):.6f} ({np.sqrt(mse)*100:.2f}%)")
+        print(f"   Approximate Price RMSE: ${price_rmse:.2f}")
         print(f"\n--- Last Actual Price ---")
         print(f"{last_row_full.name.strftime('%Y-%m-%d %H:%M')}: ${last_row_full['price']:.2f}")
         print(f"\n--- 12-Hour Price Forecast with 95% Confidence Intervals ---")
