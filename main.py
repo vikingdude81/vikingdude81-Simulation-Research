@@ -7,8 +7,15 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
 import xgboost as xgb
-import lightgbm as lgb
 import logging
+
+# Try to import LightGBM, but continue without it if unavailable
+try:
+    import lightgbm as lgb
+    HAS_LIGHTGBM = True
+except (ImportError, OSError) as e:
+    logging.warning(f"LightGBM not available: {e}")
+    HAS_LIGHTGBM = False
 
 # Set up basic logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -37,10 +44,13 @@ USE_ENSEMBLE = True  # Use ensemble of RF + XGBoost + LightGBM
 def load_multi_timeframe_data():
     """Loads all timeframe data and returns them as dataframes."""
     try:
-        # Load 90-day baseline data
-        df_90day = pd.read_csv(FILE_PATH_90DAY)
-        df_90day['timestamp'] = pd.to_datetime(df_90day['timestamp'])
-        df_90day.set_index('timestamp', inplace=True)
+        # Load 90-day baseline data (only needed for Coinbase data)
+        if not USE_YAHOO_FINANCE:
+            df_90day = pd.read_csv(FILE_PATH_90DAY)
+            df_90day['timestamp'] = pd.to_datetime(df_90day['timestamp'])
+            df_90day.set_index('timestamp', inplace=True)
+        else:
+            df_90day = None  # Not needed for Yahoo Finance
         
         if USE_YAHOO_FINANCE:
             logging.info("Loading Yahoo Finance data...")
@@ -153,7 +163,8 @@ def extract_indicator_features(df, prefix=''):
 def combine_multi_timeframe_features(df_90day, df_1h, df_4h, df_12h, df_1d, df_1w):
     """Combine features from all timeframes using forward-fill for alignment."""
     
-    logging.info(f"90-day data shape: {df_90day.shape}, date range: {df_90day.index.min()} to {df_90day.index.max()}")
+    if df_90day is not None:
+        logging.info(f"90-day data shape: {df_90day.shape}, date range: {df_90day.index.min()} to {df_90day.index.max()}")
     logging.info(f"1h data shape: {df_1h.shape}, date range: {df_1h.index.min()} to {df_1h.index.max()}")
     logging.info(f"4h data shape: {df_4h.shape}, date range: {df_4h.index.min()} to {df_4h.index.max()}")
     logging.info(f"12h data shape: {df_12h.shape}, date range: {df_12h.index.min()} to {df_12h.index.max()}")
@@ -277,7 +288,7 @@ def train_model(X_train, y_train, model_name='SVR'):
     return grid_search.best_estimator_
 
 def train_ensemble(X_train, y_train):
-    """Train ensemble of RF, XGBoost, and LightGBM models."""
+    """Train ensemble of RF, XGBoost, and optionally LightGBM models."""
     models = {}
     
     logging.info("Training RandomForest model...")
@@ -286,10 +297,13 @@ def train_ensemble(X_train, y_train):
     logging.info("Training XGBoost model...")
     models['XGB'] = train_model(X_train, y_train, 'XGB')
     
-    logging.info("Training LightGBM model...")
-    models['LGB'] = train_model(X_train, y_train, 'LGB')
+    if HAS_LIGHTGBM:
+        logging.info("Training LightGBM model...")
+        models['LGB'] = train_model(X_train, y_train, 'LGB')
+    else:
+        logging.info("LightGBM not available, using RF + XGBoost ensemble")
     
-    logging.info("Ensemble training complete!")
+    logging.info(f"Ensemble training complete with {len(models)} models!")
     return models
 
 def ensemble_predict(models, X):
@@ -398,7 +412,8 @@ if __name__ == "__main__":
         # Train model(s)
         if USE_ENSEMBLE:
             logging.info("="*50)
-            logging.info("Training Ensemble (RF + XGBoost + LightGBM)")
+            model_list = "RF + XGBoost + LightGBM" if HAS_LIGHTGBM else "RF + XGBoost"
+            logging.info(f"Training Ensemble ({model_list})")
             logging.info("="*50)
             model = train_ensemble(X_train_scaled, y_train)
             
@@ -447,10 +462,12 @@ if __name__ == "__main__":
         print(f"Test Samples: {len(X_test):,}")
         
         if USE_ENSEMBLE:
-            print(f"Model: Ensemble (3 models with equal weighting)")
+            num_models = 3 if HAS_LIGHTGBM else 2
+            print(f"Model: Ensemble ({num_models} models with equal weighting)")
             print(f"  - RandomForest")
             print(f"  - XGBoost")
-            print(f"  - LightGBM")
+            if HAS_LIGHTGBM:
+                print(f"  - LightGBM")
         else:
             print(f"Model: RandomForest")
         
