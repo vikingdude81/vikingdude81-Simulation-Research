@@ -114,6 +114,24 @@ def load_multi_timeframe_data():
         logging.error(f"Error loading data: {e}")
         raise
 
+def calculate_rsi(prices, period=14):
+    """Calculate RSI (Relative Strength Index)."""
+    delta = prices.diff()
+    gain = (delta.where(delta > 0, 0)).rolling(window=period).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(window=period).mean()
+    rs = gain / loss
+    rsi = 100 - (100 / (1 + rs))
+    return rsi
+
+def calculate_macd(prices, fast=12, slow=26, signal=9):
+    """Calculate MACD (Moving Average Convergence Divergence)."""
+    ema_fast = prices.ewm(span=fast, adjust=False).mean()
+    ema_slow = prices.ewm(span=slow, adjust=False).mean()
+    macd_line = ema_fast - ema_slow
+    signal_line = macd_line.ewm(span=signal, adjust=False).mean()
+    macd_histogram = macd_line - signal_line
+    return macd_line, signal_line, macd_histogram
+
 def extract_indicator_features(df, prefix=''):
     """Extract key technical indicators from chart data."""
     features = {}
@@ -122,15 +140,40 @@ def extract_indicator_features(df, prefix=''):
     if 'close' in df.columns:
         features[f'{prefix}close'] = df['close']
         features[f'{prefix}price_change'] = df['close'].pct_change()
+        
+        # RSI - Relative Strength Index (NEW!)
+        features[f'{prefix}rsi_14'] = calculate_rsi(df['close'], period=14)
+        features[f'{prefix}rsi_7'] = calculate_rsi(df['close'], period=7)
+        
+        # MACD - Moving Average Convergence Divergence (NEW!)
+        macd_line, signal_line, macd_hist = calculate_macd(df['close'])
+        features[f'{prefix}macd_line'] = macd_line
+        features[f'{prefix}macd_signal'] = signal_line
+        features[f'{prefix}macd_hist'] = macd_hist
+        
+        # Lagged price features for short-term memory (NEW!)
+        features[f'{prefix}price_lag_1'] = df['close'].shift(1)
+        features[f'{prefix}price_lag_2'] = df['close'].shift(2)
+        features[f'{prefix}price_lag_3'] = df['close'].shift(3)
+        features[f'{prefix}return_lag_1'] = df['close'].pct_change().shift(1)
+        features[f'{prefix}return_lag_2'] = df['close'].pct_change().shift(2)
+    
+    # Volume-weighted indicators (NEW!)
+    if 'volume' in df.columns and 'close' in df.columns:
+        features[f'{prefix}volume'] = df['volume']
+        features[f'{prefix}volume_ma_5'] = df['volume'].rolling(window=5).mean()
+        features[f'{prefix}volume_ma_20'] = df['volume'].rolling(window=20).mean()
+        features[f'{prefix}volume_price_trend'] = (df['close'].pct_change() * df['volume']).rolling(window=5).sum()
+        features[f'{prefix}price_volume_ratio'] = df['close'] / (df['volume'] + 1)
     
     # Bollinger Bands
     if all(col in df.columns for col in ['BB Upper', 'BB Basis', 'BB Lower']):
         features[f'{prefix}bb_width'] = (df['BB Upper'] - df['BB Lower']) / df['BB Basis']
         features[f'{prefix}bb_position'] = (df['close'] - df['BB Lower']) / (df['BB Upper'] - df['BB Lower'])
     
-    # Volume indicators
+    # Legacy Volume indicators (Coinbase data)
     if 'Volume Band (Close)' in df.columns:
-        features[f'{prefix}volume'] = df['Volume Band (Close)']
+        features[f'{prefix}volume_band'] = df['Volume Band (Close)']
     
     # Momentum indicators
     if 'QAO' in df.columns:
@@ -306,8 +349,18 @@ def train_ensemble(X_train, y_train):
     logging.info(f"Ensemble training complete with {len(models)} models!")
     return models
 
-def ensemble_predict(models, X):
-    """Make predictions using ensemble of models with equal weighting."""
+def ensemble_predict(models, X, return_std=False):
+    """Make predictions using ensemble of models with equal weighting.
+    
+    Args:
+        models: Dictionary of trained models
+        X: Feature array
+        return_std: If True, also return standard deviation across models
+        
+    Returns:
+        ensemble_pred: Mean prediction
+        pred_std (optional): Standard deviation of predictions
+    """
     predictions = []
     
     for name, model in models.items():
@@ -315,11 +368,17 @@ def ensemble_predict(models, X):
         predictions.append(pred)
     
     # Average predictions from all models
+    predictions = np.array(predictions)
     ensemble_pred = np.mean(predictions, axis=0)
+    
+    if return_std:
+        pred_std = np.std(predictions, axis=0)
+        return ensemble_pred, pred_std
+    
     return ensemble_pred
 
-def predict_next_steps(model, df_last_row_full, scaler, features, steps=3):
-    """Multi-step prediction carrying forward multi-timeframe features.
+def predict_next_steps(model, df_last_row_full, scaler, features, steps=3, confidence_level=1.96):
+    """Multi-step prediction with confidence intervals.
     
     Args:
         model: Either a single model or dict of models (ensemble)
@@ -327,8 +386,15 @@ def predict_next_steps(model, df_last_row_full, scaler, features, steps=3):
         scaler: Fitted StandardScaler
         features: List of feature names
         steps: Number of steps to predict
+        confidence_level: Multiplier for std (1.96 = 95% confidence)
+    
+    Returns:
+        predictions: List of most likely prices
+        prediction_df: DataFrame with price, lower_bound, upper_bound
     """
     predictions = []
+    lower_bounds = []
+    upper_bounds = []
     prices = [df_last_row_full['price']]
     current_features = df_last_row_full.copy()
     
@@ -349,15 +415,28 @@ def predict_next_steps(model, df_last_row_full, scaler, features, steps=3):
         
         # Predict percentage return using ensemble or single model
         if is_ensemble:
-            predicted_return = ensemble_predict(model, X_pred_scaled)[0]
+            predicted_return, return_std = ensemble_predict(model, X_pred_scaled, return_std=True)
+            predicted_return = predicted_return[0]
+            return_std = return_std[0]
         else:
             predicted_return = model.predict(X_pred_scaled)[0]
+            return_std = 0.005  # Default uncertainty for single model (~0.5%)
         
         # Convert return to price
         current_price = prices[-1]
         predicted_price = current_price * (1 + predicted_return)
+        
+        # Calculate confidence bounds using return uncertainty
+        lower_return = predicted_return - (confidence_level * return_std)
+        upper_return = predicted_return + (confidence_level * return_std)
+        
+        lower_price = current_price * (1 + lower_return)
+        upper_price = current_price * (1 + upper_return)
+        
         prices.append(predicted_price)
         predictions.append(predicted_price)
+        lower_bounds.append(lower_price)
+        upper_bounds.append(upper_price)
         
         # Update only price-dependent features for next iteration
         # Keep multi-timeframe features constant (carry forward from last actual data)
@@ -376,7 +455,9 @@ def predict_next_steps(model, df_last_row_full, scaler, features, steps=3):
     # Return predictions as a series with timestamps
     last_timestamp = df_last_row_full.name
     prediction_df = pd.DataFrame({
-        'price': predictions
+        'price': predictions,
+        'lower_bound': lower_bounds,
+        'upper_bound': upper_bounds
     }, index=[last_timestamp + pd.Timedelta(hours=i+1) for i in range(steps)])
     
     return predictions, prediction_df
@@ -476,9 +557,31 @@ if __name__ == "__main__":
         print(f"Approximate Price RMSE: ${price_rmse:.2f}")
         print(f"\n--- Last Actual Price ---")
         print(f"{last_row_full.name.strftime('%Y-%m-%d %H:%M')}: ${last_row_full['price']:.2f}")
-        print(f"\n--- Predicted Prices for Next {PREDICT_STEPS} Hours ---")
+        print(f"\n--- 12-Hour Price Forecast with 95% Confidence Intervals ---")
+        print(f"{'Time':<20} {'Worst Case':<15} {'Most Likely':<15} {'Best Case':<15}")
+        print("-" * 70)
         for date, row in prediction_df.iterrows():
-            print(f"{date.strftime('%Y-%m-%d %H:%M')}: ${row['price']:.2f}")
+            worst = row['lower_bound']
+            likely = row['price']
+            best = row['upper_bound']
+            print(f"{date.strftime('%Y-%m-%d %H:%M'):<20} ${worst:>12,.2f}  ${likely:>12,.2f}  ${best:>12,.2f}")
+        
+        # Summary for key hours
+        print(f"\n--- Key Forecast Summary ---")
+        first_hour = prediction_df.iloc[0]
+        sixth_hour = prediction_df.iloc[5] if len(prediction_df) >= 6 else prediction_df.iloc[-1]
+        final_hour = prediction_df.iloc[-1]
+        
+        print(f"Hour 1:  ${first_hour['lower_bound']:,.2f} - ${first_hour['price']:,.2f} - ${first_hour['upper_bound']:,.2f}")
+        print(f"Hour 6:  ${sixth_hour['lower_bound']:,.2f} - ${sixth_hour['price']:,.2f} - ${sixth_hour['upper_bound']:,.2f}")
+        print(f"Hour 12: ${final_hour['lower_bound']:,.2f} - ${final_hour['price']:,.2f} - ${final_hour['upper_bound']:,.2f}")
+        
+        current_price = last_row_full['price']
+        final_change = ((final_hour['price'] - current_price) / current_price) * 100
+        final_best_change = ((final_hour['upper_bound'] - current_price) / current_price) * 100
+        final_worst_change = ((final_hour['lower_bound'] - current_price) / current_price) * 100
+        
+        print(f"\n12-Hour Outlook: {final_worst_change:+.2f}% to {final_best_change:+.2f}% (most likely: {final_change:+.2f}%)")
         print("\n--- Last 7 Data Points (Actual) ---")
         print(df_final[['price']].tail(7))
         print("="*60)
