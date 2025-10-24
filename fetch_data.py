@@ -60,7 +60,9 @@ def fetch_and_save_data():
                 'Volume': 'volume'
             }, inplace=True)
             
-            # Convert datetime to unix timestamp for consistency
+            # Ensure time column is timezone-aware and convert to unix timestamp
+            if df['time'].dt.tz is None:
+                df['time'] = df['time'].dt.tz_localize('UTC')
             df['timestamp'] = df['time'].astype(int) // 10**9
             
             # Save to CSV

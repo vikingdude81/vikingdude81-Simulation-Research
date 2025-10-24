@@ -157,8 +157,8 @@ def combine_multi_timeframe_features(df_90day, df_1h, df_4h, df_12h, df_1d, df_1
     logging.info(f"1d data shape: {df_1d.shape}, date range: {df_1d.index.min()} to {df_1d.index.max()}")
     logging.info(f"1w data shape: {df_1w.shape}, date range: {df_1w.index.min()} to {df_1w.index.max()}")
     
-    # Use 1-day data as the base timeline since it has the most recent and comprehensive coverage
-    combined = df_1d[['close']].copy()
+    # Use 1-hour data as the base timeline for maximum training samples
+    combined = df_1h[['close']].copy()
     combined.rename(columns={'close': 'price'}, inplace=True)
     
     # Extract features from each timeframe
@@ -168,28 +168,28 @@ def combine_multi_timeframe_features(df_90day, df_1h, df_4h, df_12h, df_1d, df_1
     features_1d = extract_indicator_features(df_1d, prefix='1d_')
     features_1w = extract_indicator_features(df_1w, prefix='1w_')
     
-    # Resample hourly to match daily frequency with forward fill (limit to 7 days)
-    features_1h_resampled = features_1h.resample('1D').last()
-    features_1h_resampled = features_1h_resampled.reindex(combined.index)
-    features_1h_resampled = features_1h_resampled.ffill(limit=7)
+    # 1h features already match the base timeframe
+    features_1h_resampled = features_1h
     
-    # Resample 4-hourly to match daily frequency (limit to 7 days)
-    features_4h_resampled = features_4h.resample('1D').last()
+    # Resample 4h to hourly with forward fill (limit to 4 hours)
+    features_4h_resampled = features_4h.resample('1h').last()
     features_4h_resampled = features_4h_resampled.reindex(combined.index)
-    features_4h_resampled = features_4h_resampled.ffill(limit=7)
+    features_4h_resampled = features_4h_resampled.ffill(limit=4)
     
-    # Resample 12-hourly to match daily frequency (limit to 7 days)
-    features_12h_resampled = features_12h.resample('1D').last()
+    # Resample 12h to hourly with forward fill (limit to 12 hours)
+    features_12h_resampled = features_12h.resample('1h').last()
     features_12h_resampled = features_12h_resampled.reindex(combined.index)
-    features_12h_resampled = features_12h_resampled.ffill(limit=7)
+    features_12h_resampled = features_12h_resampled.ffill(limit=12)
     
-    # Daily features already match, just use them
-    features_1d_resampled = features_1d
+    # Resample daily to hourly with forward fill (limit to 24 hours)
+    features_1d_resampled = features_1d.resample('1h').last()
+    features_1d_resampled = features_1d_resampled.reindex(combined.index)
+    features_1d_resampled = features_1d_resampled.ffill(limit=24)
     
-    # Resample weekly to match daily frequency (limit to 14 days)
-    features_1w_resampled = features_1w.resample('1D').last()
+    # Resample weekly to hourly with forward fill (limit to 168 hours = 1 week)
+    features_1w_resampled = features_1w.resample('1h').last()
     features_1w_resampled = features_1w_resampled.reindex(combined.index)
-    features_1w_resampled = features_1w_resampled.ffill(limit=14)
+    features_1w_resampled = features_1w_resampled.ffill(limit=168)
     
     # Combine all features
     combined = pd.concat([combined, features_1h_resampled, features_4h_resampled, 
@@ -202,17 +202,17 @@ def combine_multi_timeframe_features(df_90day, df_1h, df_4h, df_12h, df_1d, df_1
     combined['rolling_mean_20'] = combined['price'].rolling(window=20).mean()
     combined['rolling_std_20'] = combined['price'].rolling(window=20).std()
     
-    # Target variable
-    combined['target_price'] = combined['price'].shift(-1)
+    # Target variable: predict percentage return instead of absolute price
+    combined['target_return'] = combined['price'].pct_change().shift(-1)
+    combined['next_price'] = combined['price'].shift(-1)  # Keep for reference
     
     logging.info(f"Combined features before cleanup: {combined.shape}")
     logging.info(f"NaN counts per column:\n{combined.isna().sum()}")
     
-    # Fill remaining NaN values with 0 for multi-timeframe features, but drop rows where core features are missing
-    # First, drop rows where target_price is NaN (last row)
-    combined = combined[combined['target_price'].notna()]
+    # Drop rows where target_return is NaN (last row)
+    combined = combined[combined['target_return'].notna()]
     
-    # Then fill NaN in non-critical features with 0
+    # Fill NaN in non-critical features with 0
     combined = combined.fillna(0)
     
     logging.info(f"Combined features shape after cleanup: {combined.shape}")
@@ -223,11 +223,11 @@ def combine_multi_timeframe_features(df_90day, df_1h, df_4h, df_12h, df_1d, df_1
 def prepare_data(combined_df):
     """Prepare X and y from combined dataframe."""
     
-    # Select features (exclude price and target)
-    feature_cols = [col for col in combined_df.columns if col not in ['price', 'target_price']]
+    # Select features (exclude price, target, and next_price reference)
+    feature_cols = [col for col in combined_df.columns if col not in ['price', 'target_return', 'next_price']]
     
     X = combined_df[feature_cols].values
-    y = combined_df['target_price'].values
+    y = combined_df['target_return'].values
     
     logging.info(f"Feature count: {len(feature_cols)}")
     logging.info(f"Sample count: {len(X)}")
@@ -259,48 +259,54 @@ def train_model(X_train, y_train, model_name='SVR'):
     logging.info(f"Best {model_name} Parameters: {grid_search.best_params_}")
     return grid_search.best_estimator_
 
-def predict_next_steps(model, df_last_rows, scaler, features, steps=3):
-    """Multi-step prediction with feature recalculation."""
+def predict_next_steps(model, df_last_row_full, scaler, features, steps=3):
+    """Multi-step prediction carrying forward multi-timeframe features."""
     predictions = []
-    prediction_history = df_last_rows[['price']].copy()
+    prices = [df_last_row_full['price']]
+    current_features = df_last_row_full.copy()
     
     for i in range(steps):
-        # Recalculate features for the last row
-        temp_df = prediction_history.copy()
-        temp_df['pct_change'] = temp_df['price'].pct_change()
-        temp_df['rolling_mean_5'] = temp_df['price'].rolling(window=5).mean()
-        temp_df['rolling_std_5'] = temp_df['price'].rolling(window=5).std()
-        temp_df['rolling_mean_20'] = temp_df['price'].rolling(window=20).mean()
-        temp_df['rolling_std_20'] = temp_df['price'].rolling(window=20).std()
-        temp_df.dropna(inplace=True)
-        
-        if len(temp_df) == 0:
-            logging.warning("Not enough data for prediction")
-            break
-        
-        # Get the last row features that exist in the model
-        current_features = []
-        last_row = temp_df.iloc[-1]
-        
+        # Build feature vector from current state
+        feature_vector = []
         for feat in features:
-            if feat in temp_df.columns:
-                current_features.append(last_row[feat])
+            if feat in current_features.index:
+                feature_vector.append(current_features[feat])
             else:
-                # Use 0 for missing features (they'll be from other timeframes)
-                current_features.append(0)
+                feature_vector.append(0)
         
-        X_pred = np.array(current_features).reshape(1, -1)
+        X_pred = np.array(feature_vector).reshape(1, -1)
         X_pred_scaled = scaler.transform(X_pred)
         
-        predicted_price = model.predict(X_pred_scaled)[0]
+        # Predict percentage return
+        predicted_return = model.predict(X_pred_scaled)[0]
+        
+        # Convert return to price
+        current_price = prices[-1]
+        predicted_price = current_price * (1 + predicted_return)
+        prices.append(predicted_price)
         predictions.append(predicted_price)
         
-        # Add predicted price to history
-        next_timestamp = temp_df.index[-1] + pd.Timedelta(hours=1)
-        new_row = pd.Series({'price': predicted_price}, name=next_timestamp)
-        prediction_history = pd.concat([prediction_history, new_row.to_frame().T])
+        # Update only price-dependent features for next iteration
+        # Keep multi-timeframe features constant (carry forward from last actual data)
+        current_features['price'] = predicted_price
+        
+        # Recalculate simple rolling features based on price history
+        price_series = pd.Series(prices[-21:])  # Last 20 + current
+        current_features['pct_change'] = predicted_return
+        if len(prices) >= 5:
+            current_features['rolling_mean_5'] = price_series[-5:].mean()
+            current_features['rolling_std_5'] = price_series[-5:].std()
+        if len(prices) >= 20:
+            current_features['rolling_mean_20'] = price_series[-20:].mean()
+            current_features['rolling_std_20'] = price_series[-20:].std()
     
-    return predictions, prediction_history.iloc[-steps:]
+    # Return predictions as a series with timestamps
+    last_timestamp = df_last_row_full.name
+    prediction_df = pd.DataFrame({
+        'price': predictions
+    }, index=[last_timestamp + pd.Timedelta(hours=i+1) for i in range(steps)])
+    
+    return predictions, prediction_df
 
 # Main execution
 if __name__ == "__main__":
@@ -330,8 +336,8 @@ if __name__ == "__main__":
         X_train_scaled = scaler.fit_transform(X_train)
         X_test_scaled = scaler.transform(X_test)
         
-        # Train model
-        model = train_model(X_train_scaled, y_train, model_name='SVR')
+        # Train model - RF handles complex features better than SVR
+        model = train_model(X_train_scaled, y_train, model_name='RF')
         
         # Evaluate
         y_pred = model.predict(X_test_scaled)
@@ -339,26 +345,34 @@ if __name__ == "__main__":
         logging.info(f"Model Test MSE: {mse:.4f}")
         logging.info(f"Model Test RMSE: {np.sqrt(mse):.4f}")
         
-        # Predict next steps
-        last_N_rows = df_final.tail(50)[['price']].copy()
-        predictions, prediction_history = predict_next_steps(
+        # Predict next steps using the full last row with all features
+        last_row_full = df_final.iloc[-1]
+        predictions, prediction_df = predict_next_steps(
             model=model,
-            df_last_rows=last_N_rows,
+            df_last_row_full=last_row_full,
             scaler=scaler,
             features=features,
             steps=PREDICT_STEPS
         )
+        
+        # Convert RMSE back to price scale (since we're predicting returns)
+        avg_price = df_final['price'].mean()
+        price_rmse = np.sqrt(mse) * avg_price
         
         # Display results
         print("\n" + "="*50)
         print("ENHANCED MULTI-TIMEFRAME MODEL SUMMARY")
         print("="*50)
         print(f"Total Features Used: {len(features)}")
-        print(f"Model: SVR with params: {model.get_params()}")
-        print(f"Test Set RMSE: {np.sqrt(mse):.4f}")
-        print("\n--- Predicted Prices for Next 3 Periods ---")
-        for date, price in prediction_history['price'].items():
-            print(f"{date.strftime('%Y-%m-%d %H:%M')}: ${price:.2f}")
+        print(f"Training Samples: {len(X_train)}")
+        print(f"Model: RandomForest with best params")
+        print(f"Test Set Return RMSE: {np.sqrt(mse):.6f} ({np.sqrt(mse)*100:.2f}%)")
+        print(f"Approximate Price RMSE: ${price_rmse:.2f}")
+        print(f"\n--- Last Actual Price ---")
+        print(f"{last_row_full.name.strftime('%Y-%m-%d %H:%M')}: ${last_row_full['price']:.2f}")
+        print("\n--- Predicted Prices for Next 3 Hours ---")
+        for date, row in prediction_df.iterrows():
+            print(f"{date.strftime('%Y-%m-%d %H:%M')}: ${row['price']:.2f}")
         print("\n--- Last 7 Data Points (Actual) ---")
         print(df_final[['price']].tail(7))
         print("="*50)
