@@ -18,6 +18,15 @@ FILE_PATH_4H = './attached_assets/COINBASE_BTCUSD, 240_739cb_1761290157184.csv'
 FILE_PATH_12H = './attached_assets/COINBASE_BTCUSD, 720_c69cd_1761290157184.csv'
 FILE_PATH_1D = './attached_assets/COINBASE_BTCUSD, 1D_87ac3_1761289206450.csv'
 FILE_PATH_1W = './attached_assets/COINBASE_BTCUSD, 1W_9771c_1761290157184.csv'
+
+# Yahoo Finance data paths (fallback/supplement)
+YF_FILE_PATH_1H = './DATA/yf_btc_1h.csv'
+YF_FILE_PATH_4H = './DATA/yf_btc_4h.csv'
+YF_FILE_PATH_12H = './DATA/yf_btc_12h.csv'
+YF_FILE_PATH_1D = './DATA/yf_btc_1d.csv'
+YF_FILE_PATH_1W = './DATA/yf_btc_1w.csv'
+
+USE_YAHOO_FINANCE = True  # Set to True to use YF data instead
 TEST_SIZE = 0.2
 PREDICT_STEPS = 3
 
@@ -30,30 +39,57 @@ def load_multi_timeframe_data():
         df_90day['timestamp'] = pd.to_datetime(df_90day['timestamp'])
         df_90day.set_index('timestamp', inplace=True)
         
-        # Load 1-hour data with indicators
-        df_1h = pd.read_csv(FILE_PATH_1H)
-        df_1h['time'] = pd.to_datetime(df_1h['time'], unit='s')
-        df_1h.set_index('time', inplace=True)
-        
-        # Load 4-hour data with indicators
-        df_4h = pd.read_csv(FILE_PATH_4H)
-        df_4h['time'] = pd.to_datetime(df_4h['time'], unit='s')
-        df_4h.set_index('time', inplace=True)
-        
-        # Load 12-hour data with indicators
-        df_12h = pd.read_csv(FILE_PATH_12H)
-        df_12h['time'] = pd.to_datetime(df_12h['time'], unit='s')
-        df_12h.set_index('time', inplace=True)
-        
-        # Load 1-day data with indicators
-        df_1d = pd.read_csv(FILE_PATH_1D)
-        df_1d['time'] = pd.to_datetime(df_1d['time'], unit='s')
-        df_1d.set_index('time', inplace=True)
-        
-        # Load 1-week data with indicators
-        df_1w = pd.read_csv(FILE_PATH_1W)
-        df_1w['time'] = pd.to_datetime(df_1w['time'], unit='s')
-        df_1w.set_index('time', inplace=True)
+        if USE_YAHOO_FINANCE:
+            logging.info("Loading Yahoo Finance data...")
+            
+            # Load Yahoo Finance data
+            df_1h = pd.read_csv(YF_FILE_PATH_1H)
+            df_1h['time'] = pd.to_datetime(df_1h['time'])
+            df_1h.set_index('time', inplace=True)
+            
+            df_4h = pd.read_csv(YF_FILE_PATH_4H)
+            df_4h['time'] = pd.to_datetime(df_4h['time'])
+            df_4h.set_index('time', inplace=True)
+            
+            df_12h = pd.read_csv(YF_FILE_PATH_12H)
+            df_12h['time'] = pd.to_datetime(df_12h['time'])
+            df_12h.set_index('time', inplace=True)
+            
+            df_1d = pd.read_csv(YF_FILE_PATH_1D)
+            df_1d['time'] = pd.to_datetime(df_1d['time'])
+            df_1d.set_index('time', inplace=True)
+            
+            df_1w = pd.read_csv(YF_FILE_PATH_1W)
+            df_1w['time'] = pd.to_datetime(df_1w['time'])
+            df_1w.set_index('time', inplace=True)
+            
+        else:
+            logging.info("Loading Coinbase indicator data...")
+            
+            # Load 1-hour data with indicators
+            df_1h = pd.read_csv(FILE_PATH_1H)
+            df_1h['time'] = pd.to_datetime(df_1h['time'], unit='s')
+            df_1h.set_index('time', inplace=True)
+            
+            # Load 4-hour data with indicators
+            df_4h = pd.read_csv(FILE_PATH_4H)
+            df_4h['time'] = pd.to_datetime(df_4h['time'], unit='s')
+            df_4h.set_index('time', inplace=True)
+            
+            # Load 12-hour data with indicators
+            df_12h = pd.read_csv(FILE_PATH_12H)
+            df_12h['time'] = pd.to_datetime(df_12h['time'], unit='s')
+            df_12h.set_index('time', inplace=True)
+            
+            # Load 1-day data with indicators
+            df_1d = pd.read_csv(FILE_PATH_1D)
+            df_1d['time'] = pd.to_datetime(df_1d['time'], unit='s')
+            df_1d.set_index('time', inplace=True)
+            
+            # Load 1-week data with indicators
+            df_1w = pd.read_csv(FILE_PATH_1W)
+            df_1w['time'] = pd.to_datetime(df_1w['time'], unit='s')
+            df_1w.set_index('time', inplace=True)
         
         logging.info("All timeframe data loaded successfully")
         return df_90day, df_1h, df_4h, df_12h, df_1d, df_1w
