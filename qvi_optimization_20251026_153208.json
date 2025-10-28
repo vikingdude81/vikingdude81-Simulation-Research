@@ -1,0 +1,10 @@
+{
+  "timestamp": "2025-10-26T15:32:08.866937",
+  "assets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "best_per_asset": {},
+  "best_universal": null
+}

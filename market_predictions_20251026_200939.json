@@ -1,0 +1,32 @@
+{
+  "timestamp": "2025-10-26T20:09:39.656996",
+  "btc_recent_performance": {
+    "current_price": 114987.5078125,
+    "week_ago_price": 110431.5078125,
+    "week_change_pct": 4.125634151202177,
+    "outlook": "\ud83d\udcc8 BULLISH MOMENTUM"
+  },
+  "signals": {
+    "BTC": {
+      "price": 114987.5078125,
+      "signal": "NEUTRAL",
+      "trend": "BULLISH",
+      "spread_pct": 1.2527734735145453,
+      "change_24h": 3.1841590061164284
+    },
+    "ETH": {
+      "price": 4207.51806640625,
+      "signal": "NEUTRAL",
+      "trend": "BULLISH",
+      "spread_pct": 1.8021472623147048,
+      "change_24h": 6.779192337868466
+    },
+    "SOL": {
+      "price": 204.0369415283203,
+      "signal": "NEUTRAL",
+      "trend": "BULLISH",
+      "spread_pct": 2.3289735328470544,
+      "change_24h": 5.64096482896718
+    }
+  }
+}

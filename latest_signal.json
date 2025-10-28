@@ -1,0 +1,23 @@
+{
+  "timestamp": "2025-10-25T17:39:14.404559",
+  "action": "HOLD",
+  "confidence": "HIGH",
+  "position_size": 0.0,
+  "expected_return_pct": 0.11,
+  "current_price": 111496.49,
+  "predicted_price": 111616.05,
+  "uncertainty_pct": 0.206,
+  "predicted_volatility_pct": 0.1,
+  "reasoning": "Expected return 0.11% below threshold (0.5%)",
+  "prediction_1h": {
+    "time": "2025-10-24 07:00",
+    "worst_case": 111500.85,
+    "most_likely": 111616.05,
+    "best_case": 111731.25
+  },
+  "prediction_12h": {
+    "time": "2025-10-24 17:00",
+    "price": 113302.98,
+    "change_pct": 1.62
+  }
+}

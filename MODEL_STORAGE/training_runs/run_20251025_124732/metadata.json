@@ -1,0 +1,16 @@
+{
+  "run_id": "run_20251025_124732",
+  "timestamp": "20251025_124732",
+  "config": {
+    "n_features": 33,
+    "n_train_samples": 13407,
+    "n_test_samples": 3352,
+    "cv_folds": 5,
+    "lstm_sequence_length": 48,
+    "transformer_layers": 4,
+    "transformer_heads": 8,
+    "device": "cuda"
+  },
+  "duration_seconds": 0,
+  "models_used": []
+}

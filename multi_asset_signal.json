@@ -1,0 +1,86 @@
+{
+  "timestamp": "2025-10-26T13:53:00.334157",
+  "individual_signals": {
+    "BTC": {
+      "signal": "BUY",
+      "confidence": "HIGH",
+      "confidence_score": 1.0,
+      "position_size": 1.0,
+      "expected_return": 0.11717827067191094,
+      "current_price": 111238.53125,
+      "predicted_price": 113302.98,
+      "price_change": 2064.448749999996,
+      "confidence_band": 0.00417714972301923,
+      "reason": "11.72% expected move (threshold: 0.30%)",
+      "sr_analysis": {
+        "proximity_bonus": 0.09861951475521957,
+        "enhanced_return": 0.11717827067191094,
+        "nearest_support": 111207.81861979167,
+        "nearest_resistance": 111269.24388020833,
+        "stop_loss": 110651.77952669271,
+        "take_profit": 115688.07250000001,
+        "risk_reward_ratio": 7.583345856949018
+      }
+    },
+    "ETH": {
+      "signal": "HOLD",
+      "confidence": "HIGH",
+      "confidence_score": 1.0,
+      "position_size": 0,
+      "expected_return": -0.0005582091229117615,
+      "current_price": 3958.89208984375,
+      "predicted_price": 3956.682200162576,
+      "price_change": -2.2098896811739905,
+      "confidence_band": 5.5770382069568186e-05,
+      "reason": "-0.06% expected move (threshold: 0.60%)",
+      "sr_analysis": null
+    },
+    "SOL": {
+      "signal": "HOLD",
+      "confidence": "HIGH",
+      "confidence_score": 1.0,
+      "position_size": 0,
+      "expected_return": 0.0008250682484762401,
+      "current_price": 194.1908264160156,
+      "predicted_price": 194.3510471010368,
+      "price_change": 0.16022068502121556,
+      "confidence_band": 3.158637856911274e-05,
+      "reason": "0.08% expected move (threshold: 0.75%)",
+      "sr_analysis": null
+    }
+  },
+  "portfolio_allocation": {
+    "BTC": 0.3333333333333333,
+    "ETH": 0.3333333333333333,
+    "SOL": 0.3333333333333333
+  },
+  "base_allocation": {
+    "BTC": 0.45,
+    "ETH": 0.0,
+    "SOL": 0.0,
+    "CASH": 0.55
+  },
+  "expected_return_12h": 0.03914837659915847,
+  "annualized_return": 1494931647602.3967,
+  "active_positions": 1,
+  "diversification": 3,
+  "market_regime": {
+    "fear_state": "NEUTRAL",
+    "fear_description": "Market neutral - balanced sentiment",
+    "fear_emoji": "\ud83d\ude10",
+    "position_modifier": 0.7,
+    "btc_regime": "BALANCED",
+    "btc_description": "Balanced market - diversified allocation",
+    "regime_emoji": "\u2696\ufe0f",
+    "asset_preference": {
+      "BTC": 0.45,
+      "ETH": 0.3,
+      "SOL": 0.25
+    },
+    "market_phase": "MODERATE",
+    "phase_description": "Moderate allocation with diversification",
+    "action": "BALANCED_ALLOCATION",
+    "usdt_d": 4.664808903056067,
+    "btc_d": 57.70073750853114
+  }
+}

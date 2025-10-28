@@ -1,0 +1,83 @@
+{
+  "timestamp": "2025-10-26T14:29:21.856451",
+  "results": {
+    "BTC": {
+      "ml_only": {
+        "num_trades": 1400,
+        "win_rate": 0.9557142857142857,
+        "avg_return": 0.011893585358364522,
+        "sharpe": 1.2268751491115573,
+        "total_return": 14493791.906707427,
+        "max_drawdown": -0.00941930652300278
+      },
+      "rb_only": {
+        "num_trades": 5,
+        "win_rate": 0.8,
+        "avg_return": 0.004648674802568098,
+        "sharpe": 0.8833781096277882,
+        "total_return": 0.023390373869018433,
+        "max_drawdown": -0.002676716131710317
+      },
+      "combined": {
+        "num_trades": 2,
+        "win_rate": 1.0,
+        "avg_return": 0.008744046926534299,
+        "sharpe": 1.8646546381155387,
+        "total_return": 0.017542562061949818,
+        "max_drawdown": 0.0
+      }
+    },
+    "ETH": {
+      "ml_only": {
+        "num_trades": 1676,
+        "win_rate": 0.9797136038186157,
+        "avg_return": 0.021204744894388023,
+        "sharpe": 1.20834269315104,
+        "total_return": 1473396598239962.2,
+        "max_drawdown": -0.008035111956524338
+      },
+      "rb_only": {
+        "num_trades": 5,
+        "win_rate": 0.8,
+        "avg_return": 0.006301611410746322,
+        "sharpe": 0.5191416660134008,
+        "total_return": 0.03153512432224037,
+        "max_drawdown": 0.0
+      },
+      "combined": {
+        "num_trades": 1,
+        "win_rate": 1.0,
+        "avg_return": 0.028692167506695787,
+        "sharpe": 0,
+        "total_return": 0.028692167506695787,
+        "max_drawdown": 0.0
+      }
+    },
+    "SOL": {
+      "ml_only": {
+        "num_trades": 1811,
+        "win_rate": 0.9911651021535064,
+        "avg_return": 0.024560442871449973,
+        "sharpe": 1.259363848926353,
+        "total_return": 8.802762813712848e+18,
+        "max_drawdown": -0.009580853713807399
+      },
+      "rb_only": {
+        "num_trades": 5,
+        "win_rate": 0.6,
+        "avg_return": 0.022330056587571902,
+        "sharpe": 0.6084358035303852,
+        "total_return": 0.11324323625022159,
+        "max_drawdown": -0.011619150225885678
+      },
+      "combined": {
+        "num_trades": 3,
+        "win_rate": 1.0,
+        "avg_return": 0.04308562969801518,
+        "sharpe": 1.2636010385588188,
+        "total_return": 0.1331147108670354,
+        "max_drawdown": 0.0
+      }
+    }
+  }
+}

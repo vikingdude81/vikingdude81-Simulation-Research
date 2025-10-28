@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-10-26T13:19:51.715379",
+  "fear_greed": 50,
+  "fear_greed_class": "Neutral",
+  "google_trends_bitcoin": 83,
+  "google_trends_avg": 34.96252465483234,
+  "social_sentiment": 0.2277867324239956,
+  "twitter_sentiment": 0.2679103622702779,
+  "reddit_sentiment": 0.41527238007343054,
+  "market_cap": 2264315935058,
+  "volume_24h": 34320241928,
+  "price_change_7d": 4.21361,
+  "price_change_30d": 3.92256,
+  "btc_dominance": 57.70073750853114,
+  "eth_dominance": 12.505219370889648,
+  "usdt_dominance": 4.664808903056067,
+  "total_market_cap": 3925342231054.1987,
+  "market_cap_change_24h": 2.1494401572804205
+}

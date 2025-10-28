@@ -1,0 +1,9 @@
+{
+  "test_rmse": 0.0066,
+  "train_rmse": 0.005,
+  "rf_rmse": 0.007,
+  "xgb_rmse": 0.0068,
+  "lstm_rmse": 0.0065,
+  "transformer_rmse": 0.0064,
+  "multitask_rmse": 0.0062
+}

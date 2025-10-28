@@ -1,0 +1,52 @@
+{
+  "timestamp": "2025-10-25T22:57:51.365118",
+  "asset": "btc",
+  "initial_capital": 10000,
+  "results": [
+    {
+      "phase": "A",
+      "config_name": "Phase A: Multi-Asset Only",
+      "use_dominance": false,
+      "use_sr": false,
+      "final_capital": 12190.546569079523,
+      "total_return": 0.21905465690795226,
+      "monthly_return": 0.07553608858894906,
+      "win_rate": 0.6,
+      "completed_trades": 135,
+      "avg_return_per_trade": 0.0031073319437029696,
+      "max_drawdown": -0.01713911063769386,
+      "sharpe_ratio": 0,
+      "sr_impact_pct": 0.0
+    },
+    {
+      "phase": "C",
+      "config_name": "Phase C: Multi-Asset + Dominance",
+      "use_dominance": true,
+      "use_sr": false,
+      "final_capital": 11475.042442886697,
+      "total_return": 0.14750424428866973,
+      "monthly_return": 0.05086353251333439,
+      "win_rate": 0.6,
+      "completed_trades": 135,
+      "avg_return_per_trade": 0.0031073319437029696,
+      "max_drawdown": -0.013282531652588461,
+      "sharpe_ratio": 0,
+      "sr_impact_pct": 0.0
+    },
+    {
+      "phase": "D",
+      "config_name": "Phase D: Multi-Asset + Dominance + S/R",
+      "use_dominance": true,
+      "use_sr": true,
+      "final_capital": 11570.871520780842,
+      "total_return": 0.15708715207808419,
+      "monthly_return": 0.054167983475201444,
+      "win_rate": 0.6,
+      "completed_trades": 135,
+      "avg_return_per_trade": 0.0031073319437029696,
+      "max_drawdown": -0.010741946401420314,
+      "sharpe_ratio": 0,
+      "sr_impact_pct": 480.0738007380073
+    }
+  ]
+}

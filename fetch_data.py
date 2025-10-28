@@ -3,19 +3,23 @@ import yfinance as yf
 import pandas as pd
 from datetime import datetime, timedelta
 import logging
+from pathlib import Path
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Get the directory where this script is located
+SCRIPT_DIR = Path(__file__).parent.absolute()
 
 def fetch_and_save_data():
     """Fetch BTC-USD data from Yahoo Finance for multiple timeframes."""
     
     # Define timeframes and their parameters
     timeframes = {
-        '1h': {'period': '730d', 'interval': '1h', 'file': './DATA/yf_btc_1h.csv'},  # 2 years of hourly
-        '4h': {'period': 'max', 'interval': '1h', 'file': './DATA/yf_btc_4h.csv'},   # Will resample
-        '12h': {'period': 'max', 'interval': '1h', 'file': './DATA/yf_btc_12h.csv'}, # Will resample
-        '1d': {'period': 'max', 'interval': '1d', 'file': './DATA/yf_btc_1d.csv'},
-        '1w': {'period': 'max', 'interval': '1wk', 'file': './DATA/yf_btc_1w.csv'},
+        '1h': {'period': '730d', 'interval': '1h', 'file': SCRIPT_DIR / 'DATA' / 'yf_btc_1h.csv'},  # 2 years of hourly
+        '4h': {'period': 'max', 'interval': '1h', 'file': SCRIPT_DIR / 'DATA' / 'yf_btc_4h.csv'},   # Will resample
+        '12h': {'period': 'max', 'interval': '1h', 'file': SCRIPT_DIR / 'DATA' / 'yf_btc_12h.csv'}, # Will resample
+        '1d': {'period': 'max', 'interval': '1d', 'file': SCRIPT_DIR / 'DATA' / 'yf_btc_1d.csv'},
+        '1w': {'period': 'max', 'interval': '1wk', 'file': SCRIPT_DIR / 'DATA' / 'yf_btc_1w.csv'},
     }
     
     ticker = yf.Ticker("BTC-USD")

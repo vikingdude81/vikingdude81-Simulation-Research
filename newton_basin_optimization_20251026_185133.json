@@ -1,0 +1,64 @@
+{
+  "timestamp": "2025-10-26T18:51:33.389766",
+  "assets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "results": {
+    "BTC": {
+      "params": {
+        "ma1_len": 15,
+        "ma2_len": 40,
+        "ma3_len": 220,
+        "newton_iterations": 4,
+        "use_relative_distance": true
+      },
+      "strategy": "shift_to_slow",
+      "metrics": {
+        "num_trades": 51,
+        "win_rate": 0.5490196078431373,
+        "sharpe": 0.28254637835566676,
+        "avg_return": 0.004846075800258773,
+        "total_return": 0.27030387237857445
+      },
+      "score": 0.5570561822772354
+    },
+    "ETH": {
+      "params": {
+        "ma1_len": 25,
+        "ma2_len": 40,
+        "ma3_len": 180,
+        "newton_iterations": 4,
+        "use_relative_distance": true
+      },
+      "strategy": "shift_to_slow",
+      "metrics": {
+        "num_trades": 62,
+        "win_rate": 0.6935483870967742,
+        "sharpe": 0.48576865478570375,
+        "avg_return": 0.009214472006805849,
+        "total_return": 0.7468442017022001
+      },
+      "score": 0.8325428483340909
+    },
+    "SOL": {
+      "params": {
+        "ma1_len": 25,
+        "ma2_len": 60,
+        "ma3_len": 200,
+        "newton_iterations": 4,
+        "use_relative_distance": true
+      },
+      "strategy": "shift_to_fast",
+      "metrics": {
+        "num_trades": 132,
+        "win_rate": 0.5909090909090909,
+        "sharpe": 0.1582416222167166,
+        "avg_return": 0.004881724487547516,
+        "total_return": 0.7863536965658402
+      },
+      "score": 0.4536961676712621
+    }
+  }
+}

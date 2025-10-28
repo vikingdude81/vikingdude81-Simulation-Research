@@ -1,0 +1,52 @@
+{
+  "backtest_summary": {
+    "periods": 2108,
+    "date_range": {
+      "start": "2025-07-28T00:00:00+00:00",
+      "end": "2025-10-23T19:00:00+00:00"
+    },
+    "final_returns": {
+      "ucb": -16.41023402849806,
+      "equal_weight": -17.064772915035565,
+      "btc_only": -59.27957593831428
+    },
+    "sharpe_ratios": {
+      "ucb": 0.173458107842994,
+      "equal_weight": 0.16854801141762596,
+      "btc_only": -0.7264925612928497
+    },
+    "final_allocation": {
+      "BTC": 0.33301821272826815,
+      "ETH": 0.3334529861409815,
+      "SOL": 0.33352880113075034
+    },
+    "avg_allocation": {
+      "BTC": 0.33299417427087574,
+      "ETH": 0.3340159046657402,
+      "SOL": 0.33298992106338404
+    },
+    "ucb_statistics": {
+      "total_selections": 6324,
+      "assets": {
+        "BTC": {
+          "selections": 2108,
+          "selection_rate": 0.3333333333333333,
+          "avg_reward": -0.0003438504576558551,
+          "total_reward": -0.7248367647385425
+        },
+        "ETH": {
+          "selections": 2108,
+          "selection_rate": 0.3333333333333333,
+          "avg_reward": 0.0003151071895969435,
+          "total_reward": 0.6642459556703569
+        },
+        "SOL": {
+          "selections": 2108,
+          "selection_rate": 0.3333333333333333,
+          "avg_reward": 0.00041924119383155643,
+          "total_reward": 0.8837604365969209
+        }
+      }
+    }
+  }
+}

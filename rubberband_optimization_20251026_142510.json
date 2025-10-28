@@ -1,0 +1,115 @@
+{
+  "timestamp": "2025-10-26T14:25:10.972396",
+  "assets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "best_per_asset": {
+    "BTC": {
+      "params": {
+        "z_lookback": 200,
+        "up_threshold": 2.5,
+        "down_threshold": -2.0,
+        "smooth_len": 3,
+        "min_bars_between": 5,
+        "use_dynamic_thresholds": true,
+        "use_keltner_filter": true,
+        "use_adaptive_weights": false
+      },
+      "metrics": {
+        "win_rate": 0.8,
+        "avg_return": 0.004648674802568099,
+        "sharpe": 0.8833781096277918,
+        "total_return": 0.023390373869018433,
+        "num_trades": 5,
+        "avg_win": 0.006480022536137719,
+        "avg_loss": -0.00267671613171038
+      }
+    },
+    "ETH": {
+      "params": {
+        "z_lookback": 200,
+        "up_threshold": 2.5,
+        "down_threshold": -2.0,
+        "smooth_len": 7,
+        "min_bars_between": 5,
+        "use_dynamic_thresholds": true,
+        "use_keltner_filter": true,
+        "use_adaptive_weights": false
+      },
+      "metrics": {
+        "win_rate": 0.8,
+        "avg_return": 0.0063016114107463635,
+        "sharpe": 0.5191416660134053,
+        "total_return": 0.03153512432224037,
+        "num_trades": 5,
+        "avg_win": 0.009761522928026942,
+        "avg_loss": -0.007538034658375949
+      }
+    },
+    "SOL": {
+      "params": {
+        "z_lookback": 150,
+        "up_threshold": 2.5,
+        "down_threshold": -1.5,
+        "smooth_len": 7,
+        "min_bars_between": 5,
+        "use_dynamic_thresholds": true,
+        "use_keltner_filter": true,
+        "use_adaptive_weights": false
+      },
+      "metrics": {
+        "win_rate": 0.6,
+        "avg_return": 0.02233005658757195,
+        "sharpe": 0.6084358035303865,
+        "total_return": 0.11324323625022159,
+        "num_trades": 5,
+        "avg_win": 0.043085629698015236,
+        "avg_loss": -0.008803303078092984
+      }
+    }
+  },
+  "best_universal": {
+    "params": {
+      "z_lookback": 200,
+      "up_threshold": 2.5,
+      "down_threshold": -2.0,
+      "smooth_len": 3,
+      "min_bars_between": 8,
+      "use_dynamic_thresholds": true,
+      "use_keltner_filter": true,
+      "use_adaptive_weights": false
+    },
+    "asset_results": {
+      "BTC": {
+        "win_rate": 0.8,
+        "avg_return": 0.004648674802568099,
+        "sharpe": 0.8833781096277918,
+        "total_return": 0.023390373869018433,
+        "num_trades": 5,
+        "avg_win": 0.006480022536137719,
+        "avg_loss": -0.00267671613171038
+      },
+      "ETH": {
+        "win_rate": 0.3333333333333333,
+        "avg_return": -0.0005307681043654366,
+        "sharpe": -0.03567336873419914,
+        "total_return": -0.0038408206476674422,
+        "num_trades": 6,
+        "avg_win": 0.018168740943792762,
+        "avg_loss": -0.009880522628444537
+      },
+      "SOL": {
+        "win_rate": 0.4,
+        "avg_return": 0.000771529771975923,
+        "sharpe": 0.08348926856947057,
+        "total_return": 0.0036499878056128754,
+        "num_trades": 5,
+        "avg_win": 0.011078657827677458,
+        "avg_loss": -0.006099888931825101
+      }
+    },
+    "universal_metric": 0.31039800315435445
+  }
+}

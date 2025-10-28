@@ -1,0 +1,111 @@
+{
+  "timestamp": "2025-10-26T15:39:19.021069",
+  "assets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "best_per_asset": {
+    "BTC": {
+      "params": {
+        "len_rvol": 60,
+        "len_cmf": 15,
+        "len_delta": 34,
+        "len_smooth": 3,
+        "len_band": 80,
+        "band_k": 1.2,
+        "vwma_len": 10,
+        "w1": 0.5,
+        "w2": 0.3,
+        "w3": 0.2
+      },
+      "metrics": {
+        "win_rate": 0.5402298850574713,
+        "avg_return": 0.0011113374006982923,
+        "sharpe": 0.0699974882169088,
+        "total_return": 0.08939717253105472,
+        "num_trades": 87
+      }
+    },
+    "ETH": {
+      "params": {
+        "len_rvol": 60,
+        "len_cmf": 20,
+        "len_delta": 21,
+        "len_smooth": 7,
+        "len_band": 80,
+        "band_k": 1.2,
+        "vwma_len": 10,
+        "w1": 0.5,
+        "w2": 0.3,
+        "w3": 0.2
+      },
+      "metrics": {
+        "win_rate": 0.6049382716049383,
+        "avg_return": -0.00031402339674665503,
+        "sharpe": -0.011804498125695303,
+        "total_return": -0.053310132742504956,
+        "num_trades": 81
+      }
+    },
+    "SOL": {
+      "params": {
+        "len_rvol": 40,
+        "len_cmf": 20,
+        "len_delta": 34,
+        "len_smooth": 7,
+        "len_band": 100,
+        "band_k": 2.0,
+        "vwma_len": 10,
+        "w1": 0.5,
+        "w2": 0.3,
+        "w3": 0.2
+      },
+      "metrics": {
+        "win_rate": 0.4946236559139785,
+        "avg_return": 0.0009696439313098992,
+        "sharpe": 0.028304366699900253,
+        "total_return": 0.03633375481757284,
+        "num_trades": 93
+      }
+    }
+  },
+  "best_universal": {
+    "params": {
+      "len_rvol": 40,
+      "len_cmf": 15,
+      "len_delta": 21,
+      "len_smooth": 5,
+      "len_band": 100,
+      "band_k": 1.6,
+      "vwma_len": 10,
+      "w1": 0.5,
+      "w2": 0.3,
+      "w3": 0.2
+    },
+    "asset_results": {
+      "BTC": {
+        "win_rate": 0.525,
+        "avg_return": 0.0003509402305738132,
+        "sharpe": 0.021666087728817916,
+        "total_return": 0.01768121546012602,
+        "num_trades": 80
+      },
+      "ETH": {
+        "win_rate": 0.5769230769230769,
+        "avg_return": -0.0013285392033677062,
+        "sharpe": -0.049296985030585994,
+        "total_return": -0.12428795195777664,
+        "num_trades": 78
+      },
+      "SOL": {
+        "win_rate": 0.4854368932038835,
+        "avg_return": -0.0003510411666103052,
+        "sharpe": -0.010268049188833794,
+        "total_return": -0.09191458151996157,
+        "num_trades": 103
+      }
+    },
+    "universal_metric": -0.012632982163533956
+  }
+}

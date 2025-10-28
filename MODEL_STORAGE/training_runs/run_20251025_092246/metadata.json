@@ -1,0 +1,19 @@
+{
+  "run_id": "run_20251025_092246",
+  "timestamp": "20251025_092246",
+  "config": {
+    "USE_LSTM": true,
+    "USE_TRANSFORMER": true,
+    "USE_MULTITASK": true,
+    "LSTM_EPOCHS": 150
+  },
+  "duration_seconds": 868.9,
+  "models_used": [
+    "RandomForest",
+    "XGBoost",
+    "LightGBM",
+    "LSTM",
+    "Transformer",
+    "MultiTask"
+  ]
+}

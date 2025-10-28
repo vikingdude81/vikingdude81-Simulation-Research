@@ -1,0 +1,192 @@
+{
+  "rubberband": {
+    "BTC": {
+      "params": {
+        "z_lookback": 200,
+        "up_threshold": 2.5,
+        "down_threshold": -2.0,
+        "smooth_len": 3,
+        "min_bars_between": 5,
+        "use_dynamic_thresholds": true,
+        "use_keltner_filter": true,
+        "use_adaptive_weights": false
+      },
+      "metrics": {
+        "win_rate": 0.8,
+        "avg_return": 0.004648674802568099,
+        "sharpe": 0.8833781096277918,
+        "total_return": 0.023390373869018433,
+        "num_trades": 5,
+        "avg_win": 0.006480022536137719,
+        "avg_loss": -0.00267671613171038
+      }
+    },
+    "ETH": {
+      "params": {
+        "z_lookback": 200,
+        "up_threshold": 2.5,
+        "down_threshold": -2.0,
+        "smooth_len": 7,
+        "min_bars_between": 5,
+        "use_dynamic_thresholds": true,
+        "use_keltner_filter": true,
+        "use_adaptive_weights": false
+      },
+      "metrics": {
+        "win_rate": 0.8,
+        "avg_return": 0.0063016114107463635,
+        "sharpe": 0.5191416660134053,
+        "total_return": 0.03153512432224037,
+        "num_trades": 5,
+        "avg_win": 0.009761522928026942,
+        "avg_loss": -0.007538034658375949
+      }
+    },
+    "SOL": {
+      "params": {
+        "z_lookback": 150,
+        "up_threshold": 2.5,
+        "down_threshold": -1.5,
+        "smooth_len": 7,
+        "min_bars_between": 5,
+        "use_dynamic_thresholds": true,
+        "use_keltner_filter": true,
+        "use_adaptive_weights": false
+      },
+      "metrics": {
+        "win_rate": 0.6,
+        "avg_return": 0.02233005658757195,
+        "sharpe": 0.6084358035303865,
+        "total_return": 0.11324323625022159,
+        "num_trades": 5,
+        "avg_win": 0.043085629698015236,
+        "avg_loss": -0.008803303078092984
+      }
+    }
+  },
+  "volatility_hole": {
+    "BTC": {
+      "params": {
+        "comp_thresh": 75,
+        "bb_pct_thresh": 15,
+        "exp_min_bb_roc": 3.0,
+        "lookback_hole_bars": 8,
+        "require_adx": true,
+        "adx_quiet": 18,
+        "use_vol_quiet": true,
+        "osc_smooth": 3
+      },
+      "metrics": {
+        "win_rate": 0.6875,
+        "avg_return": 0.010464048866047298,
+        "sharpe": 0.5553817436850247,
+        "total_return": 0.3876549005860539,
+        "num_trades": 32
+      }
+    },
+    "ETH": {
+      "params": {
+        "comp_thresh": 75,
+        "bb_pct_thresh": 15,
+        "exp_min_bb_roc": 3.0,
+        "lookback_hole_bars": 8,
+        "require_adx": true,
+        "adx_quiet": 22,
+        "use_vol_quiet": true,
+        "osc_smooth": 3
+      },
+      "metrics": {
+        "win_rate": 0.43478260869565216,
+        "avg_return": 0.0019301022438056353,
+        "sharpe": 0.08488381563959294,
+        "total_return": 0.07987446639069606,
+        "num_trades": 46
+      }
+    },
+    "SOL": {
+      "params": {
+        "comp_thresh": 75,
+        "bb_pct_thresh": 10,
+        "exp_min_bb_roc": 5.0,
+        "lookback_hole_bars": 3,
+        "require_adx": true,
+        "adx_quiet": 22,
+        "use_vol_quiet": true,
+        "osc_smooth": 3
+      },
+      "metrics": {
+        "win_rate": 0.8,
+        "avg_return": 0.010793232509324575,
+        "sharpe": 1.3953981051034168,
+        "total_return": 0.05498840052609966,
+        "num_trades": 5
+      }
+    }
+  },
+  "qvi": {
+    "BTC": {
+      "params": {
+        "len_rvol": 60,
+        "len_cmf": 15,
+        "len_delta": 34,
+        "len_smooth": 3,
+        "len_band": 80,
+        "band_k": 1.2,
+        "vwma_len": 10,
+        "w1": 0.5,
+        "w2": 0.3,
+        "w3": 0.2
+      },
+      "metrics": {
+        "win_rate": 0.5402298850574713,
+        "avg_return": 0.0011113374006982923,
+        "sharpe": 0.0699974882169088,
+        "total_return": 0.08939717253105472,
+        "num_trades": 87
+      }
+    },
+    "ETH": {
+      "params": {
+        "len_rvol": 60,
+        "len_cmf": 20,
+        "len_delta": 21,
+        "len_smooth": 7,
+        "len_band": 80,
+        "band_k": 1.2,
+        "vwma_len": 10,
+        "w1": 0.5,
+        "w2": 0.3,
+        "w3": 0.2
+      },
+      "metrics": {
+        "win_rate": 0.6049382716049383,
+        "avg_return": -0.00031402339674665503,
+        "sharpe": -0.011804498125695303,
+        "total_return": -0.053310132742504956,
+        "num_trades": 81
+      }
+    },
+    "SOL": {
+      "params": {
+        "len_rvol": 40,
+        "len_cmf": 20,
+        "len_delta": 34,
+        "len_smooth": 7,
+        "len_band": 100,
+        "band_k": 2.0,
+        "vwma_len": 10,
+        "w1": 0.5,
+        "w2": 0.3,
+        "w3": 0.2
+      },
+      "metrics": {
+        "win_rate": 0.4946236559139785,
+        "avg_return": 0.0009696439313098992,
+        "sharpe": 0.028304366699900253,
+        "total_return": 0.03633375481757284,
+        "num_trades": 93
+      }
+    }
+  },
+  "timestamp": "2025-10-26T18:21:36.337945"
+}

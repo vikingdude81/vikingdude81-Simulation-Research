@@ -1,0 +1,727 @@
+{
+  "assets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "selections": [
+    2108.0,
+    2108.0,
+    2108.0
+  ],
+  "rewards": [
+    -0.7248367647385425,
+    0.6642459556703569,
+    0.8837604365969209
+  ],
+  "avg_rewards": [
+    -0.0003438504576558551,
+    0.0003151071895969435,
+    0.00041924119383155643
+  ],
+  "total_selections": 6324,
+  "exploration_param": 1.5,
+  "history": [
+    {
+      "timestamp": "2025-10-26T14:14:11.438243",
+      "asset": "SOL",
+      "reward": -0.02622127916261976,
+      "avg_reward": 0.00012418327896490466,
+      "total_selections": 6225
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.440731",
+      "asset": "BTC",
+      "reward": 0.0012730075416801042,
+      "avg_reward": -0.0004866115295083804,
+      "total_selections": 6226
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.442783",
+      "asset": "ETH",
+      "reward": -0.005673948306973207,
+      "avg_reward": 0.00018559643281499178,
+      "total_selections": 6227
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.444874",
+      "asset": "SOL",
+      "reward": -0.02652864503480539,
+      "avg_reward": 0.00011134472968081491,
+      "total_selections": 6228
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.447607",
+      "asset": "BTC",
+      "reward": -0.0017152281695899862,
+      "avg_reward": -0.00048720306375974376,
+      "total_selections": 6229
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.449806",
+      "asset": "ETH",
+      "reward": -0.008153065481430723,
+      "avg_reward": 0.00018158167021785856,
+      "total_selections": 6230
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.451922",
+      "asset": "SOL",
+      "reward": -0.025519662360895406,
+      "avg_reward": 9.900433146676762e-05,
+      "total_selections": 6231
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.454331",
+      "asset": "BTC",
+      "reward": -0.006602391292948987,
+      "avg_reward": -0.0004901458877391418,
+      "total_selections": 6232
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.456424",
+      "asset": "ETH",
+      "reward": -0.013043714207216615,
+      "avg_reward": 0.00017521723524315476,
+      "total_selections": 6233
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.458496",
+      "asset": "SOL",
+      "reward": -0.021244213007149276,
+      "avg_reward": 8.873329328649042e-05,
+      "total_selections": 6234
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.460815",
+      "asset": "BTC",
+      "reward": -0.0039000688500886263,
+      "avg_reward": -0.0004917860623242065,
+      "total_selections": 6235
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.462845",
+      "asset": "ETH",
+      "reward": -0.0036541844358495396,
+      "avg_reward": 0.00017337529119741514,
+      "total_selections": 6236
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.464795",
+      "asset": "SOL",
+      "reward": -0.01525882837459873,
+      "avg_reward": 8.135110874205308e-05,
+      "total_selections": 6237
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.466977",
+      "asset": "BTC",
+      "reward": 0.0003621275828174896,
+      "avg_reward": -0.0004913755269178884,
+      "total_selections": 6238
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.469086",
+      "asset": "ETH",
+      "reward": -0.0030573226536983263,
+      "avg_reward": 0.00017182207103159987,
+      "total_selections": 6239
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.471056",
+      "asset": "SOL",
+      "reward": -0.005758952427422455,
+      "avg_reward": 7.854327050351246e-05,
+      "total_selections": 6240
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.473297",
+      "asset": "BTC",
+      "reward": 0.003079383128932279,
+      "avg_reward": -0.0004896596409708196,
+      "total_selections": 6241
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.475474",
+      "asset": "ETH",
+      "reward": -0.002098462018421307,
+      "avg_reward": 0.00017073111279543798,
+      "total_selections": 6242
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.477517",
+      "asset": "SOL",
+      "reward": -0.0008764193976631131,
+      "avg_reward": 7.808437445922287e-05,
+      "total_selections": 6243
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.479860",
+      "asset": "BTC",
+      "reward": 0.011298558249603798,
+      "avg_reward": -0.00048399767272366557,
+      "total_selections": 6244
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.482005",
+      "asset": "ETH",
+      "reward": 0.01110738794122636,
+      "avg_reward": 0.00017598406996567376,
+      "total_selections": 6245
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.484848",
+      "asset": "SOL",
+      "reward": 0.01754192417875158,
+      "avg_reward": 8.647238589260057e-05,
+      "total_selections": 6246
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.487294",
+      "asset": "BTC",
+      "reward": 0.020955187799587348,
+      "avg_reward": -0.0004737052169040251,
+      "total_selections": 6247
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.489321",
+      "asset": "ETH",
+      "reward": 0.02376294446259491,
+      "avg_reward": 0.0001873076227225769,
+      "total_selections": 6248
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.491967",
+      "asset": "SOL",
+      "reward": 0.03408535093638922,
+      "avg_reward": 0.0001027944591285567,
+      "total_selections": 6249
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.494339",
+      "asset": "BTC",
+      "reward": 0.014049372812293931,
+      "avg_reward": -0.00046673636948118543,
+      "total_selections": 6250
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.496478",
+      "asset": "ETH",
+      "reward": 0.024071199280510908,
+      "avg_reward": 0.00019876822332612215,
+      "total_selections": 6251
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.498477",
+      "asset": "SOL",
+      "reward": 0.04344613707680333,
+      "avg_reward": 0.000123592608177345,
+      "total_selections": 6252
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.500767",
+      "asset": "BTC",
+      "reward": 0.01720631937780363,
+      "avg_reward": -0.0004582600837510728,
+      "total_selections": 6253
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.502754",
+      "asset": "ETH",
+      "reward": 0.029281780452402834,
+      "avg_reward": 0.00021271691024654264,
+      "total_selections": 6254
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.505919",
+      "asset": "SOL",
+      "reward": 0.043321083609387925,
+      "avg_reward": 0.0001443108292810431,
+      "total_selections": 6255
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.508312",
+      "asset": "BTC",
+      "reward": 0.021076312238218643,
+      "avg_reward": -0.0004479367029639349,
+      "total_selections": 6256
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.510351",
+      "asset": "ETH",
+      "reward": 0.038485034593516564,
+      "avg_reward": 0.00023106413828262603,
+      "total_selections": 6257
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.512680",
+      "asset": "SOL",
+      "reward": 0.0558155015082223,
+      "avg_reward": 0.00017099884015301877,
+      "total_selections": 6258
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.515332",
+      "asset": "BTC",
+      "reward": 0.0214702922850187,
+      "avg_reward": -0.00043743443703773337,
+      "total_selections": 6259
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.517555",
+      "asset": "ETH",
+      "reward": 0.033754970150637234,
+      "avg_reward": 0.00024712734193013664,
+      "total_selections": 6260
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.519693",
+      "asset": "SOL",
+      "reward": 0.05297062142344485,
+      "avg_reward": 0.00019629813223892765,
+      "total_selections": 6261
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.522063",
+      "asset": "BTC",
+      "reward": 0.014156587118906933,
+      "avg_reward": -0.0004304449631124725,
+      "total_selections": 6262
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.524265",
+      "asset": "ETH",
+      "reward": 0.01502213338606057,
+      "avg_reward": 0.00025420349425012254,
+      "total_selections": 6263
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.526286",
+      "asset": "SOL",
+      "reward": 0.04334552473064838,
+      "avg_reward": 0.00021696347064812757,
+      "total_selections": 6264
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.528575",
+      "asset": "BTC",
+      "reward": 0.01138285659993355,
+      "avg_reward": -0.0004247899599707559,
+      "total_selections": 6265
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.530704",
+      "asset": "ETH",
+      "reward": 0.008068728930344386,
+      "avg_reward": 0.0002579442914909527,
+      "total_selections": 6266
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.533174",
+      "asset": "SOL",
+      "reward": 0.04478086675906945,
+      "avg_reward": 0.00023829611942190513,
+      "total_selections": 6267
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.535620",
+      "asset": "BTC",
+      "reward": 0.011426649903141833,
+      "avg_reward": -0.0004191194145817068,
+      "total_selections": 6268
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.537975",
+      "asset": "ETH",
+      "reward": 0.006605081061487642,
+      "avg_reward": 0.00026098119903640566,
+      "total_selections": 6269
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.540006",
+      "asset": "SOL",
+      "reward": 0.04727698853150998,
+      "avg_reward": 0.0002608026708152487,
+      "total_selections": 6270
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.542677",
+      "asset": "BTC",
+      "reward": 0.011311603942329346,
+      "avg_reward": -0.0004135093125458814,
+      "total_selections": 6271
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.544713",
+      "asset": "ETH",
+      "reward": 0.005696629805244653,
+      "avg_reward": 0.0002635807440417659,
+      "total_selections": 6272
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.547170",
+      "asset": "SOL",
+      "reward": 0.041651437306566876,
+      "avg_reward": 0.0002805973310905962,
+      "total_selections": 6273
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.549482",
+      "asset": "BTC",
+      "reward": 0.014547315204681523,
+      "avg_reward": -0.0004063578667919486,
+      "total_selections": 6274
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.551538",
+      "asset": "ETH",
+      "reward": 0.013844631322638041,
+      "avg_reward": 0.0002700726420238865,
+      "total_selections": 6275
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.553589",
+      "asset": "SOL",
+      "reward": 0.04643506489877782,
+      "avg_reward": 0.00030265969608471053,
+      "total_selections": 6276
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.555908",
+      "asset": "BTC",
+      "reward": 0.014382325458231881,
+      "avg_reward": -0.000399292084027962,
+      "total_selections": 6277
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.558112",
+      "asset": "ETH",
+      "reward": 0.02071141233923981,
+      "avg_reward": 0.0002798391683961826,
+      "total_selections": 6278
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.560524",
+      "asset": "SOL",
+      "reward": 0.042785226691791724,
+      "avg_reward": 0.0003229571480654592,
+      "total_selections": 6279
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.562967",
+      "asset": "BTC",
+      "reward": 0.020496516491716566,
+      "avg_reward": -0.00038931318785998464,
+      "total_selections": 6280
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.565127",
+      "asset": "ETH",
+      "reward": 0.018781963464599653,
+      "avg_reward": 0.00028867494886237343,
+      "total_selections": 6281
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.567567",
+      "asset": "SOL",
+      "reward": 0.043194065623859024,
+      "avg_reward": 0.00034343045679315434,
+      "total_selections": 6282
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.570015",
+      "asset": "BTC",
+      "reward": 0.0031549300326108886,
+      "avg_reward": -0.00038762142498625153,
+      "total_selections": 6283
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.572191",
+      "asset": "ETH",
+      "reward": -0.004923571532843373,
+      "avg_reward": 0.00028618700304771673,
+      "total_selections": 6284
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.574244",
+      "asset": "SOL",
+      "reward": 0.02502957037504339,
+      "avg_reward": 0.0003552138171359945,
+      "total_selections": 6285
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.576503",
+      "asset": "BTC",
+      "reward": 0.009406521774091235,
+      "avg_reward": -0.00038294864674241687,
+      "total_selections": 6286
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.578558",
+      "asset": "ETH",
+      "reward": -0.005255431028166919,
+      "avg_reward": 0.000283543101315267,
+      "total_selections": 6287
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.580752",
+      "asset": "SOL",
+      "reward": 0.02220108698749204,
+      "avg_reward": 0.00036563646654933234,
+      "total_selections": 6288
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.582940",
+      "asset": "BTC",
+      "reward": 9.37402822039068e-05,
+      "avg_reward": -0.000382721327272247,
+      "total_selections": 6289
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.584957",
+      "asset": "ETH",
+      "reward": -0.016069521535267237,
+      "avg_reward": 0.00027574478723010605,
+      "total_selections": 6290
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.587034",
+      "asset": "SOL",
+      "reward": 0.011092601912635228,
+      "avg_reward": 0.0003707518530281525,
+      "total_selections": 6291
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.589186",
+      "asset": "BTC",
+      "reward": 0.0011433311440720005,
+      "avg_reward": -0.00038199394287217824,
+      "total_selections": 6292
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.591116",
+      "asset": "ETH",
+      "reward": -0.015288237777139639,
+      "avg_reward": 0.00026832630173707954,
+      "total_selections": 6293
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.593174",
+      "asset": "SOL",
+      "reward": 0.002593722511519814,
+      "avg_reward": 0.0003718114195955937,
+      "total_selections": 6294
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.596078",
+      "asset": "BTC",
+      "reward": 0.00459495180251695,
+      "avg_reward": -0.0003796228396109162,
+      "total_selections": 6295
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.598496",
+      "asset": "ETH",
+      "reward": -0.007039668722656345,
+      "avg_reward": 0.000264844646175196,
+      "total_selections": 6296
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.600662",
+      "asset": "SOL",
+      "reward": 0.01100585291573927,
+      "avg_reward": 0.00037687766137555736,
+      "total_selections": 6297
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.602937",
+      "asset": "BTC",
+      "reward": 0.007573984351718816,
+      "avg_reward": -0.0003758354076150449,
+      "total_selections": 6298
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.604934",
+      "asset": "ETH",
+      "reward": -0.00220843737659141,
+      "avg_reward": 0.0002636668928310215,
+      "total_selections": 6299
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.607005",
+      "asset": "SOL",
+      "reward": 0.018734170597557987,
+      "avg_reward": 0.00038561922944040615,
+      "total_selections": 6300
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.609199",
+      "asset": "BTC",
+      "reward": 0.013412554185086373,
+      "avg_reward": -0.0003692726329397943,
+      "total_selections": 6301
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.611219",
+      "asset": "ETH",
+      "reward": 0.006415196041631381,
+      "avg_reward": 0.00026659479818504355,
+      "total_selections": 6302
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.613342",
+      "asset": "SOL",
+      "reward": 0.020158832886754147,
+      "avg_reward": 0.0003950305638798701,
+      "total_selections": 6303
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.615600",
+      "asset": "BTC",
+      "reward": 0.010931106599992219,
+      "avg_reward": -0.00036389661998407027,
+      "total_selections": 6304
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.617597",
+      "asset": "ETH",
+      "reward": 0.008956127037950469,
+      "avg_reward": 0.0002707287335988235,
+      "total_selections": 6305
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.620039",
+      "asset": "SOL",
+      "reward": 0.013110167861089888,
+      "avg_reward": 0.0004010796301487616,
+      "total_selections": 6306
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.622531",
+      "asset": "BTC",
+      "reward": 0.01018953835853939,
+      "avg_reward": -0.0003588783437222902,
+      "total_selections": 6307
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.624548",
+      "asset": "ETH",
+      "reward": 0.012357811722407857,
+      "avg_reward": 0.00027647627662726336,
+      "total_selections": 6308
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.626651",
+      "asset": "SOL",
+      "reward": 0.01569573133685377,
+      "avg_reward": 0.00040835240794557804,
+      "total_selections": 6309
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.639236",
+      "asset": "BTC",
+      "reward": 0.004510259892946857,
+      "avg_reward": -0.0003565641145223524,
+      "total_selections": 6310
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.641414",
+      "asset": "ETH",
+      "reward": 0.0029295738425361767,
+      "avg_reward": 0.00027773725455782844,
+      "total_selections": 6311
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.643438",
+      "asset": "SOL",
+      "reward": -0.00040577858676667635,
+      "avg_reward": 0.0004079654635564563,
+      "total_selections": 6312
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.645930",
+      "asset": "BTC",
+      "reward": 0.008408177782209612,
+      "avg_reward": -0.00035240034164979564,
+      "total_selections": 6313
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.648010",
+      "asset": "ETH",
+      "reward": 0.014252342504310189,
+      "avg_reward": 0.00028437602189737825,
+      "total_selections": 6314
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.650075",
+      "asset": "SOL",
+      "reward": 0.011196829846763736,
+      "avg_reward": 0.0004130908148073861,
+      "total_selections": 6315
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.652364",
+      "asset": "BTC",
+      "reward": 0.0005429893618754745,
+      "avg_reward": -0.0003519751803470771,
+      "total_selections": 6316
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.654475",
+      "asset": "ETH",
+      "reward": 0.013426168153081328,
+      "avg_reward": 0.0002906161891011693,
+      "total_selections": 6317
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.656577",
+      "asset": "SOL",
+      "reward": 0.0025039152121575994,
+      "avg_reward": 0.0004140836089181887,
+      "total_selections": 6318
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.658931",
+      "asset": "BTC",
+      "reward": 0.00820185864808254,
+      "avg_reward": -0.0003479154585490564,
+      "total_selections": 6319
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.660951",
+      "asset": "ETH",
+      "reward": 0.02940900746483241,
+      "avg_reward": 0.0003044360235936853,
+      "total_selections": 6320
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.663496",
+      "asset": "SOL",
+      "reward": 0.008886690416434494,
+      "avg_reward": 0.0004181047796858756,
+      "total_selections": 6321
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.666114",
+      "asset": "BTC",
+      "reward": 0.008221106424319327,
+      "avg_reward": -0.0003438504576558551,
+      "total_selections": 6322
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.668112",
+      "asset": "ETH",
+      "reward": 0.022799253958461958,
+      "avg_reward": 0.0003151071895969435,
+      "total_selections": 6323
+    },
+    {
+      "timestamp": "2025-10-26T14:14:11.670398",
+      "asset": "SOL",
+      "reward": 0.0028136657987810954,
+      "avg_reward": 0.00041924119383155643,
+      "total_selections": 6324
+    }
+  ],
+  "last_updated": "2025-10-26T14:14:11.670414"
+}

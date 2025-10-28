@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-10-26T20:38:26.558503",
+  "twitter": {
+    "sentiment_score": 0.25078315697675996,
+    "volume": 14154,
+    "positive_ratio": 0.5612992359781729
+  },
+  "reddit": {
+    "sentiment_score": 0.21756466856352524,
+    "submissions": 254,
+    "comments": 4774
+  },
+  "overall_sentiment": 0.45924300688338276,
+  "bullish_ratio": 0.5306405617351329
+}
