@@ -1,0 +1,13 @@
+# Large dataset files (>100MB) - store locally or use Git LFS
+chaos_unified_GPU_1000runs_*.json
+chaos_dataset_100runs_*.json
+chaos_unified_GPU_*runs_*.json
+chaos_unified_*runs_*.json
+
+# Intermediate test runs
+chaos_unified_TEST_*.json
+
+# Temporary analysis outputs
+*.pyc
+__pycache__/
+.ipynb_checkpoints/
