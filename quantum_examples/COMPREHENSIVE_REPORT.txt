@@ -1,0 +1,131 @@
+================================================================================
+🔬 COMPREHENSIVE GENOME ANALYSIS REPORT
+================================================================================
+
+Generated: 2025-11-02 03:19:30
+
+Total genomes analyzed: 7
+
+================================================================================
+📊 GENOME INVENTORY
+================================================================================
+
+1. Exp1-Best
+   File: best_individual_long_evolution_genome.json
+   Fitness: 1.0606e+16
+   Mutation: 1.349959
+   Oscillation: 0.654134
+   Decoherence: 0.011313
+   Phase: 0.448719
+
+2. Exp1-Avg
+   File: averaged_long_evolution_genome.json
+   Fitness: 3.2282e-01
+   Mutation: 0.715162
+   Oscillation: 0.765380
+   Decoherence: 0.011799
+   Phase: 0.239824
+
+3. Exp2-Best
+   File: best_individual_more_populations_genome.json
+   Fitness: 6.7443e+09
+   Mutation: 1.148584
+   Oscillation: 1.887500
+   Decoherence: 0.010708
+   Phase: 0.290771
+
+4. Exp2-Avg
+   File: averaged_more_populations_genome.json
+   Fitness: 1.3357e+00
+   Mutation: 0.604769
+   Oscillation: 0.740213
+   Decoherence: 0.011413
+   Phase: 0.244662
+
+5. Exp3-Best
+   File: best_individual_hybrid_genome.json
+   Fitness: 1.6231e+15
+   Mutation: 3.032908
+   Oscillation: 0.863872
+   Decoherence: 0.015876
+   Phase: 0.262628
+
+6. Exp3-Avg
+   File: averaged_hybrid_genome.json
+   Fitness: 9.2935e+03
+   Mutation: 0.663581
+   Oscillation: 0.693754
+   Decoherence: 0.011346
+   Phase: 0.213274
+
+7. Co-Evolved
+   File: co_evolved_best_gen_2117.json
+   Fitness: 1.6788e+00
+   Mutation: 0.688519
+   Oscillation: 0.248234
+   Decoherence: 0.018329
+   Phase: 0.526176
+
+================================================================================
+🏆 RANKINGS
+================================================================================
+
+By Fitness:
+   1. Exp1-Best            - 1.0606e+16
+   2. Exp3-Best            - 1.6231e+15
+   3. Exp2-Best            - 6.7443e+09
+   4. Exp3-Avg             - 9.2935e+03
+   5. Co-Evolved           - 1.6788e+00
+   6. Exp2-Avg             - 1.3357e+00
+   7. Exp1-Avg             - 3.2282e-01
+
+================================================================================
+🔍 KEY DISCOVERIES
+================================================================================
+
+1. THE DECOHERENCE CONSTANT (~0.011)
+   Mean: 0.012969
+   Std:  0.002711
+   CV:   20.91%
+   → Appears universally across all experiments
+   → Likely a fundamental system constant
+
+2. THE MUTATION FRONTIER (μ > 3.0)
+   Highest mutation: 3.0329
+   Genome: Exp3-Best
+   Fitness: 1.6231e+15
+   → Orders of magnitude beyond previous experiments
+
+3. AVERAGING PARADOX
+   Best individuals avg: 4.0763e+15
+   Averaged genomes avg: 3.0984e+03
+   Ratio: 1.32e+12×
+   → Averaging destroys critical parameter synergies
+
+================================================================================
+💡 APPLICATIONS
+================================================================================
+
+1. Hyperparameter Optimization
+   • Use evolved genome as neural network hyperparameters
+   • Mutation → learning rate
+   • Decoherence → regularization strength
+
+2. Control Systems
+   • Robotics PID tuning
+   • Drone stabilization parameters
+
+3. Financial Systems
+   • Trading algorithm parameters
+   • Risk management thresholds
+
+================================================================================
+🚀 NEXT STEPS
+================================================================================
+
+1. Scale to 100+ populations
+2. Test mutation rates > 5.0
+3. Multi-objective optimization
+4. Real-world application deployment
+
+================================================================================

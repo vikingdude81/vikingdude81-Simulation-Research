@@ -1,0 +1,372 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Co-Evolution Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+            color: #e0e0e0;
+            padding: 20px;
+        }
+        .header {
+            background: #2d2d44;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #9B59B6;
+        }
+        h1 { color: #9B59B6; font-size: 28px; }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        button {
+            background: #9B59B6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        button:hover { background: #8E44AD; }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: #2d2d44;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #27AE60;
+        }
+        .agent-card {
+            background: #2d2d44;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498DB;
+            margin: 10px 0;
+        }
+        .chart-container {
+            background: #2d2d44;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧬 Co-Evolution Dashboard</h1>
+        <p>Watch genomes learn from each other in real-time</p>
+    </div>
+
+    <div class="controls">
+        <button onclick="addGenome('best_individual_hybrid_genome.json')">Add Exp3 Best</button>
+        <button onclick="addGenome('best_individual_long_evolution_genome.json')">Add Exp1 Best</button>
+        <button onclick="addGenome('best_individual_more_populations_genome.json')">Add Exp2 Best</button>
+        <button onclick="startEvolution()">▶ Start</button>
+        <button onclick="stopEvolution()">⏸ Stop</button>
+        <button onclick="exportBest()">💾 Export Best</button>
+    </div>
+
+    <div class="stats" id="stats"></div>
+    
+    <div class="chart-container" style="margin: 20px 0;">
+        <h3>📈 Evolution Progress Insights</h3>
+        <div id="progressInsights" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+            <div style="background: rgba(39,174,96,0.1); padding: 15px; border-radius: 8px; border-left: 4px solid #27AE60;">
+                <div style="font-size: 12px; color: #aaa;">Learning Rate</div>
+                <div id="learningRate" style="font-size: 24px; color: #27AE60; font-weight: bold;">--</div>
+                <div style="font-size: 10px; color: #888; margin-top: 5px;">Successful learns / total</div>
+            </div>
+            <div style="background: rgba(52,152,219,0.1); padding: 15px; border-radius: 8px; border-left: 4px solid #3498DB;">
+                <div style="font-size: 12px; color: #aaa;">Fitness Growth</div>
+                <div id="fitnessGrowth" style="font-size: 24px; color: #3498DB; font-weight: bold;">--</div>
+                <div style="font-size: 10px; color: #888; margin-top: 5px;">% change from start</div>
+            </div>
+            <div style="background: rgba(241,196,15,0.1); padding: 15px; border-radius: 8px; border-left: 4px solid #F1C40F;">
+                <div style="font-size: 12px; color: #aaa;">Convergence</div>
+                <div id="convergence" style="font-size: 24px; color: #F1C40F; font-weight: bold;">--</div>
+                <div style="font-size: 10px; color: #888; margin-top: 5px;">Fitness std deviation</div>
+            </div>
+            <div style="background: rgba(155,89,182,0.1); padding: 15px; border-radius: 8px; border-left: 4px solid #9B59B6;">
+                <div style="font-size: 12px; color: #aaa;">Best Performance</div>
+                <div id="bestFitness" style="font-size: 24px; color: #9B59B6; font-weight: bold;">--</div>
+                <div style="font-size: 10px; color: #888; margin-top: 5px;">Highest fitness achieved</div>
+            </div>
+            <div style="background: rgba(230,126,34,0.1); padding: 15px; border-radius: 8px; border-left: 4px solid #E67E22;">
+                <div style="font-size: 12px; color: #aaa;">Gen/Second</div>
+                <div id="genSpeed" style="font-size: 24px; color: #E67E22; font-weight: bold;">--</div>
+                <div style="font-size: 10px; color: #888; margin-top: 5px;">Evolution speed</div>
+            </div>
+            <div style="background: rgba(231,76,60,0.1); padding: 15px; border-radius: 8px; border-left: 4px solid #E74C3C;">
+                <div style="font-size: 12px; color: #aaa;">Plateau Detection</div>
+                <div id="plateau" style="font-size: 24px; color: #E74C3C; font-weight: bold;">--</div>
+                <div style="font-size: 10px; color: #888; margin-top: 5px;">Gens without improvement</div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="agents"></div>
+
+    <div class="chart-container">
+        <canvas id="fitnessChart"></canvas>
+    </div>
+    
+    <div class="chart-container" style="margin-top: 20px;">
+        <h3>📊 Learning Dynamics</h3>
+        <canvas id="learningChart"></canvas>
+    </div>
+
+    <script>
+        let chart;
+        let learningChart;
+        let updateInterval;
+        let startTime = null;
+        let startGeneration = 0;
+        let lastBestFitness = 0;
+        let gensSinceImprovement = 0;
+
+        chart = new Chart(document.getElementById('fitnessChart'), {
+            type: 'line',
+            data: { labels: [], datasets: [] },
+            options: {
+                responsive: true,
+                animation: false,
+                scales: {
+                    x: { grid: { color: 'rgba(255,255,255,0.1)' } },
+                    y: { grid: { color: 'rgba(255,255,255,0.1)' } }
+                }
+            }
+        });
+
+        learningChart = new Chart(document.getElementById('learningChart'), {
+            type: 'line',
+            data: { labels: [], datasets: [] },
+            options: {
+                responsive: true,
+                animation: false,
+                scales: {
+                    x: { 
+                        grid: { color: 'rgba(255,255,255,0.1)' },
+                        title: { display: true, text: 'Generation', color: '#e0e0e0' }
+                    },
+                    y: { 
+                        grid: { color: 'rgba(255,255,255,0.1)' },
+                        title: { display: true, text: 'Learning Rate (%)', color: '#e0e0e0' }
+                    }
+                },
+                plugins: {
+                    legend: { labels: { color: '#e0e0e0' } }
+                }
+            }
+        });
+
+        async function addGenome(filename) {
+            try {
+                const response = await fetch(`/api/add_genome/${filename}`);
+                const data = await response.json();
+                if (data.status === 'success') {
+                    alert(`✅ Added ${filename}`);
+                    updateStatus();
+                } else {
+                    alert(`❌ ${data.message}`);
+                }
+            } catch (error) {
+                alert(`❌ Error: ${error.message}`);
+            }
+        }
+
+        async function startEvolution() {
+            try {
+                const response = await fetch('/api/start');
+                const data = await response.json();
+                if (data.status === 'running') {
+                    startTime = Date.now();
+                    const status = await (await fetch('/api/status')).json();
+                    startGeneration = status.generation;
+                    updateInterval = setInterval(updateStatus, 500);
+                    alert('✅ Evolution started!');
+                } else if (data.status === 'error') {
+                    alert(data.message);
+                }
+            } catch (error) {
+                alert(`❌ Error: ${error.message}`);
+            }
+        }
+
+        async function stopEvolution() {
+            try {
+                await fetch('/api/stop');
+                clearInterval(updateInterval);
+                startTime = null;
+                alert('⏸ Evolution stopped');
+            } catch (error) {
+                alert(`❌ Error: ${error.message}`);
+            }
+        }
+
+        async function exportBest() {
+            try {
+                const response = await fetch('/api/export_best');
+                const data = await response.json();
+                if (data.status === 'success') {
+                    alert(`✅ Exported to ${data.filename}`);
+                }
+            } catch (error) {
+                alert(`❌ Error: ${error.message}`);
+            }
+        }
+
+        async function updateStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const status = await response.json();
+
+            // Initialize timing on first run
+            if (startTime === null && status.running) {
+                startTime = Date.now();
+                startGeneration = status.generation;
+            }
+
+            // Calculate progress insights
+            const totalInteractions = status.agents.reduce((sum, a) => sum + a.interactions, 0);
+            const totalSuccessful = status.agents.reduce((sum, a) => sum + a.successful_learns, 0);
+            const learningRate = totalInteractions > 0 ? (totalSuccessful / totalInteractions * 100) : 0;
+            
+            const currentBest = status.history.length > 0 ? status.history[status.history.length - 1].max_fitness : 0;
+            const initialFitness = status.history.length > 0 ? status.history[0].max_fitness : 0;
+            const fitnessGrowth = initialFitness !== 0 ? ((currentBest - initialFitness) / Math.abs(initialFitness) * 100) : 0;
+            
+            const recentFitness = status.history.slice(-10).map(h => h.max_fitness);
+            const convergence = recentFitness.length > 1 ? 
+                Math.sqrt(recentFitness.reduce((sum, f) => sum + Math.pow(f - currentBest, 2), 0) / recentFitness.length) : 0;
+            
+            // Track plateau
+            if (currentBest > lastBestFitness + 0.001) {
+                gensSinceImprovement = 0;
+                lastBestFitness = currentBest;
+            } else if (status.running) {
+                gensSinceImprovement++;
+            }
+            
+            // Calculate generation speed
+            const elapsedSeconds = startTime ? (Date.now() - startTime) / 1000 : 0;
+            const genSpeed = elapsedSeconds > 0 ? ((status.generation - startGeneration) / elapsedSeconds).toFixed(2) : 0;
+
+            // Update progress insights
+            document.getElementById('learningRate').textContent = learningRate.toFixed(1) + '%';
+            document.getElementById('fitnessGrowth').textContent = (fitnessGrowth >= 0 ? '+' : '') + fitnessGrowth.toFixed(1) + '%';
+            document.getElementById('convergence').textContent = convergence.toExponential(2);
+            document.getElementById('bestFitness').textContent = currentBest.toExponential(2);
+            document.getElementById('genSpeed').textContent = genSpeed;
+            document.getElementById('plateau').textContent = gensSinceImprovement;
+            
+            // Color code plateau warning
+            const plateauEl = document.getElementById('plateau');
+            if (gensSinceImprovement > 100) {
+                plateauEl.style.color = '#E74C3C';
+            } else if (gensSinceImprovement > 50) {
+                plateauEl.style.color = '#F39C12';
+            } else {
+                plateauEl.style.color = '#E74C3C';
+            }
+
+            // Update stats
+            document.getElementById('stats').innerHTML = `
+                <div class="stat-card">
+                    <h3>Generation</h3>
+                    <div style="font-size: 24px; color: #27AE60;">${status.generation}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Population</h3>
+                    <div style="font-size: 24px; color: #3498DB;">${status.population_size}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Status</h3>
+                    <div style="font-size: 24px; color: ${status.running ? '#27AE60' : '#E74C3C'};">
+                        ${status.running ? '● Running' : '○ Stopped'}
+                    </div>
+                </div>
+            `;
+
+            // Update agents with more details
+            const agentsHTML = status.agents.map(a => {
+                const successRate = a.interactions > 0 ? (a.successful_learns / a.interactions * 100).toFixed(1) : 0;
+                return `
+                <div class="agent-card">
+                    <h3>Genome ${a.genome_id}</h3>
+                    <div>Fitness: <strong>${a.fitness.toFixed(4)}</strong></div>
+                    <div>Timestep: ${a.timestep}</div>
+                    <div>Interactions: ${a.interactions} (${a.successful_learns} successful - ${successRate}%)</div>
+                    <div style="margin-top: 8px; font-size: 11px; color: #aaa;">
+                        μ: ${a.genome[0].toFixed(3)} | ω: ${a.genome[1].toFixed(3)} | δ: ${a.genome[2].toFixed(4)} | φ: ${a.genome[3].toFixed(3)}
+                    </div>
+                </div>
+            `}).join('');
+            document.getElementById('agents').innerHTML = agentsHTML;
+
+            // Update fitness chart
+            if (status.history.length > 0) {
+                chart.data.labels = status.history.map(h => h.generation);
+                chart.data.datasets = [
+                    {
+                        label: 'Max Fitness',
+                        data: status.history.map(h => h.max_fitness),
+                        borderColor: '#E74C3C',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Mean Fitness',
+                        data: status.history.map(h => h.mean_fitness),
+                        borderColor: '#3498DB',
+                        tension: 0.4
+                    }
+                ];
+                chart.update();
+                
+                // Update learning dynamics chart
+                const learningRates = [];
+                for (let i = 1; i < status.history.length; i++) {
+                    const prev = status.history[i - 1];
+                    const curr = status.history[i];
+                    const improvement = curr.max_fitness > prev.max_fitness ? 100 : 0;
+                    learningRates.push(improvement);
+                }
+                
+                learningChart.data.labels = status.history.slice(1).map(h => h.generation);
+                learningChart.data.datasets = [
+                    {
+                        label: 'Learning Events',
+                        data: learningRates,
+                        borderColor: '#27AE60',
+                        backgroundColor: 'rgba(39,174,96,0.2)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 2
+                    }
+                ];
+                learningChart.update();
+            }
+            } catch (error) {
+                console.error('Status update failed:', error);
+            }
+        }
+
+        // Initial status update
+        updateStatus();
+        
+        // Auto-refresh every 2 seconds
+        setInterval(updateStatus, 2000);
+    </script>
+</body>
+</html>

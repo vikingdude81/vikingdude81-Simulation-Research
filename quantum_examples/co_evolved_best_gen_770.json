@@ -1,0 +1,16 @@
+{
+  "genome": {
+    "mutation_rate": 0.7276753635650011,
+    "oscillation_freq": 1.6946494293018621,
+    "decoherence_rate": 0.018325887671030584,
+    "phase_offset": 0.5118005973883075
+  },
+  "export_timestamp": "2025-11-02T04:07:31.738176",
+  "metadata": {
+    "type": "co_evolved",
+    "generation": 770,
+    "fitness": 1.5349892316925962,
+    "interactions": 259,
+    "successful_learns": 91
+  }
+}
