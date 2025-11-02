@@ -1,0 +1,229 @@
+entrypoint = "main.py"
+modules = ["python-3.11"]
+
+[nix]
+channel = "stable-24_05"
+packages = ["cairo", "ffmpeg-full", "freetype", "ghostscript", "glibcLocales", "gobject-introspection", "gtk3", "lcms2", "libGL", "libglvnd", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "mesa", "openjpeg", "pkg-config", "qhull", "tcl", "tk", "xsimd", "zlib"]
+
+[unitTest]
+language = "python3"
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix"]
+
+[deployment]
+run = ["sh", "-c", "python genome_deployment_server.py"]
+deploymentTarget = "cloudrun"
+
+[agent]
+expertMode = true
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Generate Genomes"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Deploy Genome Server"
+
+[[workflows.workflow]]
+name = "Quantum Data Analysis"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_data_analysis.py"
+
+[[workflows.workflow]]
+name = "Quantum ML"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_ml.py"
+
+[[workflows.workflow]]
+name = "Quantum Research Suite"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_research.py"
+
+[[workflows.workflow]]
+name = "Agent Evolution ML"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_evolution_agents.py"
+
+[[workflows.workflow]]
+name = "Quantum-Genetic Hybrid"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_genetic_agents.py"
+
+[[workflows.workflow]]
+name = "Quantum-Genetic Hybrid Enhanced"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_genetic_agents.py"
+
+[[workflows.workflow]]
+name = "Deploy Genome Server"
+author = "agent"
+mode = "sequential"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python genome_deployment_server.py"
+waitForPort = 5000
+
+[[workflows.workflow]]
+name = "Generate Genomes"
+author = "agent"
+mode = "sequential"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_genetic_agents.py"
+
+[[workflows.workflow]]
+name = "Analyze Evolution Results"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python analyze_evolution_dynamics.py"
+
+[[workflows.workflow]]
+name = "Compare All 6 Genomes"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python compare_all_genomes.py"
+
+[[workflows.workflow]]
+name = "Compare & View Genomes"
+author = 36638543
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python genome_deployment_server.py"
+
+[[workflows.workflow]]
+name = "Deep Dive Analysis"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python deep_genome_analysis.py"
+
+[[workflows.workflow]]
+name = "Co-Evolution Server"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python co_evolution_server.py"
+
+[[workflows.workflow]]
+name = "Quantum Test Suite"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_genome_tester.py"
+
+[[workflows.workflow]]
+name = "Complete Analysis Suite"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python comprehensive_analysis.py"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python compare_all_genomes.py"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python deep_genome_analysis.py"
+
+[[workflows.workflow]]
+name = "Phase-Focused Evolution"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python phase_focused_evolution.py"
+
+[[workflows.workflow]]
+name = "View Results Dashboard"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python genome_deployment_server.py"
+
+[[workflows.workflow]]
+name = "Run Extreme Frontier Test"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python extreme_frontier_test.py"
+
+[[workflows.workflow]]
+name = "Compare & Deploy Production"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python genome_deployment_server.py"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 5001
+externalPort = 3000

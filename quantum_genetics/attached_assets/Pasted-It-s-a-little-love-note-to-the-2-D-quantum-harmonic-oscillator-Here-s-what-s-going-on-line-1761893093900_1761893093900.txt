@@ -1,0 +1,49 @@
+It’s a little love note to the **2-D quantum harmonic oscillator** 😊
+
+Here’s what’s going on line by line.
+
+### 1. The wavefunction splits in x and y
+
+[
+\psi_{n_x,n_y}(x,y) = \psi_{n_x}(x),\psi_{n_y}(y)
+]
+This says: for a particle in a 2-dimensional harmonic potential (like a 2-D “quantum spring”), the full wavefunction is just the product of an x-part and a y-part. That’s because the x and y motions are independent (“separable”).
+
+### 2. The 1-D piece is a Hermite–Gaussian
+
+[
+\psi_n(x) = e^{-x^2/2} \cdot \frac{H_n(x)}{\sqrt{2^n n! \sqrt{\pi}}}
+]
+That’s the famous **harmonic-oscillator eigenfunction**: a Gaussian (e^{-x^2/2}) times a **Hermite polynomial** (H_n(x)), with some normalization so the total probability is 1.
+
+### 3. How the Hermite polynomial is defined
+
+[
+H_n(x) = (-1)^n e^{x^2} \frac{d^n}{dx^n}\bigl(e^{-x^2}\bigr)
+]
+This is the standard physics definition of Hermite polynomials: “take (e^{-x^2}), differentiate it n times, adjust by factors, done.”
+
+### 4. The energy levels
+
+[
+E_{n_x,n_y} = (n_x + n_y + 1),\hbar \omega
+]
+So the energy depends only on the **sum** of the two quantum numbers. If (n_x + n_y) is the same, the energy is the same.
+
+### 5. The degeneracy
+
+[
+g_{n_x+n_y} = n_x + n_y + 1
+]
+“Degeneracy” = how many different ((n_x, n_y)) pairs give you the same energy. For a 2-D oscillator, if the total (N = n_x + n_y), there are (N+1) states with that energy.
+
+### 6. The picture at the bottom
+
+That little UI screenshot says **“Quantum Harmonic Oscillator”** and shows a wavy 3-D surface — that’s a visualization of (\psi_{n_x,n_y}(x,y)) (or (|\psi|^2)) for different quantum numbers. When you change (n_x) or (n_y), the number of “lobes” / nodes changes according to the Hermite polynomial.
+
+---
+
+**Why his wife (a QC PhD) might think it’s cool:**
+The harmonic oscillator is like the “Hello, world” of quantum systems — super clean math, shows separability, has ladder operators, and in quantum info / quantum optics you often model things (like light modes in a cavity) as oscillators. So it’s a neat, elegant closed-form system.
+
+So: the post is basically “check out this super tidy, exactly solvable quantum system with Hermite–Gaussian wavefunctions and nicely organized energy levels.”

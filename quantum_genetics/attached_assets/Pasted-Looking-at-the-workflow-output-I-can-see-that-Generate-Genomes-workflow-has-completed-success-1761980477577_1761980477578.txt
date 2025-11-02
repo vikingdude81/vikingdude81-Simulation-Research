@@ -1,0 +1,77 @@
+Looking at the workflow output, I can see that:
+
+✅ Generate Genomes workflow has completed successfully
+❌ Deploy Genome Server workflow failed because port 5000 is already in use
+The genome files should have been created by the evolution run. Let me verify they exist and fix the server startup issue:
+
+ls -lh *.json 2>/dev/null | grep -E "(best_individual|averaged_ensemble)" || echo "Genome files not found"
+
+
+Run again
+The issue is that the Flask server is already running on port 5000 (from a previous run). We need to stop the existing server first. Let me check what's running:
+
+pkill -f "genome_deployment_server.py"
+
+
+Run again
+Now let's verify the genome files were actually created by the evolution run. Looking at the workflow output, I can see the evolution completed but I don't see the export confirmation messages. The export happens in the main() function at the end. Let me check if the files exist:
+
+find . -name "*genome.json" -type f -ls
+
+
+Run again
+The genome export code is in quantum_genetic_agents.py and should run at the end of main(). However, looking at the truncated output, I don't see the "💾 EXPORTING GENOMES" section, which means the export might not have completed.
+
+Here's what you need to do:
+
+Stop any running servers: The command above should kill the old server
+Wait for "Generate Genomes" to fully complete - it needs to reach the export section at the end
+Then start the Deploy Genome Server workflow
+Once the genome files are created (you'll see "✓ Genome exported successfully!" messages), you can:
+
+Start the "Deploy Genome Server" workflow
+Open the dashboard at the URL shown
+Click the "Deploy Best Individual" or "Deploy Averaged Ensemble" buttons to load the genomes
+The workflow is designed to run automatically in sequence - the evolution will generate and export the genome JSON files, then you start the server which loads them via the dashboard buttons.
+
+its not showing anything int he console windows for an export
+
+
+dixiebone13
+Assistant
+just now
+Read 7 files
+Looking at the console output from the "Generate Genomes" workflow, I can see that the evolution ran successfully and completed all 300 generations. However, the genome export messages are missing from the end of the output.
+
+The issue is that the main() function in quantum_genetic_agents.py calls the genome export at the very end, but the console output was truncated. Let me check if the files were actually created by running a command:
+
+ls -lh *.json 2>/dev/null || echo "No genome JSON files found"
+
+
+Run again
+If the files don't exist, the export code likely didn't run. Looking at the code, I see that after the ensemble evolution completes, there should be export statements at the end of main(). The problem is that the evolution finished but the export section may not have executed.
+
+Let me also check the actual end of the main() function to ensure the export code is being called. Looking at the code structure, the exports should happen after the multi-environment testing.
+
+Let me verify the genome files exist and if not, we'll need to re-run the workflow or manually trigger the export:
+
+find . -name "*genome.json" -type f -ls 2>/dev/null || echo "No genome files found in workspace"
+
+
+Run again
+Once we confirm whether the files exist, we can either:
+
+Restart the "Generate Genomes" workflow if they don't exist
+Or manually trigger just the export part if the evolution data is still in memory
+The export should show messages like:
+
+💾 EXPORTING GENOMES
+✓ Genome exported successfully!
+   File: /path/to/best_individual_genome.json
+But these messages are not in your console output, which suggests the export didn't complete.
+
+Apply all:
+Run shell command:
+ls -lh *.json 2>/dev/null || echo "No genome JSON files found"
+Run shell command:
+find . -name "*genome.json" -type 
