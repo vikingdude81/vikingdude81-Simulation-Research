@@ -623,9 +623,16 @@ def generate_predictions(df: pd.DataFrame, regime_type: str) -> np.ndarray:
 
 def main():
     """Train conductor-enhanced specialist and save results"""
+    import sys
     
-    # Train volatile specialist
-    regime = 'volatile'
+    # Get regime from command line argument, default to volatile
+    regime = sys.argv[1] if len(sys.argv) > 1 else 'volatile'
+    
+    # Validate regime
+    valid_regimes = ['volatile', 'trending', 'ranging']
+    if regime not in valid_regimes:
+        print(f"❌ ERROR: Invalid regime '{regime}'. Must be one of: {valid_regimes}")
+        return
     
     # Load regime-specific data
     print(f"Loading {regime} regime data...")
