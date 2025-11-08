@@ -45,6 +45,10 @@ class QuantumAgent:
 
         # Coherence decays at genome-controlled rate
         self.traits[1] = self.traits[1] * np.exp(-decoherence_rate * t * env_factor) + mutation_rate * np.random.randn()
+        
+        # CRITICAL FIX: Ensure coherence stays non-negative to prevent numerical instability
+        # Negative coherence causes exp() explosion in fitness calculation
+        self.traits[1] = max(0.0, self.traits[1])
 
         # Phase rotates with offset
         self.traits[2] = (self.traits[2] + phase_offset * t) % (2 * pi)
@@ -77,17 +81,52 @@ class QuantumAgent:
         return env_modifiers.get(self.environment, 1.0)
 
     def get_final_fitness(self):
-        """Calculate total fitness over lifetime with longevity penalty"""
+        """Calculate total fitness over lifetime with longevity penalty - NUMERICALLY STABLE"""
         fitness_values = [state[3] for state in self.history]
-        avg_fitness = np.mean(fitness_values)
-        stability = 1.0 / (1.0 + np.std(fitness_values))
+        
+        # Safeguard: Handle empty or invalid fitness values
+        if len(fitness_values) == 0:
+            return 0.0
+        
+        fitness_values = np.array(fitness_values)
+        # Clip extreme fitness values to prevent overflow
+        fitness_values = np.clip(fitness_values, -1e6, 1e6)
+        
+        avg_fitness = float(np.mean(fitness_values))
+        fitness_std = float(np.std(fitness_values))
+        
+        # Stability: inverse of (1 + std), capped at reasonable values
+        stability = 1.0 / (1.0 + min(fitness_std, 1e3))
         
         # Penalize for coherence decay (simulates aging/mortality)
         coherence_values = [state[1] for state in self.history]
         coherence_decay = coherence_values[0] - coherence_values[-1]
-        longevity_penalty = np.exp(-coherence_decay * 2)  # Higher decay = lower fitness
-
-        return avg_fitness * stability * longevity_penalty
+        
+        # CRITICAL FIX: Cap coherence decay to prevent exp() explosion
+        # Negative decay means coherence increased (reward survival but cap it)
+        # Positive decay means coherence decreased (penalize aging)
+        # Clip to [-5, 50] range to keep penalty reasonable
+        # exp(-(-5)*2) = exp(10) = 22,026 max bonus for coherence gain
+        # exp(-(50)*2) = exp(-100) = 3.7e-44 max penalty for coherence loss
+        coherence_decay = float(np.clip(coherence_decay, -5, 50))
+        
+        # Longevity penalty: exp(-decay * 2)
+        # If decay is large positive (coherence lost): penalty -> 0 (low fitness)
+        # If decay is small negative (coherence gained): penalty -> moderate boost (but capped)
+        longevity_penalty = np.exp(-coherence_decay * 2)
+        
+        # Cap longevity penalty to reasonable range
+        longevity_penalty = float(np.clip(longevity_penalty, 1e-10, 1e6))
+        
+        # Final fitness with all safeguards
+        final_fitness = avg_fitness * stability * longevity_penalty
+        
+        # Final safeguard: ensure finite result
+        if not np.isfinite(final_fitness):
+            return 0.0
+        
+        # Clip to reasonable range
+        return float(np.clip(final_fitness, -1e10, 1e10))
 
 # === GENETIC ALGORITHM OPERATIONS ===
 

@@ -1,0 +1,22 @@
+{
+  "test_type": "300_generation_validation_simple",
+  "test_date": "2025-11-04T20:46:45.608638",
+  "single_ml_300gen": {
+    "score": 2194255.0,
+    "efficiency": 7314.183333333333,
+    "avg_wealth": 43874.038,
+    "cooperation_rate": 0.531,
+    "population": 1000,
+    "duration_seconds": 18.452006
+  },
+  "comparison": {
+    "single_150_efficiency": 1454,
+    "single_300_efficiency": 7314.183333333333,
+    "single_change_percent": 403.0387436955525,
+    "phase_150_efficiency": 1693,
+    "phase_300_predicted": 1769,
+    "gap_at_150": 16.437414030261348,
+    "gap_at_300_predicted": -75.81411458558827
+  },
+  "conclusion": "Single controller at 300-gen: 7314.2/gen (+403.0% vs 150-gen). Multi-quantum predicted advantage: +-75.8%"
+}

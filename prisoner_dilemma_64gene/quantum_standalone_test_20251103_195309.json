@@ -1,0 +1,153 @@
+{
+  "champion_genome": [
+    5.0,
+    0.1,
+    0.0001,
+    6.283185307179586
+  ],
+  "cooperation_test": {
+    "rounds": 20,
+    "cooperation_rate": 0.05,
+    "results": [
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "government_test": {
+    "scenarios": 4,
+    "interventions": [
+      {
+        "scenario": "High Inequality",
+        "intervention": "wealth_redistribution",
+        "magnitude": 0.08898639532866282,
+        "reasoning": [
+          "High inequality (Gini=0.55) + structured governance (coherence=0.59)"
+        ]
+      },
+      {
+        "scenario": "Low Cooperation",
+        "intervention": "no_intervention",
+        "magnitude": 0.0,
+        "reasoning": [
+          "Economy stable"
+        ]
+      },
+      {
+        "scenario": "Recession",
+        "intervention": "welfare_program",
+        "magnitude": 0.02487887967489092,
+        "reasoning": [
+          "Low avg wealth (75) + balanced governance"
+        ]
+      },
+      {
+        "scenario": "Stable Economy",
+        "intervention": "no_intervention",
+        "magnitude": 0.0,
+        "reasoning": [
+          "Economy stable"
+        ]
+      }
+    ]
+  },
+  "adaptation_test": {
+    "timesteps": 100,
+    "trait_history": [
+      {
+        "timestep": 0,
+        "creativity": 2.1178756218319297,
+        "coherence": 6.66271540723436,
+        "longevity": 2.624448040182385,
+        "fitness": 19292.09353180688
+      },
+      {
+        "timestep": 10,
+        "creativity": 9.266048809154286,
+        "coherence": 0.0,
+        "longevity": 2.6244480401823846,
+        "fitness": 0.10588981524148168
+      },
+      {
+        "timestep": 20,
+        "creativity": 0.86172321798057,
+        "coherence": 1.248874285604796,
+        "longevity": 2.6244480401823846,
+        "fitness": 1.1404262551612694
+      },
+      {
+        "timestep": 30,
+        "creativity": 0.40754689265481364,
+        "coherence": 4.601230204135019,
+        "longevity": 2.6244480401823864,
+        "fitness": 911.906865381685
+      },
+      {
+        "timestep": 40,
+        "creativity": 0.03439420424687539,
+        "coherence": 0.0,
+        "longevity": 2.6244480401823864,
+        "fitness": 0.08047639549335664
+      },
+      {
+        "timestep": 50,
+        "creativity": 0.24254291964406566,
+        "coherence": 4.935407583309736,
+        "longevity": 2.6244480401823864,
+        "fitness": 1514.0539377364044
+      },
+      {
+        "timestep": 60,
+        "creativity": -4.0189171623866375,
+        "coherence": 1.2743038562754343,
+        "longevity": 2.6244480401823864,
+        "fitness": 1.167396447614744
+      },
+      {
+        "timestep": 70,
+        "creativity": 1.8830589215521827,
+        "coherence": 3.4316967293820704,
+        "longevity": 2.6244480401823864,
+        "fitness": 101.18421623103819
+      },
+      {
+        "timestep": 80,
+        "creativity": 7.4198028093244615,
+        "coherence": 0.0,
+        "longevity": 2.6244480401823864,
+        "fitness": 0.0971560968200554
+      },
+      {
+        "timestep": 90,
+        "creativity": 1.0124105012043376,
+        "coherence": 0.0,
+        "longevity": 2.6244480401823864,
+        "fitness": 0.09021155157155207
+      },
+      {
+        "timestep": 100,
+        "creativity": -0.06119410557983729,
+        "coherence": 7.7642391230582,
+        "longevity": 2.6244480401823864,
+        "fitness": 11019.536358470466
+      }
+    ]
+  }
+}

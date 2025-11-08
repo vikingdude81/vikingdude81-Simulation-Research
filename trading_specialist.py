@@ -90,7 +90,8 @@ class TradingSpecialist:
         self.position_size = self.genome[2]
         self.entry_threshold = self.genome[3]
         self.exit_threshold = self.genome[4]
-        self.max_hold_time = int(self.genome[5])
+        # Scale max_hold_time from 0-1 to 1-14 days
+        self.max_hold_time = max(1, int(self.genome[5] * 14))
         self.volatility_scaling = self.genome[6]
         self.momentum_weight = self.genome[7]
         

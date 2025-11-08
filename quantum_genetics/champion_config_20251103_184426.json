@@ -1,0 +1,46 @@
+{
+  "genome": [
+    5.0,
+    0.1,
+    0.0001,
+    6.283185307179586
+  ],
+  "parameters": {
+    "mutation_rate": 5.0,
+    "oscillation_freq": 0.1,
+    "decoherence_rate": 0.0001,
+    "phase_offset": 6.283185307179586
+  },
+  "performance": {
+    "worst_case_fitness": 295.95,
+    "average_fitness": 15524.98,
+    "best_case_fitness": 22190.04,
+    "consistency_std": 6448.57
+  },
+  "validation": {
+    "tested_environments": [
+      "standard",
+      "gentle",
+      "harsh",
+      "chaotic",
+      "oscillating",
+      "unstable",
+      "extreme",
+      "mixed"
+    ],
+    "total_tests": 8,
+    "success_rate": "100%"
+  },
+  "metadata": {
+    "discovery_date": "2025-11-03",
+    "method": "Multi-environment ML-guided evolution",
+    "generations": 200,
+    "population_size": 1000,
+    "training_environments": [
+      "standard",
+      "gentle",
+      "harsh",
+      "chaotic"
+    ]
+  }
+}

@@ -1,0 +1,142 @@
+[
+  {
+    "scenario": "Low Volatility Uptrend",
+    "market_state": {
+      "name": "Low Volatility Uptrend",
+      "volatility": 0.2,
+      "trend": 0.7,
+      "volume": 0.6,
+      "momentum": 0.5
+    },
+    "decision": {
+      "position_size": 0.0,
+      "risk_multiplier": 2.0,
+      "rebalance": 0.0,
+      "confidence": 2.0738001932924672,
+      "fitness": 20595.46054909816,
+      "traits": {
+        "creativity": -7.511004357787643,
+        "coherence": 14.999796908977714,
+        "longevity": 6.211117449084597
+      },
+      "feature_weights": {
+        "technical": -3.4555021788938216,
+        "fundamental": 7.799898454488857,
+        "sentiment": 2.753301307336293,
+        "volume": 4.699939072693314
+      }
+    }
+  },
+  {
+    "scenario": "High Volatility",
+    "market_state": {
+      "name": "High Volatility",
+      "volatility": 0.9,
+      "trend": 0.1,
+      "volume": 0.8,
+      "momentum": -0.2
+    },
+    "decision": {
+      "position_size": 0.20733251793497465,
+      "risk_multiplier": 2.0,
+      "rebalance": 0.0,
+      "confidence": 8.340130567795114,
+      "fitness": 23988.2451224698,
+      "traits": {
+        "creativity": 5.483006759343956,
+        "coherence": 50.13463155289165,
+        "longevity": 4.774398885205457
+      },
+      "feature_weights": {
+        "technical": 3.041503379671978,
+        "fundamental": 25.367315776445825,
+        "sentiment": -1.144902027803187,
+        "volume": 15.240389465867493
+      }
+    }
+  },
+  {
+    "scenario": "Strong Downtrend",
+    "market_state": {
+      "name": "Strong Downtrend",
+      "volatility": 0.6,
+      "trend": -0.8,
+      "volume": 0.5,
+      "momentum": -0.6
+    },
+    "decision": {
+      "position_size": 0.0,
+      "risk_multiplier": 2.0,
+      "rebalance": 0.0,
+      "confidence": 4.20933731525307,
+      "fitness": 23820.03670619905,
+      "traits": {
+        "creativity": -5.0176567281398,
+        "coherence": 32.880038850406414,
+        "longevity": 1.563844438573497
+      },
+      "feature_weights": {
+        "technical": -2.2088283640699,
+        "fundamental": 16.740019425203208,
+        "sentiment": 2.00529701844194,
+        "volume": 10.064011655121924
+      }
+    }
+  },
+  {
+    "scenario": "Ranging Market",
+    "market_state": {
+      "name": "Ranging Market",
+      "volatility": 0.3,
+      "trend": 0.0,
+      "volume": 0.4,
+      "momentum": 0.1
+    },
+    "decision": {
+      "position_size": 0.6312583900246114,
+      "risk_multiplier": 1.0041460795665742,
+      "rebalance": 0.0,
+      "confidence": 4.55607362128552,
+      "fitness": 19849.78688937775,
+      "traits": {
+        "creativity": 6.899015841005269,
+        "coherence": 24.98090941902556,
+        "longevity": 0.5041460795665742
+      },
+      "feature_weights": {
+        "technical": 3.7495079205026345,
+        "fundamental": 12.790454709512781,
+        "sentiment": -1.5697047523015808,
+        "volume": 7.694272825707668
+      }
+    }
+  },
+  {
+    "scenario": "Breakout",
+    "market_state": {
+      "name": "Breakout",
+      "volatility": 0.7,
+      "trend": 0.9,
+      "volume": 0.9,
+      "momentum": 0.8
+    },
+    "decision": {
+      "position_size": 0.0,
+      "risk_multiplier": 2.0,
+      "rebalance": 0.0,
+      "confidence": 11.317701004014237,
+      "fitness": 23329.445909372815,
+      "traits": {
+        "creativity": -1.253370537982871,
+        "coherence": 81.26280776415277,
+        "longevity": 2.7736701720933326
+      },
+      "feature_weights": {
+        "technical": -0.3266852689914355,
+        "fundamental": 40.93140388207638,
+        "sentiment": 0.8760111613948613,
+        "volume": 24.57884232924583
+      }
+    }
+  }
+]

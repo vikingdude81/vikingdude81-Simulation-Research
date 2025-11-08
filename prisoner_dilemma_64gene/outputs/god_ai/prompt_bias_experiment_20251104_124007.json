@@ -1,0 +1,114 @@
+{
+  "timestamp": "20251104_124007",
+  "generations": 100,
+  "runs_per_style": 2,
+  "results": {
+    "conservative": {
+      "runs": [
+        {
+          "success": true,
+          "final_population": 1000,
+          "avg_wealth": 8944.909,
+          "total_wealth": 8944909,
+          "cooperation_rate": 61.05539349601025,
+          "gini": 0.4809386386155523,
+          "interventions": 10,
+          "score": 89510.145393496
+        },
+        {
+          "success": true,
+          "final_population": 1000,
+          "avg_wealth": 11395.098,
+          "total_wealth": 11395098,
+          "cooperation_rate": 77.90161856186798,
+          "gini": 0.4063581992888523,
+          "interventions": 10,
+          "score": 114028.88161856186
+        }
+      ],
+      "avg_wealth": 10170.003499999999,
+      "avg_cooperation": 69.47850602893911,
+      "avg_gini": 0.4436484189522023,
+      "avg_interventions": 10.0,
+      "avg_score": 101769.51350602893,
+      "success_rate": 100.0
+    },
+    "neutral": {
+      "runs": [
+        {
+          "success": true,
+          "final_population": 1000,
+          "avg_wealth": 10280.528,
+          "total_wealth": 10280528,
+          "cooperation_rate": 67.83886591492856,
+          "gini": 0.4368819807698594,
+          "interventions": 10,
+          "score": 102873.11886591493
+        },
+        {
+          "success": true,
+          "final_population": 1000,
+          "avg_wealth": 10367.988,
+          "total_wealth": 10367988,
+          "cooperation_rate": 67.95172564274267,
+          "gini": 0.44013614213288066,
+          "interventions": 10,
+          "score": 103747.83172564275
+        }
+      ],
+      "avg_wealth": 10324.258,
+      "avg_cooperation": 67.89529577883562,
+      "avg_gini": 0.43850906145137003,
+      "avg_interventions": 10.0,
+      "avg_score": 103310.47529577884,
+      "success_rate": 100.0
+    },
+    "aggressive": {
+      "runs": [
+        {
+          "success": true,
+          "final_population": 1000,
+          "avg_wealth": 9937.292,
+          "total_wealth": 9937292,
+          "cooperation_rate": 65.78878592603103,
+          "gini": 0.4323174810602326,
+          "interventions": 10,
+          "score": 99438.70878592604
+        },
+        {
+          "success": true,
+          "final_population": 1000,
+          "avg_wealth": 9680.346,
+          "total_wealth": 9680346,
+          "cooperation_rate": 63.0673018753781,
+          "gini": 0.4364126656216627,
+          "interventions": 10,
+          "score": 96866.52730187538
+        }
+      ],
+      "avg_wealth": 9808.819,
+      "avg_cooperation": 64.42804390070457,
+      "avg_gini": 0.43436507334094765,
+      "avg_interventions": 10.0,
+      "avg_score": 98152.6180439007,
+      "success_rate": 100.0
+    }
+  },
+  "ranking": [
+    {
+      "rank": 1,
+      "style": "neutral",
+      "score": 103310.47529577884
+    },
+    {
+      "rank": 2,
+      "style": "conservative",
+      "score": 101769.51350602893
+    },
+    {
+      "rank": 3,
+      "style": "aggressive",
+      "score": 98152.6180439007
+    }
+  ]
+}

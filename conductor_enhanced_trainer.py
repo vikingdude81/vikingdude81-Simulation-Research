@@ -77,6 +77,11 @@ class ConductorEnhancedTrainer:
         self.best_agent: Optional[TradingSpecialist] = None
         self.best_fitness: float = float('-inf')
         
+        # Fitness cache for performance optimization
+        self.fitness_cache: Dict[str, float] = {}
+        self.cache_hits: int = 0
+        self.cache_misses: int = 0
+        
         # Training history
         self.history = {
             'generation': [],
@@ -278,6 +283,12 @@ class ConductorEnhancedTrainer:
                 tax_rate=tax_rate
             )
     
+    def _genome_hash(self, genome: np.ndarray) -> str:
+        """Create hash string from genome for caching"""
+        # Round to 6 decimals to avoid floating point precision issues
+        rounded = np.round(genome, decimals=6)
+        return ','.join(f'{x:.6f}' for x in rounded)
+    
     def _initialize_population(self):
         """Create initial random population"""
         self.population = [
@@ -292,18 +303,31 @@ class ConductorEnhancedTrainer:
             agent.regime_data = self.regime_data  # Attach data
     
     def _evaluate_population(self):
-        """Evaluate fitness for all agents"""
+        """Evaluate fitness for all agents with caching"""
         predictions = self.regime_data['predictions'].values
         for agent in self.population:
-            if not hasattr(agent, 'fitness') or agent.fitness is None or np.isnan(agent.fitness):
+            # Check if fitness already calculated for this genome
+            genome_hash = self._genome_hash(agent.genome)
+            
+            if genome_hash in self.fitness_cache:
+                # Use cached fitness
+                agent.fitness = self.fitness_cache[genome_hash]
+                self.cache_hits += 1
+            elif not hasattr(agent, 'fitness') or agent.fitness is None or np.isnan(agent.fitness):
+                # Calculate new fitness
+                self.cache_misses += 1
                 try:
                     agent.fitness = agent.evaluate_fitness(self.regime_data, predictions)
                     # If fitness is NaN, inf, or negative infinity, set to very low value
                     if np.isnan(agent.fitness) or np.isinf(agent.fitness):
                         agent.fitness = -1000.0
+                    else:
+                        # Cache the valid fitness
+                        self.fitness_cache[genome_hash] = agent.fitness
                 except Exception as e:
                     # If evaluation fails, set very low fitness
                     agent.fitness = -1000.0
+                    self.fitness_cache[genome_hash] = -1000.0
     
     def _get_population_stats(self) -> Dict:
         """Calculate population statistics"""
@@ -569,8 +593,18 @@ class ConductorEnhancedTrainer:
         print(f"\n{'='*60}")
         print(f"Training Complete!")
         print(f"Best Fitness: {self.best_fitness:.2f}")
+        
+        # Cache statistics
+        total_evaluations = self.cache_hits + self.cache_misses
+        cache_hit_rate = (self.cache_hits / total_evaluations * 100) if total_evaluations > 0 else 0
+        print(f"\nFitness Cache Statistics:")
+        print(f"  Cache Hits: {self.cache_hits:,}")
+        print(f"  Cache Misses: {self.cache_misses:,}")
+        print(f"  Hit Rate: {cache_hit_rate:.1f}%")
+        print(f"  Evaluations Saved: {self.cache_hits:,}")
+        
         if self.best_agent and hasattr(self.best_agent, 'total_return'):
-            print(f"Best Agent Performance:")
+            print(f"\nBest Agent Performance:")
             print(f"  Return: {self.best_agent.total_return:+.2f}%")
             print(f"  Sharpe: {self.best_agent.sharpe_ratio:.2f}")
             print(f"  Max DD: {self.best_agent.max_drawdown:.2f}%")

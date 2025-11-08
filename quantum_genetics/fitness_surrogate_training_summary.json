@@ -1,0 +1,79 @@
+{
+  "timestamp": "2025-11-03T18:01:13.862370",
+  "training_samples": 8000,
+  "validation_samples": 2000,
+  "epochs_trained": 150,
+  "best_epoch": 150,
+  "best_val_loss": 62843130.5,
+  "best_val_mae": 6901.23388671875,
+  "best_val_rmse": 7929.00244140625,
+  "best_val_r2": 0.17881172895431519,
+  "champion_predictions": [
+    {
+      "name": "Gentle",
+      "genome": [
+        2.7668,
+        0.1853,
+        0.005,
+        0.6798
+      ],
+      "predicted_fitness": 9246.759765625
+    },
+    {
+      "name": "Standard",
+      "genome": [
+        2.946,
+        0.1269,
+        0.005,
+        0.2996
+      ],
+      "predicted_fitness": 9776.6171875
+    },
+    {
+      "name": "Chaotic",
+      "genome": [
+        3.0,
+        0.5045,
+        0.005,
+        0.4108
+      ],
+      "predicted_fitness": 9423.0712890625
+    },
+    {
+      "name": "Oscillating",
+      "genome": [
+        3.0,
+        1.8126,
+        0.005,
+        0.0
+      ],
+      "predicted_fitness": 9251.1875
+    },
+    {
+      "name": "Harsh",
+      "genome": [
+        3.0,
+        2.0,
+        0.005,
+        0.5713
+      ],
+      "predicted_fitness": 9214.38671875
+    }
+  ],
+  "model_architecture": {
+    "input_dim": 4,
+    "hidden_layers": [
+      128,
+      64,
+      32
+    ],
+    "output_dim": 1,
+    "total_parameters": 11009
+  },
+  "training_config": {
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "optimizer": "Adam",
+    "loss_function": "MSE"
+  }
+}

@@ -156,14 +156,55 @@ class GodController:
     3. API_BASED: Uses external LLM for decisions (future)
     """
     
-    def __init__(self, mode: str = "RULE_BASED"):
+    def __init__(self, mode: str = "RULE_BASED", prompt_style: str = "conservative"):
         self.mode = mode
+        self.prompt_style = prompt_style
         self.intervention_history: List[InterventionRecord] = []
         self.last_intervention_generation = -GOD_INTERVENTION_COOLDOWN
         self.total_interventions = 0
         
         # Statistics tracking
         self.interventions_by_type = {itype: 0 for itype in InterventionType}
+        
+        # Initialize ML-based controller if needed
+        self.quantum_controller = None
+        if self.mode == "ML_BASED":
+            try:
+                from quantum_god_controller import QuantumGodController
+                self.quantum_controller = QuantumGodController(
+                    environment='standard',
+                    intervention_cooldown=GOD_INTERVENTION_COOLDOWN
+                )
+                print(f"{Fore.CYAN}🧬 Quantum ML-Based God Controller initialized!{Style.RESET_ALL}")
+            except ImportError as e:
+                print(f"{Fore.YELLOW}⚠️ Failed to load Quantum God Controller: {e}{Style.RESET_ALL}")
+                print(f"{Fore.YELLOW}   Falling back to RULE_BASED mode{Style.RESET_ALL}")
+                self.mode = "RULE_BASED"
+        
+        # Initialize API-based controller if needed
+        self.llm_controller = None
+        if self.mode == "API_BASED":
+            try:
+                from llm_god_controller import LLMGodController
+                import os
+                api_key = os.getenv("OPENAI_API_KEY")
+                if not api_key:
+                    print(f"{Fore.YELLOW}⚠️ OPENAI_API_KEY not found. Falling back to RULE_BASED mode{Style.RESET_ALL}")
+                    self.mode = "RULE_BASED"
+                else:
+                    self.llm_controller = LLMGodController(
+                        provider="openai",
+                        model="gpt-4",
+                        intervention_cooldown=GOD_INTERVENTION_COOLDOWN,
+                        fallback_to_rules=True,
+                        prompt_style=prompt_style
+                    )
+                    print(f"{Fore.CYAN}🤖 GPT-4 API-Based God Controller initialized!{Style.RESET_ALL}")
+                    print(f"{Fore.WHITE}   Prompt style: {Fore.YELLOW}{prompt_style.upper()}{Style.RESET_ALL}")
+            except ImportError as e:
+                print(f"{Fore.YELLOW}⚠️ Failed to load LLM God Controller: {e}{Style.RESET_ALL}")
+                print(f"{Fore.YELLOW}   Falling back to RULE_BASED mode{Style.RESET_ALL}")
+                self.mode = "RULE_BASED"
         
     def should_intervene(self, generation: int) -> bool:
         """Check cooldown period."""
@@ -228,6 +269,10 @@ class GodController:
             return None
         
         state = self.capture_state(population)
+        state['generation'] = generation  # Add generation for ML controller
+        state['gini_coefficient'] = state.get('wealth_inequality', 0)  # Alias for quantum controller
+        state['growth_rate'] = 0.0  # TODO: Calculate from history
+        state['tribe_dominance'] = state.get('max_tribe_dominance', 0)
         
         if self.mode == "RULE_BASED":
             return self._rule_based_decision(state, population)
@@ -285,15 +330,43 @@ class GodController:
         return None
     
     def _ml_based_decision(self, state: Dict, population: 'GodEchoPopulation') -> Optional[Tuple[InterventionType, str, Dict]]:
-        """Use ML model to predict best intervention (FUTURE)."""
-        # TODO: Implement reinforcement learning agent
-        # Input: state vector [population, avg_wealth, cooperation, etc.]
-        # Output: [intervention_type, parameters]
-        return None
+        """Use Quantum Genetic Evolution ML model to predict best intervention."""
+        if self.quantum_controller is None:
+            print(f"{Fore.YELLOW}⚠️ Quantum controller not initialized, using rule-based fallback{Style.RESET_ALL}")
+            return self._rule_based_decision(state, population)
+        
+        # Get current generation from state
+        generation = state.get('generation', 0)
+        
+        # Let quantum controller decide
+        result = self.quantum_controller.decide_intervention(state, generation)
+        
+        if result is None:
+            return None
+        
+        intervention_type_str, reasoning, parameters = result
+        
+        # Convert string type to InterventionType enum
+        try:
+            intervention_type = InterventionType[intervention_type_str]
+        except KeyError:
+            print(f"{Fore.RED}⚠️ Unknown intervention type: {intervention_type_str}{Style.RESET_ALL}")
+            return None
+        
+        return (intervention_type, reasoning, parameters)
     
     def _api_based_decision(self, state: Dict, population: 'GodEchoPopulation') -> Optional[Tuple[InterventionType, str, Dict]]:
-        """Call external LLM API for governance decision (FUTURE)."""
-        # TODO: Serialize state, call GPT-4/Claude, parse response
+        """Call external LLM API for governance decision."""
+        if not self.llm_controller:
+            return None
+        
+        result = self.llm_controller.decide_intervention(state, state.get('generation', 0))
+        
+        if result:
+            intervention_type_str, reasoning, parameters = result
+            intervention_type = InterventionType[intervention_type_str]
+            return (intervention_type, reasoning, parameters)
+        
         return None
     
     def execute_intervention(self, population: 'GodEchoPopulation', 
@@ -599,13 +672,13 @@ class ExternalShock:
 class GodEchoPopulation:
     """Echo population with God-AI oversight."""
     
-    def __init__(self, initial_size: int = 100, god_mode: str = "RULE_BASED"):
+    def __init__(self, initial_size: int = 100, god_mode: str = "RULE_BASED", prompt_style: str = "conservative"):
         self.agents: List[GodEchoAgent] = []
         self.grid = np.full((GRID_HEIGHT, GRID_WIDTH), None, dtype=object)
         self.rounds_per_interaction = 5
         
         # Initialize God Controller
-        self.god = GodController(mode=god_mode)
+        self.god = GodController(mode=god_mode, prompt_style=prompt_style)
         
         # Initialize population (same as Ultimate)
         positions_used = set()
@@ -1040,7 +1113,8 @@ def run_god_echo_simulation(
     generations: int = 500,
     initial_size: int = 100,
     god_mode: str = "RULE_BASED",
-    update_frequency: int = 5
+    update_frequency: int = 5,
+    prompt_style: str = "conservative"
 ):
     """
     Run Echo simulation with God-AI controller.
@@ -1050,6 +1124,7 @@ def run_god_echo_simulation(
         initial_size: Starting population
         god_mode: "RULE_BASED", "ML_BASED", "API_BASED", or "DISABLED"
         update_frequency: Update dashboard every N generations
+        prompt_style: For API_BASED mode: "conservative", "neutral", or "aggressive"
     """
     print(f"\n{Fore.CYAN}{'='*100}")
     print(f"{Fore.MAGENTA}🧠👁️  INITIALIZING GOD-CONTROLLED ECHO SIMULATION 👁️🧠{Style.RESET_ALL}")
@@ -1061,7 +1136,7 @@ def run_god_echo_simulation(
     
     time.sleep(2)
     
-    population = GodEchoPopulation(initial_size=initial_size, god_mode=god_mode)
+    population = GodEchoPopulation(initial_size=initial_size, god_mode=god_mode, prompt_style=prompt_style)
     
     for gen in range(generations):
         deaths, births, shock_msg, god_msg = population.step()

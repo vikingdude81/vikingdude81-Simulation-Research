@@ -1,0 +1,107 @@
+{
+  "config": {
+    "initial_size": 374,
+    "grid_size": "50\u00d750",
+    "god_mode": "RULE_BASED",
+    "generations": 5
+  },
+  "final_stats": {
+    "population": 374,
+    "avg_wealth": 183.36898395721926,
+    "cooperation_rate": 0.8277966101694916,
+    "clustering": 0.47445766270118966
+  },
+  "history": {
+    "population": [
+      129,
+      147,
+      182,
+      255,
+      374
+    ],
+    "resources": [
+      14480,
+      19119,
+      26975,
+      41514,
+      68580
+    ],
+    "cooperation": [
+      0.8333333333333334,
+      0.7575757575757576,
+      0.7463087248322148,
+      0.8013201320132013,
+      0.8277966101694916
+    ],
+    "births": [
+      19,
+      22,
+      38,
+      75,
+      124
+    ],
+    "deaths": [
+      0,
+      4,
+      3,
+      2,
+      5
+    ],
+    "clustering": [
+      0.2191780821917808,
+      0.4117647058823529,
+      0.37656903765690375,
+      0.43630573248407645,
+      0.47445766270118966
+    ],
+    "shocks": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "god_interventions": [
+    {
+      "generation": 0,
+      "intervention_type": "welfare",
+      "reason": "Extreme inequality! Wealth ratio = 400.0:1",
+      "parameters": {
+        "target_bottom_percent": 0.1,
+        "amount": 100
+      },
+      "before_state": {
+        "population": 110,
+        "avg_wealth": 122.63636363636364,
+        "total_wealth": 13490,
+        "cooperation_rate": 0.8333333333333334,
+        "clustering": 0.1,
+        "tribe_diversity": 0.7272727272727273,
+        "max_tribe_dominance": 0.09090909090909091,
+        "wealth_inequality": 400.0,
+        "avg_age": 0.0
+      },
+      "after_state": {
+        "population": 110,
+        "avg_wealth": 132.63636363636363,
+        "total_wealth": 14590,
+        "cooperation_rate": 0.8333333333333334,
+        "clustering": 0.09090909090909091,
+        "tribe_diversity": 0.7272727272727273,
+        "max_tribe_dominance": 0.09090909090909091,
+        "wealth_inequality": 4.0,
+        "avg_age": 0.0
+      },
+      "effectiveness": null
+    }
+  ],
+  "god_summary": {
+    "total_interventions": 1,
+    "interventions_by_type": {
+      "welfare": 1
+    },
+    "avg_effectiveness": NaN,
+    "mode": "RULE_BASED"
+  }
+}

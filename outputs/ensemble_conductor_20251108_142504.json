@@ -1,0 +1,17 @@
+{
+  "initial_capital": 10000.0,
+  "final_capital": 28936.105484585027,
+  "total_return": 189.36105484585028,
+  "sharpe_ratio": 1.0091605388970464,
+  "max_drawdown": -11.006039028497598,
+  "num_trades": 77,
+  "win_rate": 41.55844155844156,
+  "regime_usage": {
+    "volatile": 542,
+    "trending": 1126,
+    "ranging": 2158,
+    "crisis": 170
+  },
+  "num_trades_detail": 154,
+  "timestamp": "20251108_142504"
+}

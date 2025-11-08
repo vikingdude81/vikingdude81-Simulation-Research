@@ -504,12 +504,16 @@ class AdaptiveMutationEvolution:
     
     def _crossover(self, genome1, genome2):
         """Single-point crossover"""
-        point = np.random.randint(1, len(genome1))
-        return genome1[:point] + genome2[point:]
+        # Ensure numpy arrays
+        g1 = np.array(genome1)
+        g2 = np.array(genome2)
+        point = np.random.randint(1, len(g1))
+        child = np.concatenate([g1[:point], g2[point:]])
+        return child
     
     def _mutate(self, genome, mutation_rate):
         """Gaussian mutation with adaptive rate"""
-        mutated = genome.copy()
+        mutated = np.array(genome).copy()
         for i in range(len(mutated)):
             if np.random.random() < 0.1:  # 10% probability per gene
                 # Mutation strength proportional to mutation_rate

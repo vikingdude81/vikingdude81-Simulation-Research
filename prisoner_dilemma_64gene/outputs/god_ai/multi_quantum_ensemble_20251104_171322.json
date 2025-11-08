@@ -1,0 +1,1177 @@
+{
+  "timestamp": "20251104_171322",
+  "ensemble_config": [
+    {
+      "name": "EarlyGame_Specialist",
+      "genome": [
+        5.0,
+        0.1,
+        0.0001,
+        6.283185307179586,
+        0.6,
+        0.3,
+        0.7,
+        10.0
+      ],
+      "trained_for": "50-generation scenarios, early optimization",
+      "optimal_phase": "early",
+      "performance_history": [
+        127449.99401926191,
+        115532.82294597797,
+        125161.26420221238,
+        87879.05360231179,
+        89072.04819048927,
+        87055.77786201448,
+        77029.0850374348,
+        81800.81245738622,
+        58132.633867073586,
+        77487.3209068676,
+        69260.96616091109,
+        85239.05500497749,
+        72253.25484730885,
+        81401.66932676677,
+        58100.97313540327,
+        78556.47353546631,
+        86596.9015852606,
+        94068.0335672696,
+        91692.02023057264,
+        75182.82852313679
+      ]
+    },
+    {
+      "name": "MidGame_Balanced",
+      "genome": [
+        2.5,
+        0.15,
+        0.01,
+        10.0,
+        0.7,
+        0.5,
+        0.6,
+        12.0
+      ],
+      "trained_for": "Mid-phase stability and growth",
+      "optimal_phase": "mid",
+      "performance_history": [
+        79128.73933015199,
+        88090.26850595455,
+        85012.97909328001,
+        68629.76590701421,
+        80754.4344138582,
+        72603.88132490798,
+        89318.86862802073,
+        84646.44780010983,
+        83060.85512274741,
+        73104.28310423373,
+        77776.6500198712,
+        90767.20487661027
+      ]
+    },
+    {
+      "name": "LateGame_Stabilizer",
+      "genome": [
+        1.5,
+        0.2,
+        0.1,
+        15.0,
+        0.8,
+        0.6,
+        0.5,
+        15.0
+      ],
+      "trained_for": "Long-term cooperation maintenance",
+      "optimal_phase": "late",
+      "performance_history": [
+        63569.80576250358,
+        57918.569336766624,
+        61649.49219877454,
+        66929.10452773626
+      ]
+    },
+    {
+      "name": "Crisis_Manager",
+      "genome": [
+        1.0,
+        0.3,
+        1.0,
+        20.0,
+        0.9,
+        0.7,
+        0.4,
+        8.0
+      ],
+      "trained_for": "Emergency intervention for failing populations",
+      "optimal_phase": "early",
+      "performance_history": []
+    }
+  ],
+  "test_config": {
+    "time_horizons": [
+      50,
+      75,
+      100,
+      125,
+      150
+    ],
+    "strategies": [
+      "phase_based",
+      "adaptive"
+    ],
+    "runs_per_config": 2
+  },
+  "results": [
+    {
+      "horizon": 50,
+      "tests": [
+        {
+          "strategy": "phase_based",
+          "generations": 50,
+          "run_number": 1,
+          "total_score": 73046.12633689975,
+          "cooperation_rate": 64.29086439983614,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-50",
+              "genome": "EarlyGame_Specialist",
+              "score": 73046.12633689975,
+              "cooperation": 64.29086439983614,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 0,
+            "genome_usage": {
+              "EarlyGame_Specialist": 0,
+              "MidGame_Balanced": 0,
+              "LateGame_Stabilizer": 0,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {}
+          },
+          "ensemble_size": 4
+        },
+        {
+          "strategy": "phase_based",
+          "generations": 50,
+          "run_number": 2,
+          "total_score": 78801.82262209587,
+          "cooperation_rate": 77.37479680542795,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-50",
+              "genome": "EarlyGame_Specialist",
+              "score": 78801.82262209587,
+              "cooperation": 77.37479680542795,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 0,
+            "genome_usage": {
+              "EarlyGame_Specialist": 0,
+              "MidGame_Balanced": 0,
+              "LateGame_Stabilizer": 0,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {}
+          },
+          "ensemble_size": 4
+        },
+        {
+          "strategy": "adaptive",
+          "generations": 50,
+          "run_number": 1,
+          "total_score": 82123.18666974184,
+          "cooperation_rate": 79.7861421200426,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-50",
+              "genome": "EarlyGame_Specialist",
+              "score": 82123.18666974184,
+              "cooperation": 79.7861421200426,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 0,
+            "genome_usage": {
+              "EarlyGame_Specialist": 0,
+              "MidGame_Balanced": 0,
+              "LateGame_Stabilizer": 0,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {}
+          },
+          "ensemble_size": 4
+        },
+        {
+          "strategy": "adaptive",
+          "generations": 50,
+          "run_number": 2,
+          "total_score": 85782.22187590526,
+          "cooperation_rate": 83.49790136411332,
+          "final_population": 998,
+          "phase_results": [
+            {
+              "generations": "0-50",
+              "genome": "EarlyGame_Specialist",
+              "score": 85782.22187590526,
+              "cooperation": 83.49790136411332,
+              "population": 998
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 0,
+            "genome_usage": {
+              "EarlyGame_Specialist": 0,
+              "MidGame_Balanced": 0,
+              "LateGame_Stabilizer": 0,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {}
+          },
+          "ensemble_size": 4
+        }
+      ],
+      "baselines": {
+        "fixed_50gen": {
+          "score": 83597.51861025514,
+          "cooperation": 81.25291273251351,
+          "population": 1000
+        },
+        "gpt4_neutral": {
+          "score": 82606.1478706146,
+          "cooperation": 78.6062819576333,
+          "population": 1000
+        }
+      }
+    },
+    {
+      "horizon": 75,
+      "tests": [
+        {
+          "strategy": "phase_based",
+          "generations": 75,
+          "run_number": 1,
+          "total_score": 127449.99401926191,
+          "cooperation_rate": 89.56353666428255,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-75",
+              "genome": "EarlyGame_Specialist",
+              "score": 127449.99401926191,
+              "cooperation": 89.56353666428255,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 1,
+            "genome_usage": {
+              "EarlyGame_Specialist": 1,
+              "MidGame_Balanced": 0,
+              "LateGame_Stabilizer": 0,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {
+              "EarlyGame_Specialist": {
+                "mean": 127449.99401926191,
+                "std": 0.0,
+                "min": 127449.99401926191,
+                "max": 127449.99401926191,
+                "count": 1
+              }
+            }
+          },
+          "ensemble_size": 4
+        },
+        {
+          "strategy": "phase_based",
+          "generations": 75,
+          "run_number": 2,
+          "total_score": 115532.82294597797,
+          "cooperation_rate": 75.08385921101475,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-75",
+              "genome": "EarlyGame_Specialist",
+              "score": 115532.82294597797,
+              "cooperation": 75.08385921101475,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 1,
+            "genome_usage": {
+              "EarlyGame_Specialist": 1,
+              "MidGame_Balanced": 0,
+              "LateGame_Stabilizer": 0,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {
+              "EarlyGame_Specialist": {
+                "mean": 121491.40848261994,
+                "std": 5958.585536641971,
+                "min": 115532.82294597797,
+                "max": 127449.99401926191,
+                "count": 2
+              }
+            }
+          },
+          "ensemble_size": 4
+        },
+        {
+          "strategy": "adaptive",
+          "generations": 75,
+          "run_number": 1,
+          "total_score": 125161.26420221238,
+          "cooperation_rate": 83.95292975452165,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-75",
+              "genome": "EarlyGame_Specialist",
+              "score": 125161.26420221238,
+              "cooperation": 83.95292975452165,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 1,
+            "genome_usage": {
+              "EarlyGame_Specialist": 1,
+              "MidGame_Balanced": 0,
+              "LateGame_Stabilizer": 0,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {
+              "EarlyGame_Specialist": {
+                "mean": 122714.6937224841,
+                "std": 5163.591897874148,
+                "min": 115532.82294597797,
+                "max": 127449.99401926191,
+                "count": 3
+              }
+            }
+          },
+          "ensemble_size": 4
+        },
+        {
+          "strategy": "adaptive",
+          "generations": 75,
+          "run_number": 2,
+          "total_score": 87879.05360231179,
+          "cooperation_rate": 47.166479749728055,
+          "final_population": 999,
+          "phase_results": [
+            {
+              "generations": "0-75",
+              "genome": "EarlyGame_Specialist",
+              "score": 87879.05360231179,
+              "cooperation": 47.166479749728055,
+              "population": 999
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 1,
+            "genome_usage": {
+              "EarlyGame_Specialist": 1,
+              "MidGame_Balanced": 0,
+              "LateGame_Stabilizer": 0,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {
+              "EarlyGame_Specialist": {
+                "mean": 114005.78369244101,
+                "std": 15733.160925255872,
+                "min": 87879.05360231179,
+                "max": 127449.99401926191,
+                "count": 4
+              }
+            }
+          },
+          "ensemble_size": 4
+        }
+      ],
+      "baselines": {
+        "fixed_50gen": {
+          "score": 118859.51866617448,
+          "cooperation": 79.94092855009458,
+          "population": 1000
+        },
+        "gpt4_neutral": {
+          "score": 115781.67446287605,
+          "cooperation": 82.6548515256286,
+          "population": 987
+        }
+      }
+    },
+    {
+      "horizon": 100,
+      "tests": [
+        {
+          "strategy": "phase_based",
+          "generations": 100,
+          "run_number": 1,
+          "total_score": 168200.78752064126,
+          "cooperation_rate": 80.77597612929185,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-50",
+              "genome": "EarlyGame_Specialist",
+              "score": 89072.04819048927,
+              "cooperation": 89.23006304761648,
+              "population": 1000
+            },
+            {
+              "generations": "50-100",
+              "genome": "MidGame_Balanced",
+              "score": 79128.73933015199,
+              "cooperation": 72.3218892109672,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 2,
+            "genome_usage": {
+              "EarlyGame_Specialist": 1,
+              "MidGame_Balanced": 1,
+              "LateGame_Stabilizer": 0,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {
+              "EarlyGame_Specialist": {
+                "mean": 109019.03659205066,
+                "std": 17248.08594404042,
+                "min": 87879.05360231179,
+                "max": 127449.99401926191,
+                "count": 5
+              },
+              "MidGame_Balanced": {
+                "mean": 79128.73933015199,
+                "std": 0.0,
+                "min": 79128.73933015199,
+                "max": 79128.73933015199,
+                "count": 1
+              }
+            }
+          },
+          "ensemble_size": 4
+        },
+        {
+          "strategy": "phase_based",
+          "generations": 100,
+          "run_number": 2,
+          "total_score": 175146.04636796901,
+          "cooperation_rate": 86.93218274019564,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-50",
+              "genome": "EarlyGame_Specialist",
+              "score": 87055.77786201448,
+              "cooperation": 86.04017904721304,
+              "population": 1000
+            },
+            {
+              "generations": "50-100",
+              "genome": "MidGame_Balanced",
+              "score": 88090.26850595455,
+              "cooperation": 87.82418643317824,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 2,
+            "genome_usage": {
+              "EarlyGame_Specialist": 1,
+              "MidGame_Balanced": 1,
+              "LateGame_Stabilizer": 0,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {
+              "EarlyGame_Specialist": {
+                "mean": 105358.49347037797,
+                "std": 17745.748890151048,
+                "min": 87055.77786201448,
+                "max": 127449.99401926191,
+                "count": 6
+              },
+              "MidGame_Balanced": {
+                "mean": 83609.50391805326,
+                "std": 4480.764587901278,
+                "min": 79128.73933015199,
+                "max": 88090.26850595455,
+                "count": 2
+              }
+            }
+          },
+          "ensemble_size": 4
+        },
+        {
+          "strategy": "adaptive",
+          "generations": 100,
+          "run_number": 1,
+          "total_score": 162042.0641307148,
+          "cooperation_rate": 75.64844008788,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-50",
+              "genome": "EarlyGame_Specialist",
+              "score": 77029.0850374348,
+              "cooperation": 72.00734309652307,
+              "population": 1000
+            },
+            {
+              "generations": "50-100",
+              "genome": "MidGame_Balanced",
+              "score": 85012.97909328001,
+              "cooperation": 79.28953707923692,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 2,
+            "genome_usage": {
+              "EarlyGame_Specialist": 1,
+              "MidGame_Balanced": 1,
+              "LateGame_Stabilizer": 0,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {
+              "EarlyGame_Specialist": {
+                "mean": 101311.43512281466,
+                "std": 19188.44233726654,
+                "min": 77029.0850374348,
+                "max": 127449.99401926191,
+                "count": 7
+              },
+              "MidGame_Balanced": {
+                "mean": 84077.32897646217,
+                "std": 3717.8696541627187,
+                "min": 79128.73933015199,
+                "max": 88090.26850595455,
+                "count": 3
+              }
+            }
+          },
+          "ensemble_size": 4
+        },
+        {
+          "strategy": "adaptive",
+          "generations": 100,
+          "run_number": 2,
+          "total_score": 150430.57836440043,
+          "cooperation_rate": 66.99412091349765,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-50",
+              "genome": "EarlyGame_Specialist",
+              "score": 81800.81245738622,
+              "cooperation": 76.42857142857142,
+              "population": 1000
+            },
+            {
+              "generations": "50-100",
+              "genome": "MidGame_Balanced",
+              "score": 68629.76590701421,
+              "cooperation": 57.559670398423876,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 2,
+            "genome_usage": {
+              "EarlyGame_Specialist": 1,
+              "MidGame_Balanced": 1,
+              "LateGame_Stabilizer": 0,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {
+              "EarlyGame_Specialist": {
+                "mean": 98872.6072896361,
+                "std": 19073.724015343265,
+                "min": 77029.0850374348,
+                "max": 127449.99401926191,
+                "count": 8
+              },
+              "MidGame_Balanced": {
+                "mean": 80215.43820910019,
+                "std": 7423.578447831977,
+                "min": 68629.76590701421,
+                "max": 88090.26850595455,
+                "count": 4
+              }
+            }
+          },
+          "ensemble_size": 4
+        }
+      ],
+      "baselines": {
+        "fixed_50gen": {
+          "score": 159218.49376025822,
+          "cooperation": 82.04700710601576,
+          "population": 1000
+        },
+        "gpt4_neutral": {
+          "score": 160454.0202037718,
+          "cooperation": 82.49585925135264,
+          "population": 1000
+        }
+      }
+    },
+    {
+      "horizon": 125,
+      "tests": [
+        {
+          "strategy": "phase_based",
+          "generations": 125,
+          "run_number": 1,
+          "total_score": 199189.76053644478,
+          "cooperation_rate": 70.39607198862467,
+          "final_population": 998,
+          "phase_results": [
+            {
+              "generations": "0-40",
+              "genome": "EarlyGame_Specialist",
+              "score": 58132.633867073586,
+              "cooperation": 59.37839697282422,
+              "population": 1000
+            },
+            {
+              "generations": "40-85",
+              "genome": "EarlyGame_Specialist",
+              "score": 77487.3209068676,
+              "cooperation": 80.96891676948462,
+              "population": 997
+            },
+            {
+              "generations": "85-125",
+              "genome": "LateGame_Stabilizer",
+              "score": 63569.80576250358,
+              "cooperation": 70.84090222356517,
+              "population": 998
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 3,
+            "genome_usage": {
+              "EarlyGame_Specialist": 2,
+              "MidGame_Balanced": 0,
+              "LateGame_Stabilizer": 1,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {
+              "EarlyGame_Specialist": {
+                "mean": 92660.081309103,
+                "std": 21544.31874082816,
+                "min": 58132.633867073586,
+                "max": 127449.99401926191,
+                "count": 10
+              },
+              "MidGame_Balanced": {
+                "mean": 80215.43820910019,
+                "std": 7423.578447831977,
+                "min": 68629.76590701421,
+                "max": 88090.26850595455,
+                "count": 4
+              },
+              "LateGame_Stabilizer": {
+                "mean": 63569.80576250358,
+                "std": 0.0,
+                "min": 63569.80576250358,
+                "max": 63569.80576250358,
+                "count": 1
+              }
+            }
+          },
+          "ensemble_size": 4
+        },
+        {
+          "strategy": "phase_based",
+          "generations": 125,
+          "run_number": 2,
+          "total_score": 212418.5905026552,
+          "cooperation_rate": 76.57468296687367,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-40",
+              "genome": "EarlyGame_Specialist",
+              "score": 69260.96616091109,
+              "cooperation": 76.86869032545087,
+              "population": 1000
+            },
+            {
+              "generations": "40-85",
+              "genome": "EarlyGame_Specialist",
+              "score": 85239.05500497749,
+              "cooperation": 91.81339505279908,
+              "population": 1000
+            },
+            {
+              "generations": "85-125",
+              "genome": "LateGame_Stabilizer",
+              "score": 57918.569336766624,
+              "cooperation": 61.04196352237105,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 3,
+            "genome_usage": {
+              "EarlyGame_Specialist": 2,
+              "MidGame_Balanced": 0,
+              "LateGame_Stabilizer": 1,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {
+              "EarlyGame_Specialist": {
+                "mean": 90091.73618807655,
+                "std": 20746.506053752073,
+                "min": 58132.633867073586,
+                "max": 127449.99401926191,
+                "count": 12
+              },
+              "MidGame_Balanced": {
+                "mean": 80215.43820910019,
+                "std": 7423.578447831977,
+                "min": 68629.76590701421,
+                "max": 88090.26850595455,
+                "count": 4
+              },
+              "LateGame_Stabilizer": {
+                "mean": 60744.1875496351,
+                "std": 2825.6182128684777,
+                "min": 57918.569336766624,
+                "max": 63569.80576250358,
+                "count": 2
+              }
+            }
+          },
+          "ensemble_size": 4
+        },
+        {
+          "strategy": "adaptive",
+          "generations": 125,
+          "run_number": 1,
+          "total_score": 215304.41637285016,
+          "cooperation_rate": 79.63332212951845,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-40",
+              "genome": "EarlyGame_Specialist",
+              "score": 72253.25484730885,
+              "cooperation": 83.9795637514622,
+              "population": 1000
+            },
+            {
+              "generations": "40-85",
+              "genome": "EarlyGame_Specialist",
+              "score": 81401.66932676677,
+              "cooperation": 86.3882122629526,
+              "population": 1000
+            },
+            {
+              "generations": "85-125",
+              "genome": "LateGame_Stabilizer",
+              "score": 61649.49219877454,
+              "cooperation": 68.53219037414054,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 3,
+            "genome_usage": {
+              "EarlyGame_Specialist": 2,
+              "MidGame_Balanced": 0,
+              "LateGame_Stabilizer": 1,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {
+              "EarlyGame_Specialist": {
+                "mean": 88196.83988792817,
+                "std": 19835.880174253827,
+                "min": 58132.633867073586,
+                "max": 127449.99401926191,
+                "count": 14
+              },
+              "MidGame_Balanced": {
+                "mean": 80215.43820910019,
+                "std": 7423.578447831977,
+                "min": 68629.76590701421,
+                "max": 88090.26850595455,
+                "count": 4
+              },
+              "LateGame_Stabilizer": {
+                "mean": 61045.95576601491,
+                "std": 2346.2467125383055,
+                "min": 57918.569336766624,
+                "max": 63569.80576250358,
+                "count": 3
+              }
+            }
+          },
+          "ensemble_size": 4
+        },
+        {
+          "strategy": "adaptive",
+          "generations": 125,
+          "run_number": 2,
+          "total_score": 203586.55119860586,
+          "cooperation_rate": 73.10795231319794,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-40",
+              "genome": "EarlyGame_Specialist",
+              "score": 58100.97313540327,
+              "cooperation": 59.46575027013622,
+              "population": 1000
+            },
+            {
+              "generations": "40-85",
+              "genome": "EarlyGame_Specialist",
+              "score": 78556.47353546631,
+              "cooperation": 83.41828321290438,
+              "population": 1000
+            },
+            {
+              "generations": "85-125",
+              "genome": "LateGame_Stabilizer",
+              "score": 66929.10452773626,
+              "cooperation": 76.43982345655321,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 3,
+            "genome_usage": {
+              "EarlyGame_Specialist": 2,
+              "MidGame_Balanced": 0,
+              "LateGame_Stabilizer": 1,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {
+              "EarlyGame_Specialist": {
+                "mean": 85713.32531886648,
+                "std": 20013.249263273272,
+                "min": 58100.97313540327,
+                "max": 127449.99401926191,
+                "count": 16
+              },
+              "MidGame_Balanced": {
+                "mean": 80215.43820910019,
+                "std": 7423.578447831977,
+                "min": 68629.76590701421,
+                "max": 88090.26850595455,
+                "count": 4
+              },
+              "LateGame_Stabilizer": {
+                "mean": 62516.74295644525,
+                "std": 3258.5733236609067,
+                "min": 57918.569336766624,
+                "max": 66929.10452773626,
+                "count": 4
+              }
+            }
+          },
+          "ensemble_size": 4
+        }
+      ],
+      "baselines": {
+        "fixed_50gen": {
+          "score": 149471.95740085113,
+          "cooperation": 56.660565094233505,
+          "population": 1000
+        },
+        "gpt4_neutral": {
+          "score": 174642.12290426745,
+          "cooperation": 70.92724891349646,
+          "population": 1000
+        }
+      }
+    },
+    {
+      "horizon": 150,
+      "tests": [
+        {
+          "strategy": "phase_based",
+          "generations": 150,
+          "run_number": 1,
+          "total_score": 239955.2173240268,
+          "cooperation_rate": 73.217369770231,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-50",
+              "genome": "EarlyGame_Specialist",
+              "score": 86596.9015852606,
+              "cooperation": 82.93410356274669,
+              "population": 1000
+            },
+            {
+              "generations": "50-100",
+              "genome": "MidGame_Balanced",
+              "score": 80754.4344138582,
+              "cooperation": 74.44062030749605,
+              "population": 1000
+            },
+            {
+              "generations": "100-150",
+              "genome": "MidGame_Balanced",
+              "score": 72603.88132490798,
+              "cooperation": 62.277385440450274,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 3,
+            "genome_usage": {
+              "EarlyGame_Specialist": 1,
+              "MidGame_Balanced": 2,
+              "LateGame_Stabilizer": 0,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {
+              "EarlyGame_Specialist": {
+                "mean": 85765.30039336026,
+                "std": 19416.81672622805,
+                "min": 58100.97313540327,
+                "max": 127449.99401926191,
+                "count": 17
+              },
+              "MidGame_Balanced": {
+                "mean": 79036.67809586116,
+                "std": 6712.271480494006,
+                "min": 68629.76590701421,
+                "max": 88090.26850595455,
+                "count": 6
+              },
+              "LateGame_Stabilizer": {
+                "mean": 62516.74295644525,
+                "std": 3258.5733236609067,
+                "min": 57918.569336766624,
+                "max": 66929.10452773626,
+                "count": 4
+              }
+            }
+          },
+          "ensemble_size": 4
+        },
+        {
+          "strategy": "phase_based",
+          "generations": 150,
+          "run_number": 2,
+          "total_score": 268033.3499954002,
+          "cooperation_rate": 86.58860472983048,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-50",
+              "genome": "EarlyGame_Specialist",
+              "score": 94068.0335672696,
+              "cooperation": 93.00934531842836,
+              "population": 1000
+            },
+            {
+              "generations": "50-100",
+              "genome": "MidGame_Balanced",
+              "score": 89318.86862802073,
+              "cooperation": 84.80545933393012,
+              "population": 1000
+            },
+            {
+              "generations": "100-150",
+              "genome": "MidGame_Balanced",
+              "score": 84646.44780010983,
+              "cooperation": 81.95100953713295,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 3,
+            "genome_usage": {
+              "EarlyGame_Specialist": 1,
+              "MidGame_Balanced": 2,
+              "LateGame_Stabilizer": 0,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {
+              "EarlyGame_Specialist": {
+                "mean": 86226.56334746633,
+                "std": 18965.35255433647,
+                "min": 58100.97313540327,
+                "max": 127449.99401926191,
+                "count": 18
+              },
+              "MidGame_Balanced": {
+                "mean": 81023.17312541218,
+                "std": 6855.209595829382,
+                "min": 68629.76590701421,
+                "max": 89318.86862802073,
+                "count": 8
+              },
+              "LateGame_Stabilizer": {
+                "mean": 62516.74295644525,
+                "std": 3258.5733236609067,
+                "min": 57918.569336766624,
+                "max": 66929.10452773626,
+                "count": 4
+              }
+            }
+          },
+          "ensemble_size": 4
+        },
+        {
+          "strategy": "adaptive",
+          "generations": 150,
+          "run_number": 1,
+          "total_score": 247857.15845755377,
+          "cooperation_rate": 77.66283287471275,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-50",
+              "genome": "EarlyGame_Specialist",
+              "score": 91692.02023057264,
+              "cooperation": 89.57132725696725,
+              "population": 1000
+            },
+            {
+              "generations": "50-100",
+              "genome": "MidGame_Balanced",
+              "score": 83060.85512274741,
+              "cooperation": 78.2306827910959,
+              "population": 1000
+            },
+            {
+              "generations": "100-150",
+              "genome": "MidGame_Balanced",
+              "score": 73104.28310423373,
+              "cooperation": 65.18648857607508,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 3,
+            "genome_usage": {
+              "EarlyGame_Specialist": 1,
+              "MidGame_Balanced": 2,
+              "LateGame_Stabilizer": 0,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {
+              "EarlyGame_Specialist": {
+                "mean": 86514.21897289298,
+                "std": 18499.81764448977,
+                "min": 58100.97313540327,
+                "max": 127449.99401926191,
+                "count": 19
+              },
+              "MidGame_Balanced": {
+                "mean": 80435.05232302786,
+                "std": 6628.373066822822,
+                "min": 68629.76590701421,
+                "max": 89318.86862802073,
+                "count": 10
+              },
+              "LateGame_Stabilizer": {
+                "mean": 62516.74295644525,
+                "std": 3258.5733236609067,
+                "min": 57918.569336766624,
+                "max": 66929.10452773626,
+                "count": 4
+              }
+            }
+          },
+          "ensemble_size": 4
+        },
+        {
+          "strategy": "adaptive",
+          "generations": 150,
+          "run_number": 2,
+          "total_score": 243726.68341961823,
+          "cooperation_rate": 75.45746326107526,
+          "final_population": 1000,
+          "phase_results": [
+            {
+              "generations": "0-50",
+              "genome": "EarlyGame_Specialist",
+              "score": 75182.82852313679,
+              "cooperation": 67.70559697077269,
+              "population": 1000
+            },
+            {
+              "generations": "50-100",
+              "genome": "MidGame_Balanced",
+              "score": 77776.6500198712,
+              "cooperation": 69.50113348623245,
+              "population": 1000
+            },
+            {
+              "generations": "100-150",
+              "genome": "MidGame_Balanced",
+              "score": 90767.20487661027,
+              "cooperation": 89.16565932622063,
+              "population": 1000
+            }
+          ],
+          "meta_stats": {
+            "total_selections": 3,
+            "genome_usage": {
+              "EarlyGame_Specialist": 1,
+              "MidGame_Balanced": 2,
+              "LateGame_Stabilizer": 0,
+              "Crisis_Manager": 0
+            },
+            "genome_performance": {
+              "EarlyGame_Specialist": {
+                "mean": 85947.64945040518,
+                "std": 18199.728286099093,
+                "min": 58100.97313540327,
+                "max": 127449.99401926191,
+                "count": 20
+              },
+              "MidGame_Balanced": {
+                "mean": 81074.53151056335,
+                "std": 6759.355065082376,
+                "min": 68629.76590701421,
+                "max": 90767.20487661027,
+                "count": 12
+              },
+              "LateGame_Stabilizer": {
+                "mean": 62516.74295644525,
+                "std": 3258.5733236609067,
+                "min": 57918.569336766624,
+                "max": 66929.10452773626,
+                "count": 4
+              }
+            }
+          },
+          "ensemble_size": 4
+        }
+      ],
+      "baselines": {
+        "fixed_50gen": {
+          "score": 218135.67434316827,
+          "cooperation": 74.96712315617701,
+          "population": 1000
+        },
+        "gpt4_neutral": {
+          "score": 227894.5898142891,
+          "cooperation": 80.67293289853356,
+          "population": 1000
+        }
+      }
+    }
+  ]
+}

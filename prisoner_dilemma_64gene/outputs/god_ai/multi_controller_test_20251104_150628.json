@@ -1,0 +1,329 @@
+{
+  "timestamp": "20251104_150628",
+  "hypothesis": "Multi-controller beats single controller by phase-appropriate selection",
+  "test_lengths": [
+    50,
+    75,
+    100,
+    125,
+    150
+  ],
+  "runs_per_test": 2,
+  "controllers": {
+    "fixed_50gen": "Quantum ML trained on 50-gen scenarios",
+    "fixed_150gen": "Quantum ML trained on 150-gen scenarios",
+    "adaptive": "Switch controllers based on lifecycle phase"
+  },
+  "tests": [
+    {
+      "strategy": "fixed_50gen",
+      "generations": 50,
+      "run": 1,
+      "wealth": 4780.339,
+      "cooperation": 0.633610856968588,
+      "gini": 0.44435200871737357,
+      "score": 59695.978482512146,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_150gen",
+      "generations": 50,
+      "run": 1,
+      "wealth": 0,
+      "cooperation": 0,
+      "gini": 1,
+      "score": 0,
+      "population": 0,
+      "skipped": true
+    },
+    {
+      "strategy": "adaptive_gpt4",
+      "generations": 50,
+      "run": 1,
+      "wealth": 4452.37,
+      "cooperation": 0.5865493687869733,
+      "gini": 0.41804244570869,
+      "score": 56208.76923078283,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_50gen",
+      "generations": 50,
+      "run": 2,
+      "wealth": 5014.237,
+      "cooperation": 0.6704290917884619,
+      "gini": 0.4233095434061056,
+      "score": 62613.565483823564,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_150gen",
+      "generations": 50,
+      "run": 2,
+      "wealth": 0,
+      "cooperation": 0,
+      "gini": 1,
+      "score": 0,
+      "population": 0,
+      "skipped": true
+    },
+    {
+      "strategy": "adaptive_gpt4",
+      "generations": 50,
+      "run": 2,
+      "wealth": 5131.504,
+      "cooperation": 0.6673535567937267,
+      "gini": 0.4142918150312269,
+      "score": 63845.657417625,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_50gen",
+      "generations": 75,
+      "run": 1,
+      "wealth": 8255.282,
+      "cooperation": 0.7597780204858754,
+      "gini": 0.42476105140926745,
+      "score": 95902.98969076607,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_150gen",
+      "generations": 75,
+      "run": 1,
+      "wealth": 0,
+      "cooperation": 0,
+      "gini": 1,
+      "score": 0,
+      "population": 0,
+      "skipped": true
+    },
+    {
+      "strategy": "adaptive_gpt4",
+      "generations": 75,
+      "run": 1,
+      "wealth": 8516.269,
+      "cooperation": 0.7770080474893669,
+      "gini": 0.4166514518270854,
+      "score": 98766.25595662282,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_50gen",
+      "generations": 75,
+      "run": 2,
+      "wealth": 7175.333,
+      "cooperation": 0.6096235432046021,
+      "gini": 0.4478462963321703,
+      "score": 83371.10246872432,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_150gen",
+      "generations": 75,
+      "run": 2,
+      "wealth": 0,
+      "cooperation": 0,
+      "gini": 1,
+      "score": 0,
+      "population": 0,
+      "skipped": true
+    },
+    {
+      "strategy": "adaptive_gpt4",
+      "generations": 75,
+      "run": 2,
+      "wealth": 8428.11,
+      "cooperation": 0.7231848847676479,
+      "gini": 0.3630852689392996,
+      "score": 97882.09615828349,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_50gen",
+      "generations": 100,
+      "run": 1,
+      "wealth": 8844.3,
+      "cooperation": 0.5578704677220704,
+      "gini": 0.4644048223149375,
+      "score": 99377.65645407133,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_150gen",
+      "generations": 100,
+      "run": 1,
+      "wealth": 0,
+      "cooperation": 0,
+      "gini": 1,
+      "score": 0,
+      "population": 0,
+      "skipped": true
+    },
+    {
+      "strategy": "adaptive_gpt4",
+      "generations": 100,
+      "run": 1,
+      "wealth": 9133.319,
+      "cooperation": 0.5995123655828581,
+      "gini": 0.4564232466861171,
+      "score": 102764.08118896742,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_50gen",
+      "generations": 100,
+      "run": 2,
+      "wealth": 8767.087,
+      "cooperation": 0.5366338520630686,
+      "gini": 0.4721191541728742,
+      "score": 98316.01697890194,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_150gen",
+      "generations": 100,
+      "run": 2,
+      "wealth": 0,
+      "cooperation": 0,
+      "gini": 1,
+      "score": 0,
+      "population": 0,
+      "skipped": true
+    },
+    {
+      "strategy": "adaptive_gpt4",
+      "generations": 100,
+      "run": 2,
+      "wealth": 10333.139,
+      "cooperation": 0.6242247874986081,
+      "gini": 0.42837288756107905,
+      "score": 115289.90899937529,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_50gen",
+      "generations": 125,
+      "run": 1,
+      "wealth": 12879.144,
+      "cooperation": 0.6534215000513481,
+      "gini": 0.44304108968732714,
+      "score": 140895.2441036402,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_150gen",
+      "generations": 125,
+      "run": 1,
+      "wealth": 0,
+      "cooperation": 0,
+      "gini": 1,
+      "score": 0,
+      "population": 0,
+      "skipped": true
+    },
+    {
+      "strategy": "adaptive_gpt4",
+      "generations": 125,
+      "run": 1,
+      "wealth": 15124.619,
+      "cooperation": 0.8071066874172493,
+      "gini": 0.3650945619853301,
+      "score": 165666.31125431918,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_50gen",
+      "generations": 125,
+      "run": 2,
+      "wealth": 10294.622,
+      "cooperation": 0.48719820986927337,
+      "gini": 0.46880576557352005,
+      "score": 113130.14444295753,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_150gen",
+      "generations": 125,
+      "run": 2,
+      "wealth": 0,
+      "cooperation": 0,
+      "gini": 1,
+      "score": 0,
+      "population": 0,
+      "skipped": true
+    },
+    {
+      "strategy": "adaptive_gpt4",
+      "generations": 125,
+      "run": 2,
+      "wealth": 12645.779,
+      "cooperation": 0.719245854433522,
+      "gini": 0.43845919567311764,
+      "score": 139265.65658760405,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_50gen",
+      "generations": 150,
+      "run": 1,
+      "wealth": 15257.627,
+      "cooperation": 0.7129293975487657,
+      "gini": 0.4541618383382948,
+      "score": 165163.94559210472,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_150gen",
+      "generations": 150,
+      "run": 1,
+      "wealth": 0,
+      "cooperation": 0,
+      "gini": 1,
+      "score": 0,
+      "population": 0,
+      "skipped": true
+    },
+    {
+      "strategy": "adaptive_gpt4",
+      "generations": 150,
+      "run": 1,
+      "wealth": 16476.104,
+      "cooperation": 0.7887452691663392,
+      "gini": 0.4412925196393518,
+      "score": 178235.5674952699,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_50gen",
+      "generations": 150,
+      "run": 2,
+      "wealth": 13738.509,
+      "cooperation": 0.6203754475703325,
+      "gini": 0.46457331978310035,
+      "score": 148943.11127787232,
+      "population": 1000
+    },
+    {
+      "strategy": "fixed_150gen",
+      "generations": 150,
+      "run": 2,
+      "wealth": 0,
+      "cooperation": 0,
+      "gini": 1,
+      "score": 0,
+      "population": 0,
+      "skipped": true
+    },
+    {
+      "strategy": "adaptive_gpt4",
+      "generations": 150,
+      "run": 2,
+      "wealth": 16173.787,
+      "cooperation": 0.7041374507964447,
+      "gini": 0.4292279483462964,
+      "score": 174486.96502450146,
+      "population": 1000
+    }
+  ]
+}
