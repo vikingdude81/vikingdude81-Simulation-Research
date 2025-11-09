@@ -43,13 +43,15 @@ class ConductorControlSignals:
 
 class ConductorEnhancedTrainer:
     """
-    Training with adaptive parameter control from GA Conductor
+    Training with adaptive parameter control from GA Conductor or DANN Conductor
     """
     
     def __init__(self,
                  regime: str,
                  regime_data: pd.DataFrame,
                  conductor_model_path: str = "outputs/ga_conductor_best.pth",
+                 use_dann: bool = False,
+                 dann_model_path: str = "outputs/dann_conductor_best.pth",
                  population_size: int = 200,
                  generations: int = 300,
                  elite_size: int = 10,
@@ -61,16 +63,27 @@ class ConductorEnhancedTrainer:
         self.generations = generations
         self.elite_size = elite_size
         self.tournament_size = tournament_size
+        self.use_dann = use_dann
         
-        # Load trained GA Conductor
+        # Load trained Conductor (GA or DANN)
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        print(f"Loading GA Conductor on {self.device}...")
-        self.conductor = GAConductor().to(self.device)
-        checkpoint = torch.load(conductor_model_path, map_location=self.device)
-        self.conductor.load_state_dict(checkpoint['model_state_dict'])
-        self.conductor.eval()
-        val_loss = checkpoint.get('val_loss', checkpoint.get('best_val_loss', 'unknown'))
-        print(f"✓ GA Conductor loaded (val_loss: {val_loss if isinstance(val_loss, str) else f'{val_loss:.6f}'})")
+        
+        if use_dann:
+            # Load DANN Conductor
+            print(f"Loading DANN Conductor on {self.device}...")
+            from domain_adversarial_conductor import DANNConductor
+            self.conductor = DANNConductor(device=self.device)
+            self.conductor.load(dann_model_path)
+            print(f"✓ DANN Conductor loaded (regime-invariant features)")
+        else:
+            # Load original GA Conductor
+            print(f"Loading GA Conductor on {self.device}...")
+            self.conductor = GAConductor().to(self.device)
+            checkpoint = torch.load(conductor_model_path, map_location=self.device)
+            self.conductor.load_state_dict(checkpoint['model_state_dict'])
+            self.conductor.eval()
+            val_loss = checkpoint.get('val_loss', checkpoint.get('best_val_loss', 'unknown'))
+            print(f"✓ GA Conductor loaded (val_loss: {val_loss if isinstance(val_loss, str) else f'{val_loss:.6f}'})")
         
         # Initialize population
         self.population: List[TradingSpecialist] = []
@@ -209,36 +222,113 @@ class ConductorEnhancedTrainer:
         
         return torch.FloatTensor(state).unsqueeze(0).to(self.device)
     
+    def _create_dann_state(self, generation: int) -> np.ndarray:
+        """
+        Create state features for DANN conductor (13 features)
+        Matches the format used during DANN training
+        """
+        progress = generation / self.generations
+        
+        # Get fitness statistics
+        fitnesses = [agent.fitness for agent in self.population if agent.fitness is not None]
+        if not fitnesses:
+            fitnesses = [0.0]
+        
+        best_fitness = max(fitnesses)
+        avg_fitness = np.mean(fitnesses)
+        diversity = np.std([agent.genome for agent in self.population])
+        
+        # Get current mutation/crossover rates
+        current_mutation = self.history['mutation_rate'][-1] if self.history['mutation_rate'] else 0.1
+        current_crossover = self.history['crossover_rate'][-1] if self.history['crossover_rate'] else 0.7
+        
+        # Calculate fitness gap
+        fitness_gap = (best_fitness - avg_fitness) / (abs(best_fitness) + 1e-6)
+        
+        # Market features (13 total)
+        state = np.array([
+            best_fitness / 100.0,    # Normalized best fitness
+            avg_fitness / 100.0,     # Normalized avg fitness
+            diversity,                # Population diversity
+            progress,                 # Training progress
+            current_mutation,         # Current mutation rate
+            current_crossover,        # Current crossover rate
+            fitness_gap,              # Fitness gap
+            abs(fitness_gap),         # Abs fitness gap
+            0.5,                      # Regime strength (placeholder)
+            0.5,                      # Market volatility (placeholder)
+            0.5,                      # Trend strength (placeholder)
+            0.5,                      # Regime stability (placeholder)
+            0.5                       # Signal quality (placeholder)
+        ], dtype=np.float32)
+        
+        # Replace any NaN or inf values
+        state = np.nan_to_num(state, nan=0.0, posinf=1.0, neginf=0.0)
+        
+        return state
+    
+    def _get_default_controls(self) -> ConductorControlSignals:
+        """Return default control signals when predictions fail"""
+        return ConductorControlSignals(
+            mutation_rate=0.1,
+            crossover_rate=0.7,
+            selection_pressure=0.5,
+            population_delta=0,
+            immigration_count=0,
+            culling_count=0,
+            diversity_injection=0.0,
+            extinction_trigger=0.0,
+            elite_preservation=0.1,
+            restart_signal=0.0,
+            welfare_amount=0.0,
+            tax_rate=0.0
+        )
+    
     def _get_conductor_controls(self, generation: int) -> ConductorControlSignals:
         """
-        Get adaptive control signals from GA Conductor
+        Get adaptive control signals from GA Conductor or DANN Conductor
         """
-        with torch.no_grad():
-            state = self._create_conductor_state(generation)
+        if self.use_dann:
+            # Use DANN conductor (simplified parameter prediction)
+            state_features = self._create_dann_state(generation)
             
-            # Check for NaN in state
-            if torch.isnan(state).any():
-                print(f"  ⚠️ Warning: NaN in conductor state at gen {generation}, using defaults")
-                # Use default values if state is invalid
-                return ConductorControlSignals(
-                    mutation_rate=0.1,
-                    crossover_rate=0.7,
-                    selection_pressure=0.5,
-                    population_delta=0,
-                    immigration_count=0,
-                    culling_count=0,
-                    diversity_injection=0.0,
-                    extinction_trigger=0.0,
-                    elite_preservation=0.1,
-                    restart_signal=0.0,
-                    welfare_amount=0.0,
-                    tax_rate=0.0
-                )
+            # Check for NaN
+            if np.isnan(state_features).any():
+                print(f"  ⚠️ Warning: NaN in DANN state at gen {generation}, using defaults")
+                return self._get_default_controls()
             
-            outputs = self.conductor(state)
+            # Get DANN predictions (12 parameters)
+            params = self.conductor.predict(state_features)
             
-            # Convert to numpy
-            controls = {k: v.cpu().numpy()[0] for k, v in outputs.items()}
+            # Map DANN parameters to control signals
+            return ConductorControlSignals(
+                mutation_rate=float(params[0]),
+                crossover_rate=float(params[1]),
+                selection_pressure=float(params[8]),  # selection_pressure
+                population_delta=0,  # DANN doesn't control population changes
+                immigration_count=0,
+                culling_count=0,
+                diversity_injection=float(params[6]),  # diversity_weight
+                extinction_trigger=0.0,
+                elite_preservation=float(params[2]),  # elite_size
+                restart_signal=0.0,
+                welfare_amount=0.0,
+                tax_rate=0.0
+            )
+        else:
+            # Use original GA conductor
+            with torch.no_grad():
+                state = self._create_conductor_state(generation)
+                
+                # Check for NaN in state
+                if torch.isnan(state).any():
+                    print(f"  ⚠️ Warning: NaN in conductor state at gen {generation}, using defaults")
+                    return self._get_default_controls()
+                
+                outputs = self.conductor(state)
+                
+                # Convert to numpy
+                controls = {k: v.cpu().numpy()[0] for k, v in outputs.items()}
             
             # Map to control signals  
             # Extract scalars from arrays and handle NaN
@@ -659,14 +749,20 @@ def main():
     """Train conductor-enhanced specialist and save results"""
     import sys
     
-    # Get regime from command line argument, default to volatile
+    # Parse command line arguments
     regime = sys.argv[1] if len(sys.argv) > 1 else 'volatile'
+    use_dann = '--use-dann' in sys.argv or '--dann' in sys.argv
     
     # Validate regime
     valid_regimes = ['volatile', 'trending', 'ranging']
     if regime not in valid_regimes:
         print(f"❌ ERROR: Invalid regime '{regime}'. Must be one of: {valid_regimes}")
         return
+    
+    if use_dann:
+        print(f"🔬 Using DANN Conductor (regime-invariant features)")
+    else:
+        print(f"🎮 Using Enhanced ML Conductor")
     
     # Load regime-specific data
     print(f"Loading {regime} regime data...")
@@ -693,6 +789,7 @@ def main():
     trainer = ConductorEnhancedTrainer(
         regime=regime,
         regime_data=regime_data,
+        use_dann=use_dann,
         population_size=200,
         generations=300
     )
@@ -707,6 +804,7 @@ def main():
     results = {
         'regime': regime,
         'conductor_enhanced': True,
+        'conductor_type': 'DANN' if use_dann else 'EnhancedML',
         'population_size': trainer.population_size,
         'generations': trainer.generations,
         'best_fitness': float(trainer.best_fitness),
