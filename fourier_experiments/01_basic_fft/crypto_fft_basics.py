@@ -25,17 +25,18 @@ import time
 import argparse
 import logging
 import traceback
-from typing import List
+from typing import List, Optional
 
 # Add parent directory to path to import existing modules
 import sys
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
+fetch_ohlcv = None  # will attempt to resolve dynamically from fetch_data module
 try:
-    from fetch_data import fetch_ohlcv  # Optional, may not exist / symbol missing
+    import fetch_data as _fetch_data_module  # Optional module; function may or may not exist
+    fetch_ohlcv = getattr(_fetch_data_module, 'fetch_ohlcv', None)
 except Exception:
     print("[INFO] fetch_ohlcv not available – defaulting to internal/simple fetch or mock.")
-    fetch_ohlcv = None
 
 try:
     import yfinance as yf  # lightweight external fetch for quick prototyping
@@ -46,7 +47,13 @@ logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 
 
 class CryptoFFTAnalyzer:
-    """Analyze cryptocurrency price data using Fourier transforms."""
+    """Analyze cryptocurrency price data using Fourier transforms.
+
+    Contract:
+    - call load_data() before compute_fft()
+    - compute_fft() populates fft, frequencies, power_spectrum
+    - reconstruct_from_top_frequencies() requires fft + power_spectrum
+    """
     
     def __init__(self, symbol: str = "BTC/USDT", hours: int = 1000, use_real: bool = False, mock: bool = False, quiet: bool = False):
         """
@@ -56,17 +63,18 @@ class CryptoFFTAnalyzer:
             symbol: Trading pair (e.g., 'BTC/USDT')
             hours: Number of hours of historical data to analyze
         """
-    self.symbol = symbol
-    self.hours = hours
-    self.use_real = use_real
-    self.mock = mock
-    self.quiet = quiet
-        self.prices = None
-        self.fft = None
-        self.frequencies = None
-        self.power_spectrum = None
+        self.symbol = symbol
+        self.hours = hours
+        self.use_real = use_real
+        self.mock = mock
+        self.quiet = quiet
+        # Core data containers (numpy ndarrays once populated)
+        self.prices: Optional[np.ndarray] = None
+        self.fft: Optional[np.ndarray] = None
+        self.frequencies: Optional[np.ndarray] = None
+        self.power_spectrum: Optional[np.ndarray] = None
         
-    def _generate_mock(self):
+    def _generate_mock(self) -> np.ndarray:
         t = np.arange(self.hours)
         base = 50000 if 'BTC' in self.symbol else 3000
         return (
@@ -76,7 +84,7 @@ class CryptoFFTAnalyzer:
             0.004 * base * np.random.randn(self.hours)
         )
 
-    def _simple_yfinance_fetch(self):
+    def _simple_yfinance_fetch(self) -> Optional[np.ndarray]:
         if yf is None:
             return None
         # Map symbol to yfinance ticker (simple heuristic)
@@ -89,6 +97,7 @@ class CryptoFFTAnalyzer:
             if hist.empty:
                 return None
             closes = hist['Close'].tail(self.hours).values
+            closes = np.asarray(closes, dtype=float)
             if len(closes) < self.hours:
                 # pad with last value
                 closes = np.pad(closes, (self.hours - len(closes), 0), mode='edge')
@@ -96,7 +105,7 @@ class CryptoFFTAnalyzer:
         except Exception:
             return None
 
-    def load_data(self):
+    def load_data(self) -> None:
         """Load price data (real if requested & available, else mock)."""
         logging.info(f"Loading {self.hours}h of data for {self.symbol} (real={self.use_real}, mock={self.mock})")
 
@@ -119,12 +128,17 @@ class CryptoFFTAnalyzer:
             self.prices = self._generate_mock()
             used_source = 'mock'
 
-        logging.info(f"Data source: {used_source}; points: {len(self.prices)}; min={self.prices.min():.2f} max={self.prices.max():.2f}")
+        # Ensure np.ndarray (guard against pandas ExtensionArray types)
+        self.prices = np.asarray(self.prices, dtype=float)
+        logging.info(f"Data source: {used_source}; points: {len(self.prices)}; min={float(self.prices.min()):.2f} max={float(self.prices.max()):.2f}")
         
-    def compute_fft(self):
+    def compute_fft(self) -> None:
         """Compute FFT of price data."""
         if not self.quiet:
             print("\n=== Computing FFT ===")
+        
+        if self.prices is None:
+            raise RuntimeError("Prices not loaded. Call load_data() before compute_fft().")
         
         # Normalize prices (remove mean, scale by std)
         normalized_prices = (self.prices - self.prices.mean()) / self.prices.std()
@@ -142,7 +156,7 @@ class CryptoFFTAnalyzer:
             print(f"FFT shape: {self.fft.shape}")
             print(f"Frequency range: {self.frequencies.min():.6f} to {self.frequencies.max():.6f} cycles/hour")
         
-    def analyze_dominant_frequencies(self, top_n: int = 10):
+    def analyze_dominant_frequencies(self, top_n: int = 10) -> pd.DataFrame:
         """
         Identify dominant frequencies in the data.
         
@@ -156,6 +170,8 @@ class CryptoFFTAnalyzer:
             print(f"\n=== Identifying Top {top_n} Dominant Frequencies ===")
         
         # Only consider positive frequencies (FFT is symmetric)
+        if self.frequencies is None or self.power_spectrum is None:
+            raise RuntimeError("FFT not computed. Call compute_fft() before analyze_dominant_frequencies().")
         positive_freq_mask = self.frequencies > 0
         positive_freqs = self.frequencies[positive_freq_mask]
         positive_power = self.power_spectrum[positive_freq_mask]
@@ -168,7 +184,6 @@ class CryptoFFTAnalyzer:
             freq = positive_freqs[idx]
             power = positive_power[idx]
             period_hours = 1.0 / freq if freq > 0 else np.inf
-            
             results.append({
                 'rank': i,
                 'frequency_cycles_per_hour': freq,
@@ -177,11 +192,8 @@ class CryptoFFTAnalyzer:
                 'power': power,
                 'power_pct': 100 * power / positive_power.sum()
             })
-            
-        if not self.quiet:
-            print(f"{i}. Freq: {freq:.6f} cycles/hour | "
-                f"Period: {period_hours:.1f}h ({period_hours/24:.1f} days) | "
-                f"Power: {power:.2e} ({100*power/positive_power.sum():.2f}%)")
+            if not self.quiet:
+                print(f"{i}. Freq: {freq:.6f} cycles/hour | Period: {period_hours:.1f}h ({period_hours/24:.1f} days) | Power: {power:.2e} ({100*power/positive_power.sum():.2f}%)")
         
         return pd.DataFrame(results)
     
@@ -199,6 +211,10 @@ class CryptoFFTAnalyzer:
             print(f"\n=== Reconstructing from Top {top_n} Frequencies ===")
         
         # Create filtered FFT (keep only top N components)
+        if self.fft is None or self.power_spectrum is None:
+            raise RuntimeError("FFT not computed. Call compute_fft() before reconstruction.")
+        if self.prices is None:
+            raise RuntimeError("Prices not loaded.")
         filtered_fft = np.zeros_like(self.fft)
         
         # Find top N frequencies by power
@@ -231,7 +247,7 @@ class CryptoFFTAnalyzer:
             'top_n': top_n
         }
     
-    def plot_analysis(self, reconstructed_prices=None, save_path=None):
+    def plot_analysis(self, reconstructed_prices=None, save_path=None) -> None:
         """
         Create comprehensive visualization of FFT analysis.
         
@@ -239,7 +255,7 @@ class CryptoFFTAnalyzer:
             reconstructed_prices: Optional reconstructed signal to overlay
             save_path: Optional path to save figure
         """
-    fig, axes = plt.subplots(2, 2, figsize=(15, 10))
+        fig, axes = plt.subplots(2, 2, figsize=(15, 10))
         
         # Plot 1: Original price data
         ax = axes[0, 0]
@@ -254,6 +270,8 @@ class CryptoFFTAnalyzer:
         
         # Plot 2: Power spectrum (positive frequencies only)
         ax = axes[0, 1]
+        if self.frequencies is None or self.power_spectrum is None:
+            raise RuntimeError("FFT not computed. Cannot plot without frequencies & power spectrum.")
         positive_mask = self.frequencies > 0
         ax.semilogy(self.frequencies[positive_mask], 
                     self.power_spectrum[positive_mask], 
@@ -304,13 +322,16 @@ class CryptoFFTAnalyzer:
         # Close plot instead of showing interactively (avoid blocking)
         plt.close()
         
-    def save_results(self, dominant_freqs_df, reconstruction_metrics, save_dir):
+    def save_results(self, dominant_freqs_df: pd.DataFrame, reconstruction_metrics: dict, save_dir) -> dict:
         """Save analysis results to JSON."""
         save_dir = Path(save_dir)
         save_dir.mkdir(parents=True, exist_ok=True)
         
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
+        # Satisfy type checkers and ensure data present
+        assert self.prices is not None, "Prices must be loaded before saving results"
+
         results = {
             'experiment': '1.1_crypto_fft_basics',
             'timestamp': timestamp,

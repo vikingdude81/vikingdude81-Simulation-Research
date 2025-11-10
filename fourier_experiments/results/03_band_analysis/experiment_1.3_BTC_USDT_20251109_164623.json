@@ -1,0 +1,150 @@
+{
+  "experiment": "1.3_frequency_band_analysis",
+  "timestamp": "20251109_164623",
+  "symbol": "BTC/USDT",
+  "data_points": 1000,
+  "band_definitions": {
+    "LOW": [
+      0.0,
+      0.25
+    ],
+    "MID": [
+      0.25,
+      0.75
+    ],
+    "HIGH": [
+      0.75,
+      1.0
+    ]
+  },
+  "individual_bands": {
+    "LOW": {
+      "band": "LOW",
+      "components": 249,
+      "components_pct": 24.9,
+      "power_pct": 99.75527863124627,
+      "freq_range_cycles_per_hour": [
+        0.001,
+        0.124
+      ],
+      "period_range_hours": [
+        8.064516129032258,
+        1000.0
+      ],
+      "period_range_days": [
+        0.33602150537634407,
+        41.666666666666664
+      ],
+      "rmse": 314.30440973986794,
+      "mae": 226.47441779889533,
+      "r2": 0.9975527863124627
+    },
+    "MID": {
+      "band": "MID",
+      "components": 500,
+      "components_pct": 50.0,
+      "power_pct": 0.19710799538944254,
+      "freq_range_cycles_per_hour": [
+        0.125,
+        0.374
+      ],
+      "period_range_hours": [
+        2.6737967914438503,
+        8.0
+      ],
+      "period_range_days": [
+        0.11140819964349376,
+        0.3333333333333333
+      ],
+      "rmse": 6347.257110801948,
+      "mae": 5007.744474083157,
+      "r2": 0.00197107995389445
+    },
+    "HIGH": {
+      "band": "HIGH",
+      "components": 250,
+      "components_pct": 25.0,
+      "power_pct": 0.04715149563637096,
+      "freq_range_cycles_per_hour": [
+        0.375,
+        0.499
+      ],
+      "period_range_hours": [
+        2.004008016032064,
+        2.6666666666666665
+      ],
+      "period_range_days": [
+        0.083500334001336,
+        0.1111111111111111
+      ],
+      "rmse": 6352.023782276701,
+      "mae": 5009.648399188109,
+      "r2": 0.00047151495636366114
+    }
+  },
+  "combinations": {
+    "LOW+MID": {
+      "combination": "LOW+MID",
+      "bands": [
+        "LOW",
+        "MID"
+      ],
+      "components": 749,
+      "components_pct": 74.9,
+      "power_pct": 99.95238662663573,
+      "rmse": 138.6369526667237,
+      "mae": 100.98318026557409,
+      "r2": 0.999523866266357
+    },
+    "LOW+HIGH": {
+      "combination": "LOW+HIGH",
+      "bands": [
+        "LOW",
+        "HIGH"
+      ],
+      "components": 499,
+      "components_pct": 49.9,
+      "power_pct": 99.80243012688264,
+      "rmse": 282.40662992860234,
+      "mae": 207.77635414141818,
+      "r2": 0.9980243012688264
+    },
+    "MID+HIGH": {
+      "combination": "MID+HIGH",
+      "bands": [
+        "MID",
+        "HIGH"
+      ],
+      "components": 750,
+      "components_pct": 75.0,
+      "power_pct": 0.24425949102581349,
+      "rmse": 6345.757564961932,
+      "mae": 5006.108146685026,
+      "r2": 0.0024425949102582223
+    }
+  },
+  "success_criteria": {
+    "LOW_r2_gt_0.80": {
+      "target": 0.8,
+      "actual": 0.9975527863124627,
+      "achieved": true
+    },
+    "MID_r2_gt_0.40": {
+      "target": 0.4,
+      "actual": 0.00197107995389445,
+      "achieved": false
+    },
+    "HIGH_r2_lt_0.20": {
+      "target": 0.2,
+      "actual": 0.00047151495636366114,
+      "achieved": true
+    }
+  },
+  "summary": {
+    "all_criteria_met": false,
+    "best_single_band": "LOW",
+    "best_single_band_r2": 0.9975527863124627,
+    "low_band_dominance": 99.75527863124627,
+    "recommended_filter": "Remove HIGH band"
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "experiment": "1.2_holographic_memory",
+  "timestamp": "20251109_164032",
+  "symbol": "ETH/USDT",
+  "data_points": 1000,
+  "damage_tests": {
+    "10_random": {
+      "damage_pct": 10,
+      "strategy": "random",
+      "components_damaged": 100,
+      "components_total": 1000,
+      "power_loss_pct": 1.3845711146162631,
+      "rmse": 29.25302400509556,
+      "mae": 24.365824199152875,
+      "r2": 0.9928494435971487
+    },
+    "10_weakest": {
+      "damage_pct": 10,
+      "strategy": "weakest",
+      "components_damaged": 100,
+      "components_total": 1000,
+      "power_loss_pct": 0.0025048837992754746,
+      "rmse": 1.7231382834174458,
+      "mae": 1.375778497639525,
+      "r2": 0.9999751893258871
+    },
+    "10_strongest": {
+      "damage_pct": 10,
+      "strategy": "strongest",
+      "components_damaged": 100,
+      "components_total": 1000,
+      "power_loss_pct": 99.26903588512924,
+      "rmse": 344.67338647237375,
+      "mae": 269.0102766828831,
+      "r2": 0.007309641148707802
+    },
+    "20_random": {
+      "damage_pct": 20,
+      "strategy": "random",
+      "components_damaged": 200,
+      "components_total": 1000,
+      "power_loss_pct": 4.217077131440008,
+      "rmse": 50.34550435213556,
+      "mae": 40.80852328138217,
+      "r2": 0.9788203054068056
+    },
+    "20_weakest": {
+      "damage_pct": 20,
+      "strategy": "weakest",
+      "components_damaged": 200,
+      "components_total": 1000,
+      "power_loss_pct": 0.010394406770272768,
+      "rmse": 3.5269613732431826,
+      "mae": 2.7909740554875255,
+      "r2": 0.9998960559322972
+    },
+    "20_strongest": {
+      "damage_pct": 20,
+      "strategy": "strongest",
+      "components_damaged": 200,
+      "components_total": 1000,
+      "power_loss_pct": 99.69696727633962,
+      "rmse": 345.4155007894133,
+      "mae": 270.4411207455735,
+      "r2": 0.0030303272366037914
+    },
+    "30_random": {
+      "damage_pct": 30,
+      "strategy": "random",
+      "components_damaged": 300,
+      "components_total": 1000,
+      "power_loss_pct": 26.848287958042338,
+      "rmse": 133.91520830271125,
+      "mae": 119.42043930445553,
+      "r2": 0.8501495318891095
+    },
+    "30_weakest": {
+      "damage_pct": 30,
+      "strategy": "weakest",
+      "components_damaged": 300,
+      "components_total": 1000,
+      "power_loss_pct": 0.023395460937666108,
+      "rmse": 5.291351986702674,
+      "mae": 4.202282086934337,
+      "r2": 0.9997660453906233
+    },
+    "30_strongest": {
+      "damage_pct": 30,
+      "strategy": "strongest",
+      "components_damaged": 300,
+      "components_total": 1000,
+      "power_loss_pct": 99.82685731580084,
+      "rmse": 345.64043957318336,
+      "mae": 270.5604597493479,
+      "r2": 0.00173142684199179
+    },
+    "40_random": {
+      "damage_pct": 40,
+      "strategy": "random",
+      "components_damaged": 400,
+      "components_total": 1000,
+      "power_loss_pct": 48.70478924316491,
+      "rmse": 174.87856035138148,
+      "mae": 140.4930618258032,
+      "r2": 0.7444526154976716
+    },
+    "40_weakest": {
+      "damage_pct": 40,
+      "strategy": "weakest",
+      "components_damaged": 400,
+      "components_total": 1000,
+      "power_loss_pct": 0.04226991009685944,
+      "rmse": 7.1124055352248865,
+      "mae": 5.595391620160415,
+      "r2": 0.9995773008990314
+    },
+    "40_strongest": {
+      "damage_pct": 40,
+      "strategy": "strongest",
+      "components_damaged": 400,
+      "components_total": 1000,
+      "power_loss_pct": 99.8897126892541,
+      "rmse": 345.7492376499744,
+      "mae": 270.66100442425073,
+      "r2": 0.0011028731074590459
+    },
+    "50_random": {
+      "damage_pct": 50,
+      "strategy": "random",
+      "components_damaged": 500,
+      "components_total": 1000,
+      "power_loss_pct": 32.004980920539005,
+      "rmse": 161.97879609539223,
+      "mae": 145.9621130680891,
+      "r2": 0.7807626039933645
+    },
+    "50_weakest": {
+      "damage_pct": 50,
+      "strategy": "weakest",
+      "components_damaged": 500,
+      "components_total": 1000,
+      "power_loss_pct": 0.06985400125116926,
+      "rmse": 9.14316364827013,
+      "mae": 7.027704821896449,
+      "r2": 0.9993014599874883
+    },
+    "50_strongest": {
+      "damage_pct": 50,
+      "strategy": "strongest",
+      "components_damaged": 500,
+      "components_total": 1000,
+      "power_loss_pct": 99.93014599874884,
+      "rmse": 345.819206674615,
+      "mae": 270.59097715679536,
+      "r2": 0.0006985400125114616
+    }
+  },
+  "success_criteria": {
+    "10pct_random": {
+      "target_r2": 0.95,
+      "achieved": true,
+      "actual_r2": 0.9928494435971487
+    },
+    "20pct_random": {
+      "target_r2": 0.85,
+      "achieved": true,
+      "actual_r2": 0.9788203054068056
+    },
+    "30pct_random": {
+      "target_r2": 0.7,
+      "achieved": true,
+      "actual_r2": 0.8501495318891095
+    }
+  },
+  "summary": {
+    "all_criteria_met": true,
+    "best_r2_at_30pct": 0.9997660453906233,
+    "holographic_property": "CONFIRMED"
+  }
+}

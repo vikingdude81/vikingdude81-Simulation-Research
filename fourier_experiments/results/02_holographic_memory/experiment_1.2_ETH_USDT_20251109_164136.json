@@ -1,0 +1,300 @@
+{
+  "experiment": "1.2_holographic_memory",
+  "timestamp": "20251109_164136",
+  "symbol": "ETH/USDT",
+  "data_points": 2000,
+  "damage_tests": {
+    "5_random": {
+      "damage_pct": 5,
+      "strategy": "random",
+      "components_damaged": 100,
+      "components_total": 2000,
+      "power_loss_pct": 0.33623940652285134,
+      "rmse": 14.665891991825905,
+      "mae": 12.00917532347659,
+      "r2": 0.9983168592825447
+    },
+    "5_weakest": {
+      "damage_pct": 5,
+      "strategy": "weakest",
+      "components_damaged": 100,
+      "components_total": 2000,
+      "power_loss_pct": 0.00043279698211056556,
+      "rmse": 0.7398880569694527,
+      "mae": 0.5940722060230608,
+      "r2": 0.9999957161377636
+    },
+    "5_strongest": {
+      "damage_pct": 5,
+      "strategy": "strongest",
+      "components_damaged": 100,
+      "components_total": 2000,
+      "power_loss_pct": 98.72311157092491,
+      "rmse": 355.18751085598774,
+      "mae": 308.1920184785489,
+      "r2": 0.012768884290750737
+    },
+    "10_random": {
+      "damage_pct": 10,
+      "strategy": "random",
+      "components_damaged": 200,
+      "components_total": 2000,
+      "power_loss_pct": 24.552579445526934,
+      "rmse": 128.57715245511807,
+      "mae": 112.54118464122905,
+      "r2": 0.8706307475775262
+    },
+    "10_weakest": {
+      "damage_pct": 10,
+      "strategy": "weakest",
+      "components_damaged": 200,
+      "components_total": 2000,
+      "power_loss_pct": 0.0019253587724103916,
+      "rmse": 1.564214317490291,
+      "mae": 1.2361425723824333,
+      "r2": 0.9999808532099473
+    },
+    "10_strongest": {
+      "damage_pct": 10,
+      "strategy": "strongest",
+      "components_damaged": 200,
+      "components_total": 2000,
+      "power_loss_pct": 99.42395715686138,
+      "rmse": 356.44603765216317,
+      "mae": 309.3849788218979,
+      "r2": 0.005760428431386133
+    },
+    "15_random": {
+      "damage_pct": 15,
+      "strategy": "random",
+      "components_damaged": 300,
+      "components_total": 2000,
+      "power_loss_pct": 57.263537918664824,
+      "rmse": 255.50993301584361,
+      "mae": 221.68070993451587,
+      "r2": 0.48911983911144663
+    },
+    "15_weakest": {
+      "damage_pct": 15,
+      "strategy": "weakest",
+      "components_damaged": 300,
+      "components_total": 2000,
+      "power_loss_pct": 0.004650879572696039,
+      "rmse": 2.433711861246327,
+      "mae": 1.9136415034435672,
+      "r2": 0.999953650849442
+    },
+    "15_strongest": {
+      "damage_pct": 15,
+      "strategy": "strongest",
+      "components_damaged": 300,
+      "components_total": 2000,
+      "power_loss_pct": 99.63383475898002,
+      "rmse": 356.82205669033135,
+      "mae": 309.79282529113266,
+      "r2": 0.0036616524101995562
+    },
+    "20_random": {
+      "damage_pct": 20,
+      "strategy": "random",
+      "components_damaged": 400,
+      "components_total": 2000,
+      "power_loss_pct": 11.518366059730612,
+      "rmse": 85.98318273984925,
+      "mae": 72.81562124430616,
+      "r2": 0.9421463857595275
+    },
+    "20_weakest": {
+      "damage_pct": 20,
+      "strategy": "weakest",
+      "components_damaged": 400,
+      "components_total": 2000,
+      "power_loss_pct": 0.008542727558490044,
+      "rmse": 3.299547079512217,
+      "mae": 2.5768134631430843,
+      "r2": 0.9999148053897048
+    },
+    "20_strongest": {
+      "damage_pct": 20,
+      "strategy": "strongest",
+      "components_damaged": 400,
+      "components_total": 2000,
+      "power_loss_pct": 99.73596822275039,
+      "rmse": 357.0048968772436,
+      "mae": 309.9941387929113,
+      "r2": 0.0026403177724961813
+    },
+    "25_random": {
+      "damage_pct": 25,
+      "strategy": "random",
+      "components_damaged": 500,
+      "components_total": 2000,
+      "power_loss_pct": 41.566280931013345,
+      "rmse": 173.5088941503611,
+      "mae": 144.78710941037386,
+      "r2": 0.7644153740090517
+    },
+    "25_weakest": {
+      "damage_pct": 25,
+      "strategy": "weakest",
+      "components_damaged": 500,
+      "components_total": 2000,
+      "power_loss_pct": 0.01377838159743027,
+      "rmse": 4.191535711489083,
+      "mae": 3.2383888488227384,
+      "r2": 0.9998625167458591
+    },
+    "25_strongest": {
+      "damage_pct": 25,
+      "strategy": "strongest",
+      "components_damaged": 500,
+      "components_total": 2000,
+      "power_loss_pct": 99.80021836262954,
+      "rmse": 357.1198700511345,
+      "mae": 310.13251708455044,
+      "r2": 0.001997816373704775
+    },
+    "30_random": {
+      "damage_pct": 30,
+      "strategy": "random",
+      "components_damaged": 600,
+      "components_total": 2000,
+      "power_loss_pct": 13.443026898858008,
+      "rmse": 93.93358958666641,
+      "mae": 79.1191454022358,
+      "r2": 0.9309529227994864
+    },
+    "30_weakest": {
+      "damage_pct": 30,
+      "strategy": "weakest",
+      "components_damaged": 600,
+      "components_total": 2000,
+      "power_loss_pct": 0.020601244787512504,
+      "rmse": 5.1262001102346995,
+      "mae": 3.8982082123725177,
+      "r2": 0.9997943661659643
+    },
+    "30_strongest": {
+      "damage_pct": 30,
+      "strategy": "strongest",
+      "components_damaged": 600,
+      "components_total": 2000,
+      "power_loss_pct": 99.84222077134649,
+      "rmse": 357.19501175467303,
+      "mae": 310.1841286836567,
+      "r2": 0.0015777922865348737
+    },
+    "35_random": {
+      "damage_pct": 35,
+      "strategy": "random",
+      "components_damaged": 700,
+      "components_total": 2000,
+      "power_loss_pct": 46.77208763679104,
+      "rmse": 174.24359080317933,
+      "mae": 149.99630651832032,
+      "r2": 0.762416056519822
+    },
+    "35_weakest": {
+      "damage_pct": 35,
+      "strategy": "weakest",
+      "components_damaged": 700,
+      "components_total": 2000,
+      "power_loss_pct": 0.02900200920506678,
+      "rmse": 6.087827136272649,
+      "mae": 4.567514878168659,
+      "r2": 0.9997099799079493
+    },
+    "35_strongest": {
+      "damage_pct": 35,
+      "strategy": "strongest",
+      "components_damaged": 700,
+      "components_total": 2000,
+      "power_loss_pct": 99.87319728355614,
+      "rmse": 357.25041816227935,
+      "mae": 310.2483932811412,
+      "r2": 0.0012680271644388563
+    },
+    "40_random": {
+      "damage_pct": 40,
+      "strategy": "random",
+      "components_damaged": 800,
+      "components_total": 2000,
+      "power_loss_pct": 32.72719875251968,
+      "rmse": 198.4668467163705,
+      "mae": 162.7381337286348,
+      "r2": 0.6917668100308065
+    },
+    "40_weakest": {
+      "damage_pct": 40,
+      "strategy": "weakest",
+      "components_damaged": 800,
+      "components_total": 2000,
+      "power_loss_pct": 0.03916230316943983,
+      "rmse": 7.074282223387609,
+      "mae": 5.169638395342867,
+      "r2": 0.9996083769683056
+    },
+    "40_strongest": {
+      "damage_pct": 40,
+      "strategy": "strongest",
+      "components_damaged": 800,
+      "components_total": 2000,
+      "power_loss_pct": 99.8974429165275,
+      "rmse": 357.293779329868,
+      "mae": 310.29124745450486,
+      "r2": 0.001025570834725098
+    },
+    "50_random": {
+      "damage_pct": 50,
+      "strategy": "random",
+      "components_damaged": 1000,
+      "components_total": 2000,
+      "power_loss_pct": 79.5301426642066,
+      "rmse": 302.622159816858,
+      "mae": 261.9707248933803,
+      "r2": 0.28335361455057095
+    },
+    "50_weakest": {
+      "damage_pct": 50,
+      "strategy": "weakest",
+      "components_damaged": 1000,
+      "components_total": 2000,
+      "power_loss_pct": 0.06560044291314027,
+      "rmse": 9.15591294936511,
+      "mae": 6.444494020319998,
+      "r2": 0.9993439955708686
+    },
+    "50_strongest": {
+      "damage_pct": 50,
+      "strategy": "strongest",
+      "components_damaged": 1000,
+      "components_total": 2000,
+      "power_loss_pct": 99.93439955708685,
+      "rmse": 357.35986288711985,
+      "mae": 310.3511623994445,
+      "r2": 0.0006560044291313849
+    }
+  },
+  "success_criteria": {
+    "10pct_random": {
+      "target_r2": 0.95,
+      "achieved": false,
+      "actual_r2": 0.8706307475775262
+    },
+    "20pct_random": {
+      "target_r2": 0.85,
+      "achieved": true,
+      "actual_r2": 0.9421463857595275
+    },
+    "30pct_random": {
+      "target_r2": 0.7,
+      "achieved": true,
+      "actual_r2": 0.9309529227994864
+    }
+  },
+  "summary": {
+    "all_criteria_met": false,
+    "best_r2_at_30pct": 0.9997943661659643,
+    "holographic_property": "CONFIRMED"
+  }
+}
