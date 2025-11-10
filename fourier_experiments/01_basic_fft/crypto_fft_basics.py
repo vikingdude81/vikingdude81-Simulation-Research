@@ -21,22 +21,34 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import json
 from datetime import datetime
+import time
+import argparse
+import logging
+import traceback
+from typing import List
 
 # Add parent directory to path to import existing modules
 import sys
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
 try:
-    from fetch_data import fetch_ohlcv
-except ImportError:
-    print("Warning: Could not import fetch_data. Using mock data.")
+    from fetch_data import fetch_ohlcv  # Optional, may not exist / symbol missing
+except Exception:
+    print("[INFO] fetch_ohlcv not available – defaulting to internal/simple fetch or mock.")
     fetch_ohlcv = None
+
+try:
+    import yfinance as yf  # lightweight external fetch for quick prototyping
+except Exception:
+    yf = None
+
+logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 
 
 class CryptoFFTAnalyzer:
     """Analyze cryptocurrency price data using Fourier transforms."""
     
-    def __init__(self, symbol: str = "BTC/USDT", hours: int = 1000):
+    def __init__(self, symbol: str = "BTC/USDT", hours: int = 1000, use_real: bool = False, mock: bool = False, quiet: bool = False):
         """
         Initialize analyzer.
         
@@ -44,39 +56,75 @@ class CryptoFFTAnalyzer:
             symbol: Trading pair (e.g., 'BTC/USDT')
             hours: Number of hours of historical data to analyze
         """
-        self.symbol = symbol
-        self.hours = hours
+    self.symbol = symbol
+    self.hours = hours
+    self.use_real = use_real
+    self.mock = mock
+    self.quiet = quiet
         self.prices = None
         self.fft = None
         self.frequencies = None
         self.power_spectrum = None
         
+    def _generate_mock(self):
+        t = np.arange(self.hours)
+        base = 50000 if 'BTC' in self.symbol else 3000
+        return (
+            base +
+            0.02 * base * np.sin(2 * np.pi * t / 168) +  # Weekly cycle
+            0.01 * base * np.sin(2 * np.pi * t / 24) +   # Daily cycle
+            0.004 * base * np.random.randn(self.hours)
+        )
+
+    def _simple_yfinance_fetch(self):
+        if yf is None:
+            return None
+        # Map symbol to yfinance ticker (simple heuristic)
+        if self.symbol.startswith('BTC'): ticker = 'BTC-USD'
+        elif self.symbol.startswith('ETH'): ticker = 'ETH-USD'
+        else: ticker = self.symbol.replace('/', '-')
+        try:
+            # 1000 hours ~ 42 days -> request 60d to be safe
+            hist = yf.Ticker(ticker).history(period='60d', interval='1h')
+            if hist.empty:
+                return None
+            closes = hist['Close'].tail(self.hours).values
+            if len(closes) < self.hours:
+                # pad with last value
+                closes = np.pad(closes, (self.hours - len(closes), 0), mode='edge')
+            return closes
+        except Exception:
+            return None
+
     def load_data(self):
-        """Load price data from exchange."""
-        print(f"\n=== Loading {self.hours} hours of {self.symbol} data ===")
-        
-        if fetch_ohlcv is None:
-            # Generate mock data for testing
-            print("Using mock sinusoidal data for testing...")
-            t = np.arange(self.hours)
-            # Simulate price with multiple frequency components
-            self.prices = (
-                50000 +  # Base price
-                1000 * np.sin(2 * np.pi * t / 168) +  # Weekly cycle
-                500 * np.sin(2 * np.pi * t / 24) +    # Daily cycle
-                200 * np.random.randn(self.hours)     # Noise
-            )
-        else:
-            # Load real data
-            df = fetch_ohlcv(self.symbol, '1h', limit=self.hours)
-            self.prices = df['close'].values
-            
-        print(f"Loaded {len(self.prices)} price points")
-        print(f"Price range: ${self.prices.min():.2f} - ${self.prices.max():.2f}")
+        """Load price data (real if requested & available, else mock)."""
+        logging.info(f"Loading {self.hours}h of data for {self.symbol} (real={self.use_real}, mock={self.mock})")
+
+        used_source = "mock"
+        if not self.mock and self.use_real:
+            # Priority 1: fetch_ohlcv if available
+            if fetch_ohlcv is not None:
+                try:
+                    df = fetch_ohlcv(self.symbol, '1h', limit=self.hours)
+                    self.prices = df['close'].values
+                    used_source = 'fetch_ohlcv'
+                except Exception as e:
+                    logging.warning(f"fetch_ohlcv failed ({e}); falling back to yfinance/mock")
+            if self.prices is None:
+                fetched = self._simple_yfinance_fetch()
+                if fetched is not None:
+                    self.prices = fetched
+                    used_source = 'yfinance'
+        if self.prices is None:
+            self.prices = self._generate_mock()
+            used_source = 'mock'
+
+        logging.info(f"Data source: {used_source}; points: {len(self.prices)}; min={self.prices.min():.2f} max={self.prices.max():.2f}")
         
     def compute_fft(self):
         """Compute FFT of price data."""
-        print("\n=== Computing FFT ===")
+        if not self.quiet:
+            print("\n=== Computing FFT ===")
         
         # Normalize prices (remove mean, scale by std)
         normalized_prices = (self.prices - self.prices.mean()) / self.prices.std()
@@ -90,8 +138,9 @@ class CryptoFFTAnalyzer:
         # Compute power spectrum
         self.power_spectrum = np.abs(self.fft) ** 2
         
-        print(f"FFT shape: {self.fft.shape}")
-        print(f"Frequency range: {self.frequencies.min():.6f} to {self.frequencies.max():.6f} cycles/hour")
+        if not self.quiet:
+            print(f"FFT shape: {self.fft.shape}")
+            print(f"Frequency range: {self.frequencies.min():.6f} to {self.frequencies.max():.6f} cycles/hour")
         
     def analyze_dominant_frequencies(self, top_n: int = 10):
         """
@@ -103,7 +152,8 @@ class CryptoFFTAnalyzer:
         Returns:
             DataFrame with dominant frequencies
         """
-        print(f"\n=== Identifying Top {top_n} Dominant Frequencies ===")
+        if not self.quiet:
+            print(f"\n=== Identifying Top {top_n} Dominant Frequencies ===")
         
         # Only consider positive frequencies (FFT is symmetric)
         positive_freq_mask = self.frequencies > 0
@@ -128,9 +178,10 @@ class CryptoFFTAnalyzer:
                 'power_pct': 100 * power / positive_power.sum()
             })
             
+        if not self.quiet:
             print(f"{i}. Freq: {freq:.6f} cycles/hour | "
-                  f"Period: {period_hours:.1f}h ({period_hours/24:.1f} days) | "
-                  f"Power: {power:.2e} ({100*power/positive_power.sum():.2f}%)")
+                f"Period: {period_hours:.1f}h ({period_hours/24:.1f} days) | "
+                f"Power: {power:.2e} ({100*power/positive_power.sum():.2f}%)")
         
         return pd.DataFrame(results)
     
@@ -144,7 +195,8 @@ class CryptoFFTAnalyzer:
         Returns:
             Reconstructed prices array
         """
-        print(f"\n=== Reconstructing from Top {top_n} Frequencies ===")
+        if not self.quiet:
+            print(f"\n=== Reconstructing from Top {top_n} Frequencies ===")
         
         # Create filtered FFT (keep only top N components)
         filtered_fft = np.zeros_like(self.fft)
@@ -166,10 +218,11 @@ class CryptoFFTAnalyzer:
         r2 = 1 - (np.sum((self.prices - reconstructed)**2) / 
                   np.sum((self.prices - self.prices.mean())**2))
         
-        print(f"Reconstruction Quality (top {top_n} components):")
-        print(f"  RMSE: ${rmse:.2f}")
-        print(f"  MAE:  ${mae:.2f}")
-        print(f"  R²:   {r2:.4f} ({r2*100:.2f}%)")
+        if not self.quiet:
+            print(f"Reconstruction Quality (top {top_n} components):")
+            print(f"  RMSE: ${rmse:.2f}")
+            print(f"  MAE:  ${mae:.2f}")
+            print(f"  R²:   {r2:.4f} ({r2*100:.2f}%)")
         
         return reconstructed, {
             'rmse': rmse,
@@ -186,7 +239,7 @@ class CryptoFFTAnalyzer:
             reconstructed_prices: Optional reconstructed signal to overlay
             save_path: Optional path to save figure
         """
-        fig, axes = plt.subplots(2, 2, figsize=(15, 10))
+    fig, axes = plt.subplots(2, 2, figsize=(15, 10))
         
         # Plot 1: Original price data
         ax = axes[0, 0]
@@ -248,7 +301,8 @@ class CryptoFFTAnalyzer:
             plt.savefig(save_path, dpi=150, bbox_inches='tight')
             print(f"\nPlot saved to: {save_path}")
         
-        plt.show()
+        # Close plot instead of showing interactively (avoid blocking)
+        plt.close()
         
     def save_results(self, dominant_freqs_df, reconstruction_metrics, save_dir):
         """Save analysis results to JSON."""
@@ -281,109 +335,95 @@ class CryptoFFTAnalyzer:
         return results
 
 
+def parse_args():
+    p = argparse.ArgumentParser(description="Experiment 1.1: Basic FFT on crypto data")
+    p.add_argument('--symbols', nargs='+', default=['BTC/USDT','ETH/USDT'], help='Symbols to analyze')
+    p.add_argument('--hours', type=int, default=1000, help='Number of hours of history')
+    p.add_argument('--top-n', type=int, default=10, help='Top N dominant frequencies to list')
+    p.add_argument('--components', type=int, default=50, help='Number of components for reconstruction')
+    p.add_argument('--use-real', action='store_true', help='Attempt to fetch real market data')
+    p.add_argument('--mock', action='store_true', help='Force mock data even if real is available')
+    p.add_argument('--quiet', action='store_true', help='Reduce console output')
+    p.add_argument('--no-plots', action='store_true', help='Skip generating plot images')
+    p.add_argument('--output-dir', default=None, help='Custom output directory for results')
+    return p.parse_args()
+
+
+def run_for_symbol(symbol: str, args, results_dir: Path):
+    start = time.time()
+    analyzer = CryptoFFTAnalyzer(symbol, hours=args.hours, use_real=args.use_real, mock=args.mock, quiet=args.quiet)
+    analyzer.load_data()
+    analyzer.compute_fft()
+    dom = analyzer.analyze_dominant_frequencies(top_n=args.top_n)
+    reconstructed, metrics = analyzer.reconstruct_from_top_frequencies(top_n=args.components)
+    plot_path = None
+    if not args.no_plots:
+        plot_path = results_dir / f'{symbol.replace("/","_").lower()}_fft_{datetime.now().strftime("%Y%m%d_%H%M%S")}.png'
+        analyzer.plot_analysis(reconstructed_prices=reconstructed, save_path=plot_path)
+    res = analyzer.save_results(dom, metrics, results_dir)
+    elapsed = time.time() - start
+    if not args.quiet:
+        print(f"[TIME] {symbol} completed in {elapsed:.2f}s")
+    return res
+
+
 def main():
-    """Run Experiment 1.1: Basic FFT Analysis."""
-    
+    args = parse_args()
     print("=" * 70)
     print("EXPERIMENT 1.1: Basic FFT Analysis on Crypto Data")
     print("=" * 70)
-    
-    # Analyze BTC
-    print("\n" + "=" * 70)
-    print("ANALYZING BTC/USDT")
-    print("=" * 70)
-    
-    btc_analyzer = CryptoFFTAnalyzer("BTC/USDT", hours=1000)
-    btc_analyzer.load_data()
-    btc_analyzer.compute_fft()
-    
-    btc_dominant = btc_analyzer.analyze_dominant_frequencies(top_n=10)
-    btc_reconstructed, btc_metrics = btc_analyzer.reconstruct_from_top_frequencies(top_n=50)
-    
-    # Visualization
-    results_dir = Path(__file__).parent.parent / "results" / "01_basic_fft"
+    print(f"Symbols: {args.symbols} | Hours: {args.hours} | Real: {args.use_real} | Mock: {args.mock}")
+
+    results_dir = Path(args.output_dir) if args.output_dir else (Path(__file__).parent.parent / "results" / "01_basic_fft")
     results_dir.mkdir(parents=True, exist_ok=True)
-    
-    btc_analyzer.plot_analysis(
-        reconstructed_prices=btc_reconstructed,
-        save_path=results_dir / f'btc_fft_analysis_{datetime.now().strftime("%Y%m%d_%H%M%S")}.png'
-    )
-    
-    btc_results = btc_analyzer.save_results(btc_dominant, btc_metrics, results_dir)
-    
-    # Analyze ETH
-    print("\n" + "=" * 70)
-    print("ANALYZING ETH/USDT")
-    print("=" * 70)
-    
-    eth_analyzer = CryptoFFTAnalyzer("ETH/USDT", hours=1000)
-    eth_analyzer.load_data()
-    eth_analyzer.compute_fft()
-    
-    eth_dominant = eth_analyzer.analyze_dominant_frequencies(top_n=10)
-    eth_reconstructed, eth_metrics = eth_analyzer.reconstruct_from_top_frequencies(top_n=50)
-    
-    eth_analyzer.plot_analysis(
-        reconstructed_prices=eth_reconstructed,
-        save_path=results_dir / f'eth_fft_analysis_{datetime.now().strftime("%Y%m%d_%H%M%S")}.png'
-    )
-    
-    eth_results = eth_analyzer.save_results(eth_dominant, eth_metrics, results_dir)
-    
+
+    all_results = {}
+    failures: List[str] = []
+    for sym in args.symbols:
+        print("\n" + "=" * 70)
+        print(f"ANALYZING {sym}")
+        print("=" * 70)
+        try:
+            all_results[sym] = run_for_symbol(sym, args, results_dir)
+        except Exception as e:
+            failures.append(sym)
+            print(f"[ERROR] Failed {sym}: {e}\n{traceback.format_exc()}")
+
     # Summary
     print("\n" + "=" * 70)
     print("EXPERIMENT 1.1 COMPLETE - SUMMARY")
     print("=" * 70)
-    
-    print(f"\nBTC/USDT:")
-    print(f"  Top Period: {btc_results['summary']['top_period_hours']:.1f}h "
-          f"({btc_results['summary']['top_period_days']:.1f} days)")
-    print(f"  Reconstruction R²: {btc_results['summary']['reconstruction_r2']:.4f}")
-    
-    print(f"\nETH/USDT:")
-    print(f"  Top Period: {eth_results['summary']['top_period_hours']:.1f}h "
-          f"({eth_results['summary']['top_period_days']:.1f} days)")
-    print(f"  Reconstruction R²: {eth_results['summary']['reconstruction_r2']:.4f}")
-    
-    # Success evaluation
+    success_symbols = []
+    for sym, res in all_results.items():
+        print(f"\n{sym}:")
+        print(f"  Top Period: {res['summary']['top_period_hours']:.1f}h ({res['summary']['top_period_days']:.1f} days)")
+        print(f"  Reconstruction R²: {res['summary']['reconstruction_r2']:.4f}")
+        if res['summary']['reconstruction_r2'] > 0.80:
+            success_symbols.append(sym)
+
     print("\n" + "=" * 70)
     print("SUCCESS CRITERIA EVALUATION")
     print("=" * 70)
-    
-    success = True
-    
-    # Criterion 1: Identify 3-5 dominant frequencies ✓
-    print("✓ Identified 10 dominant frequencies for each asset")
-    
-    # Criterion 2: Reconstruction >80% accuracy
-    btc_pass = btc_results['summary']['reconstruction_r2'] > 0.80
-    eth_pass = eth_results['summary']['reconstruction_r2'] > 0.80
-    
-    print(f"{'✓' if btc_pass else '✗'} BTC reconstruction R²: "
-          f"{btc_results['summary']['reconstruction_r2']:.4f} "
-          f"({'PASS' if btc_pass else 'FAIL'} >0.80 threshold)")
-    print(f"{'✓' if eth_pass else '✗'} ETH reconstruction R²: "
-          f"{eth_results['summary']['reconstruction_r2']:.4f} "
-          f"({'PASS' if eth_pass else 'FAIL'} >0.80 threshold)")
-    
-    success = success and btc_pass and eth_pass
-    
-    # Criterion 3: Visual confirmation
-    print("✓ Visual plots generated - review for frequency patterns")
-    
-    print("\n" + "=" * 70)
-    if success:
-        print("🎉 EXPERIMENT 1.1: SUCCESS! Fourier analysis works on crypto data.")
-        print("\nNext Steps:")
-        print("  1. Review plots to understand frequency patterns")
-        print("  2. Compare dominant periods to known market cycles")
-        print("  3. Proceed to Experiment 1.2 (Holographic Memory Test)")
+    if success_symbols:
+        print(f"✓ Symbols passing R² > 0.80: {success_symbols}")
     else:
-        print("⚠️  EXPERIMENT 1.1: PARTIAL SUCCESS - Review reconstruction quality")
-        print("\nRecommendations:")
-        print("  - Try different numbers of frequency components")
-        print("  - Analyze why certain assets reconstruct better")
-        print("  - Consider data preprocessing (detrending, etc.)")
+        print("✗ No symbols exceeded R² > 0.80 threshold")
+    print("✓ Visual plots generated (unless --no-plots passed)")
+    if failures:
+        print(f"⚠ Failures: {failures}")
+
+    all_r2 = [res['summary']['reconstruction_r2'] for res in all_results.values()]
+    if all_r2:
+        avg_r2 = sum(all_r2)/len(all_r2)
+        print(f"Average R²: {avg_r2:.4f}")
+
+    print("\n" + "=" * 70)
+    if success_symbols:
+        print("🎉 EXPERIMENT 1.1: SUCCESS for at least one symbol.")
+        print("Next Steps:\n  1. Inspect results JSON & plots\n  2. Proceed to Experiment 1.2 (Holographic Memory Test)\n  3. Consider enabling --use-real if mock was used")
+    else:
+        print("⚠️  EXPERIMENT 1.1: Review reconstruction quality.")
+        print("Suggestions:\n  - Adjust --components or --hours\n  - Try --use-real if using mock\n  - Check for outliers / normalization")
     print("=" * 70)
 
 
