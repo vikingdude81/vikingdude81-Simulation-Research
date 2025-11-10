@@ -1,0 +1,44 @@
+{
+  "genome": {
+    "mutation_rate": 3.0329079456071697,
+    "oscillation_freq": 0.8638717351551382,
+    "decoherence_rate": 0.015875798494836533,
+    "phase_offset": 0.2626281057460014
+  },
+  "export_timestamp": "2025-11-02T01:05:41.825884",
+  "metadata": {
+    "fitness": 1623079418101038.5,
+    "generation": 400,
+    "population_id": 10,
+    "type": "best_individual",
+    "experiment": "Hybrid",
+    "config": {
+      "n_ensemble": 20,
+      "population_size": 30,
+      "generations": 400
+    },
+    "environment_performance": {
+      "standard": {
+        "fitness": -53682.402513677065,
+        "std": 107364.80502736731
+      },
+      "harsh": {
+        "fitness": 2031737593144031.5,
+        "std": 4063475186288108.5
+      },
+      "gentle": {
+        "fitness": -98251.93281209108,
+        "std": 215367.38742338773
+      },
+      "chaotic": {
+        "fitness": 1108417194012346.0,
+        "std": 2216831794419875.5
+      },
+      "oscillating": {
+        "fitness": 18863387.53935524,
+        "std": 37726760.97886582
+      }
+    },
+    "robustness_score": 1256061403751495.5
+  }
+}

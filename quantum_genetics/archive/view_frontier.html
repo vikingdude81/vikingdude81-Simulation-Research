@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Extreme Frontier Test Results</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #1e1e2e;
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #9B59B6;
+        }
+        img {
+            max-width: 95%;
+            border: 2px solid #9B59B6;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+        .header p {
+            font-size: 1.1em;
+            color: #bd93f9;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(155, 89, 182, 0.3);
+        }
+        .nav-link {
+            padding: 8px 16px;
+            background: rgba(155, 89, 182, 0.2);
+            color: #9B59B6;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .nav-link:hover {
+            background: rgba(155, 89, 182, 0.4);
+            color: #fff;
+        }
+        .nav-link.active {
+            background: #9B59B6;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 Extreme Frontier Results</h1>
+        <p>Testing mutation rates from μ=6.0 to μ=10.0</p>
+        <div class="nav-menu">
+            <a href="/" class="nav-link">📊 Main Dashboard</a>
+            <a href="/comparison" class="nav-link">🏆 Co-Evolution Comparison</a>
+            <a href="/frontier" class="nav-link active">🚀 Extreme Frontier</a>
+        </div>
+    </div>
+    <img src="/visualizations/extreme_frontier.png" alt="Extreme Frontier Results">
+</body>
+</html>

@@ -1,0 +1,80 @@
+{
+  "symbol": "BTC",
+  "total_days": 4056,
+  "labeled_days": 3956,
+  "timestamp": "2025-11-05T17:44:43.835284",
+  "regimes": {
+    "volatile": {
+      "days": 643,
+      "path": "DATA/yf_btc_1d_volatile.csv",
+      "date_range": {
+        "start": "119",
+        "end": "2885"
+      },
+      "price_stats": {
+        "mean": 16684.896651889452,
+        "std": 18799.665590923898,
+        "min": 178.10299682617188,
+        "max": 63503.45703125
+      },
+      "volatility_stats": {
+        "mean": 0.837254876706008,
+        "std": 0.3091690547851088
+      }
+    },
+    "trending": {
+      "days": 1121,
+      "path": "DATA/yf_btc_1d_trending.csv",
+      "date_range": {
+        "start": "100",
+        "end": "4053"
+      },
+      "price_stats": {
+        "mean": 22337.67156359003,
+        "std": 28539.34921471944,
+        "min": 199.25999450683597,
+        "max": 124752.53125
+      },
+      "volatility_stats": {
+        "mean": 0.6510378970228557,
+        "std": 0.31538971224436413
+      }
+    },
+    "ranging": {
+      "days": 2078,
+      "path": "DATA/yf_btc_1d_ranging.csv",
+      "date_range": {
+        "start": "104",
+        "end": "4055"
+      },
+      "price_stats": {
+        "mean": 32478.348498706982,
+        "std": 34064.35542526459,
+        "min": 219.42999267578125,
+        "max": 123513.4765625
+      },
+      "volatility_stats": {
+        "mean": 0.47843463188724983,
+        "std": 0.20657496195293953
+      }
+    },
+    "crisis": {
+      "days": 114,
+      "path": "DATA/yf_btc_1d_crisis.csv",
+      "date_range": {
+        "start": "412",
+        "end": "3049"
+      },
+      "price_stats": {
+        "mean": 8782.378579926073,
+        "std": 4578.4367173713545,
+        "min": 311.0840148925781,
+        "max": 22777.625
+      },
+      "volatility_stats": {
+        "mean": 1.0626617746638083,
+        "std": 0.28587832572161204
+      }
+    }
+  }
+}

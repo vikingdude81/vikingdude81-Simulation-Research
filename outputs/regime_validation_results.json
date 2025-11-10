@@ -1,0 +1,223 @@
+{
+  "date": "2025-11-04T23:25:25.191969",
+  "detector_config": {
+    "vix_threshold_high": 62.2,
+    "vix_threshold_extreme": 99.2,
+    "adx_trending": 51.1,
+    "adx_ranging": 27.0
+  },
+  "summary": {
+    "total_events": 13,
+    "correct_detections": 9,
+    "accuracy": 69.23076923076923
+  },
+  "results": [
+    {
+      "event": "COVID Crash",
+      "period": "Feb-Mar 2020",
+      "expected": [
+        "crisis",
+        "volatile"
+      ],
+      "detected": "crisis",
+      "correct": true,
+      "confidence": 0.6153846153846154,
+      "price_change": -34.89363983840457,
+      "price_range": 104.03195466010699,
+      "price_start": 9889.4248046875,
+      "price_end": 6438.64453125,
+      "days": 46
+    },
+    {
+      "event": "Post-COVID Recovery",
+      "period": "Apr-Jul 2020",
+      "expected": [
+        "ranging",
+        "trending"
+      ],
+      "detected": "trending",
+      "correct": true,
+      "confidence": 0.5714285714285714,
+      "price_change": 71.3917070526695,
+      "price_range": 71.39170705266949,
+      "price_start": 6606.7763671875,
+      "price_end": 11323.466796875,
+      "days": 122
+    },
+    {
+      "event": "Bull Run Start",
+      "period": "Oct-Dec 2020",
+      "expected": [
+        "trending"
+      ],
+      "detected": "trending",
+      "correct": true,
+      "confidence": 0.7692307692307693,
+      "price_change": 173.09997067402568,
+      "price_range": 174.91530905817933,
+      "price_start": 10619.4521484375,
+      "price_end": 29001.720703125,
+      "days": 92
+    },
+    {
+      "event": "Bull Run Peak",
+      "period": "Jan-Apr 2021",
+      "expected": [
+        "trending",
+        "volatile"
+      ],
+      "detected": "volatile",
+      "correct": true,
+      "confidence": 0.3076923076923077,
+      "price_change": 96.60201630818337,
+      "price_range": 116.18821979304457,
+      "price_start": 29374.15234375,
+      "price_end": 57750.17578125,
+      "days": 120
+    },
+    {
+      "event": "May 2021 Crash",
+      "period": "May 2021",
+      "expected": [
+        "crisis",
+        "volatile"
+      ],
+      "detected": "trending",
+      "correct": false,
+      "confidence": 0.5,
+      "price_change": -35.4416153330648,
+      "price_range": 69.8742331194883,
+      "price_start": 57828.05078125,
+      "price_end": 37332.85546875,
+      "days": 31
+    },
+    {
+      "event": "Summer 2021 Consolidation",
+      "period": "Jun-Sep 2021",
+      "expected": [
+        "ranging",
+        "volatile"
+      ],
+      "detected": "volatile",
+      "correct": true,
+      "confidence": 0.36363636363636365,
+      "price_change": 19.37026884658963,
+      "price_range": 76.57906286476921,
+      "price_start": 36684.92578125,
+      "price_end": 43790.89453125,
+      "days": 122
+    },
+    {
+      "event": "Q4 2021 Rally",
+      "period": "Oct-Nov 2021",
+      "expected": [
+        "trending"
+      ],
+      "detected": "ranging",
+      "correct": false,
+      "confidence": 0.0,
+      "price_change": 18.47267119485998,
+      "price_range": 41.61542756056279,
+      "price_start": 48116.94140625,
+      "price_end": 57005.42578125,
+      "days": 61
+    },
+    {
+      "event": "Bear Market Start",
+      "period": "Dec 2021 - Mar 2022",
+      "expected": [
+        "volatile",
+        "trending"
+      ],
+      "detected": "trending",
+      "correct": true,
+      "confidence": 0.6666666666666666,
+      "price_change": -20.428424698768044,
+      "price_range": 63.37259404371935,
+      "price_start": 57229.828125,
+      "price_end": 45538.67578125,
+      "days": 121
+    },
+    {
+      "event": "Terra/Luna Collapse",
+      "period": "May 2022",
+      "expected": [
+        "crisis",
+        "volatile"
+      ],
+      "detected": "volatile",
+      "correct": true,
+      "confidence": 0.4444444444444444,
+      "price_change": -17.35622691430052,
+      "price_range": 38.67179520837304,
+      "price_start": 38469.09375,
+      "price_end": 31792.310546875,
+      "days": 31
+    },
+    {
+      "event": "Bear Market Bottom",
+      "period": "Jun-Nov 2022",
+      "expected": [
+        "volatile",
+        "ranging"
+      ],
+      "detected": "trending",
+      "correct": false,
+      "confidence": 0.6666666666666666,
+      "price_change": -42.38558250375939,
+      "price_range": 98.70847650517788,
+      "price_start": 29799.080078125,
+      "price_end": 17168.56640625,
+      "days": 183
+    },
+    {
+      "event": "2023 Recovery",
+      "period": "Jan-Dec 2023",
+      "expected": [
+        "trending",
+        "ranging"
+      ],
+      "detected": "ranging",
+      "correct": true,
+      "confidence": 0.7,
+      "price_change": 154.22546719406074,
+      "price_range": 165.66248917269078,
+      "price_start": 16625.080078125,
+      "price_end": 42265.1875,
+      "days": 365
+    },
+    {
+      "event": "2024 ETF Rally",
+      "period": "Jan-Mar 2024",
+      "expected": [
+        "trending",
+        "volatile"
+      ],
+      "detected": "ranging",
+      "correct": false,
+      "confidence": 0.14285714285714285,
+      "price_change": 61.50771431479909,
+      "price_range": 84.98701685979059,
+      "price_start": 44167.33203125,
+      "price_end": 71333.6484375,
+      "days": 91
+    },
+    {
+      "event": "Recent Period",
+      "period": "Apr 2024 - Present",
+      "expected": [
+        "ranging",
+        "volatile",
+        "trending"
+      ],
+      "detected": "ranging",
+      "correct": true,
+      "confidence": 0.5,
+      "price_change": 59.59125183887917,
+      "price_range": 131.242655700241,
+      "price_start": 69702.1484375,
+      "price_end": 111238.53125,
+      "days": 572
+    }
+  ]
+}

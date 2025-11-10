@@ -1,0 +1,128 @@
+{
+  "date": "2025-11-04T23:23:41.370143",
+  "dataset": {
+    "source": "DATA/yf_btc_1d.csv",
+    "rows": 4026,
+    "date_range": "2014-10-17 to 2025-10-24"
+  },
+  "vix_statistics": {
+    "min": 11.262783494531352,
+    "max": 144.98266687181282,
+    "mean": 50.96516825159361,
+    "median": 46.503454157650545,
+    "std": 23.22258502119774,
+    "p25": 34.86371157504468,
+    "p50": 46.503454157650545,
+    "p75": 62.168331485728004,
+    "p90": 80.1137929487163,
+    "p95": 99.1795899731907,
+    "p99": 123.34317208709972
+  },
+  "adx_statistics": {
+    "min": 6.719636347287214,
+    "max": 95.209840297002,
+    "mean": 40.58229559258331,
+    "median": 38.00124176377582,
+    "std": 17.848914733520683,
+    "p25": 26.952847998259575,
+    "p50": 38.00124176377582,
+    "p75": 51.05314710257848,
+    "p90": 66.14408428491978
+  },
+  "atr_statistics": {
+    "min": 0.5940505064952711,
+    "max": 16.50739590372692,
+    "mean": 4.303539181496783,
+    "median": 3.795929186751028,
+    "p75": 5.128731629961545,
+    "p90": 7.352705415262459
+  },
+  "event_analysis": [
+    {
+      "name": "COVID Crash",
+      "period": "Feb-Mar 2020",
+      "expected": "crisis",
+      "vix_mean": 81.24142401201424,
+      "vix_max": 143.6750538442334,
+      "adx_mean": 43.92039927091734,
+      "adx_max": 70.16792208058277,
+      "price_range": "$4971 - $10142",
+      "price_change": -34.89363983840457
+    },
+    {
+      "name": "Bull Run",
+      "period": "Nov 2020 - Apr 2021",
+      "expected": "trending",
+      "vix_mean": 63.279302168931096,
+      "vix_max": 97.60816740554704,
+      "adx_mean": 41.459462584374826,
+      "adx_max": 87.06649108353481,
+      "price_range": "$13550 - $63503",
+      "price_change": 320.3953990957432
+    },
+    {
+      "name": "Bear Market",
+      "period": "May-Nov 2022",
+      "expected": "volatile/ranging",
+      "vix_mean": 53.54048885028044,
+      "vix_max": 77.66862811038497,
+      "adx_mean": 37.55810812865175,
+      "adx_max": 76.74850445337545,
+      "price_range": "$15787 - $39698",
+      "price_change": -55.37049425228532
+    },
+    {
+      "name": "Recovery",
+      "period": "2023",
+      "expected": "trending",
+      "vix_mean": 34.74546540418152,
+      "vix_max": 58.45888519292459,
+      "adx_mean": 39.36619635815156,
+      "adx_max": 90.53469082920829,
+      "price_range": "$16625 - $44167",
+      "price_change": 154.22546719406074
+    },
+    {
+      "name": "Recent Period",
+      "period": "2024-2025",
+      "expected": "mixed",
+      "vix_mean": 38.913574364926674,
+      "vix_max": 70.30859607583434,
+      "adx_mean": 35.49697738005993,
+      "adx_max": 81.17367469332257,
+      "price_range": "$39507 - $124753",
+      "price_change": 151.85703128116202
+    }
+  ],
+  "recommendations": {
+    "vix_thresholds": {
+      "ranging": "< 34.9",
+      "volatile": "34.9 - 99.2",
+      "crisis": "> 99.2",
+      "values": {
+        "low": 34.9,
+        "high": 99.2
+      }
+    },
+    "adx_thresholds": {
+      "ranging": "< 27.0",
+      "trending": "> 51.1",
+      "values": {
+        "weak": 27.0,
+        "strong": 51.1
+      }
+    },
+    "comparison": {
+      "stock_market": {
+        "vix_volatile": 25,
+        "vix_crisis": 35,
+        "adx_trending": 25
+      },
+      "crypto_market": {
+        "vix_volatile": 34.9,
+        "vix_crisis": 99.2,
+        "adx_trending": 51.1
+      }
+    }
+  }
+}

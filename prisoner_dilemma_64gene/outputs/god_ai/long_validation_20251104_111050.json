@@ -1,0 +1,242 @@
+{
+  "config": {
+    "generations": 100,
+    "initial_size": 300,
+    "runs_per_mode": 2,
+    "total_time_minutes": 2.0151912887891132
+  },
+  "results": {
+    "DISABLED": [
+      {
+        "run": 1,
+        "final_population": 1000,
+        "avg_wealth": 8220.252,
+        "min_wealth": 84,
+        "max_wealth": 26306,
+        "cooperation_rate": 0.5168422548059308,
+        "gini_coefficient": 0.4775127215078079,
+        "avg_age": 92.858,
+        "max_age": 100,
+        "survival_rate": 3.3333333333333335,
+        "interventions": 0,
+        "intervention_types": {},
+        "elapsed_time": 5.730827808380127,
+        "generations_per_second": 17.44948606792392,
+        "api_calls": 0,
+        "failed_api_calls": 0
+      },
+      {
+        "run": 2,
+        "final_population": 1000,
+        "avg_wealth": 9490.505,
+        "min_wealth": 98,
+        "max_wealth": 36103,
+        "cooperation_rate": 0.6187987769365172,
+        "gini_coefficient": 0.4558251539828493,
+        "avg_age": 93.52,
+        "max_age": 100,
+        "survival_rate": 3.3333333333333335,
+        "interventions": 0,
+        "intervention_types": {},
+        "elapsed_time": 5.9197678565979,
+        "generations_per_second": 16.89255430659238,
+        "api_calls": 0,
+        "failed_api_calls": 0
+      }
+    ],
+    "RULE_BASED": [
+      {
+        "run": 1,
+        "final_population": 1000,
+        "avg_wealth": 9952.834,
+        "min_wealth": 256,
+        "max_wealth": 33956,
+        "cooperation_rate": 0.6575015417143864,
+        "gini_coefficient": 0.44477467241993596,
+        "avg_age": 94.736,
+        "max_age": 100,
+        "survival_rate": 3.3333333333333335,
+        "interventions": 10,
+        "intervention_types": {
+          "WELFARE": 10
+        },
+        "elapsed_time": 6.476355075836182,
+        "generations_per_second": 15.440784025741316,
+        "api_calls": 0,
+        "failed_api_calls": 0
+      },
+      {
+        "run": 2,
+        "final_population": 1000,
+        "avg_wealth": 10790.288,
+        "min_wealth": 74,
+        "max_wealth": 29755,
+        "cooperation_rate": 0.7616987991298907,
+        "gini_coefficient": 0.4305735485466191,
+        "avg_age": 94.942,
+        "max_age": 100,
+        "survival_rate": 3.3333333333333335,
+        "interventions": 10,
+        "intervention_types": {
+          "WELFARE": 10
+        },
+        "elapsed_time": 6.480187177658081,
+        "generations_per_second": 15.431653015328436,
+        "api_calls": 0,
+        "failed_api_calls": 0
+      }
+    ],
+    "ML_BASED": [
+      {
+        "run": 1,
+        "final_population": 1000,
+        "avg_wealth": 11543.294,
+        "min_wealth": 505,
+        "max_wealth": 31554,
+        "cooperation_rate": 0.8053175583436261,
+        "gini_coefficient": 0.3983898069303269,
+        "avg_age": 95.601,
+        "max_age": 100,
+        "survival_rate": 3.3333333333333335,
+        "interventions": 10,
+        "intervention_types": {
+          "WELFARE": 10
+        },
+        "elapsed_time": 8.391999959945679,
+        "generations_per_second": 11.916110638380806,
+        "api_calls": 0,
+        "failed_api_calls": 0
+      },
+      {
+        "run": 2,
+        "final_population": 1000,
+        "avg_wealth": 9527.277,
+        "min_wealth": 616,
+        "max_wealth": 30705,
+        "cooperation_rate": 0.5835710988815906,
+        "gini_coefficient": 0.4211866235231747,
+        "avg_age": 96.186,
+        "max_age": 100,
+        "survival_rate": 3.3333333333333335,
+        "interventions": 10,
+        "intervention_types": {
+          "WELFARE": 10
+        },
+        "elapsed_time": 6.38318133354187,
+        "generations_per_second": 15.666169387124784,
+        "api_calls": 0,
+        "failed_api_calls": 0
+      }
+    ],
+    "API_BASED": [
+      {
+        "run": 1,
+        "final_population": 1000,
+        "avg_wealth": 10488.077,
+        "min_wealth": 350,
+        "max_wealth": 32957,
+        "cooperation_rate": 0.6696431631733069,
+        "gini_coefficient": 0.3983082192283678,
+        "avg_age": 92.243,
+        "max_age": 100,
+        "survival_rate": 3.3333333333333335,
+        "interventions": 10,
+        "intervention_types": {
+          "WELFARE": 10
+        },
+        "elapsed_time": 45.91248655319214,
+        "generations_per_second": 2.178056722851299,
+        "api_calls": 10,
+        "failed_api_calls": 0
+      },
+      {
+        "run": 2,
+        "final_population": 1000,
+        "avg_wealth": 9968.065,
+        "min_wealth": 750,
+        "max_wealth": 31452,
+        "cooperation_rate": 0.6523344143512432,
+        "gini_coefficient": 0.44156274994193967,
+        "avg_age": 96.64,
+        "max_age": 100,
+        "survival_rate": 3.3333333333333335,
+        "interventions": 10,
+        "intervention_types": {
+          "WELFARE": 10
+        },
+        "elapsed_time": 35.59116840362549,
+        "generations_per_second": 2.8096857868204608,
+        "api_calls": 10,
+        "failed_api_calls": 0
+      }
+    ]
+  },
+  "summary": {
+    "DISABLED": {
+      "name": "No God (Baseline)",
+      "success_rate": 1.0,
+      "avg_population": 1000.0,
+      "avg_wealth": 8855.378499999999,
+      "avg_cooperation": 0.567820515871224,
+      "avg_gini": 0.4666689377453286,
+      "avg_age": 93.189,
+      "max_age": 100,
+      "avg_interventions": 0.0,
+      "avg_time": 5.825297832489014,
+      "avg_speed": 17.17102018725815,
+      "runs": 2
+    },
+    "RULE_BASED": {
+      "name": "Rule-Based God",
+      "success_rate": 1.0,
+      "avg_population": 1000.0,
+      "avg_wealth": 10371.561000000002,
+      "avg_cooperation": 0.7096001704221385,
+      "avg_gini": 0.43767411048327753,
+      "avg_age": 94.839,
+      "max_age": 100,
+      "avg_interventions": 10.0,
+      "avg_time": 6.478271126747131,
+      "avg_speed": 15.436218520534876,
+      "runs": 2
+    },
+    "ML_BASED": {
+      "name": "Quantum ML God",
+      "success_rate": 1.0,
+      "avg_population": 1000.0,
+      "avg_wealth": 10535.2855,
+      "avg_cooperation": 0.6944443286126083,
+      "avg_gini": 0.4097882152267508,
+      "avg_age": 95.8935,
+      "max_age": 100,
+      "avg_interventions": 10.0,
+      "avg_time": 7.387590646743774,
+      "avg_speed": 13.791140012752795,
+      "runs": 2
+    },
+    "API_BASED": {
+      "name": "GPT-4 API God",
+      "success_rate": 1.0,
+      "avg_population": 1000.0,
+      "avg_wealth": 10228.071,
+      "avg_cooperation": 0.660988788762275,
+      "avg_gini": 0.41993548458515373,
+      "avg_age": 94.44149999999999,
+      "max_age": 100,
+      "avg_interventions": 10.0,
+      "avg_time": 40.75182747840881,
+      "avg_speed": 2.49387125483588,
+      "runs": 2,
+      "total_api_calls": 20,
+      "total_failed_calls": 0,
+      "estimated_cost": 0.06
+    }
+  },
+  "scores": {
+    "DISABLED": 270.27791701902834,
+    "RULE_BASED": 295.4282074727792,
+    "ML_BASED": 299.0962499079553,
+    "API_BASED": 293.3366009795984
+  },
+  "winner": "ML_BASED"
+}

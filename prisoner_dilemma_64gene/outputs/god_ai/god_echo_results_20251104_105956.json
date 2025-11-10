@@ -1,0 +1,107 @@
+{
+  "config": {
+    "initial_size": 291,
+    "grid_size": "50\u00d750",
+    "god_mode": "ML_BASED",
+    "generations": 5
+  },
+  "final_stats": {
+    "population": 291,
+    "avg_wealth": 164.10652920962198,
+    "cooperation_rate": 0.8711943793911007,
+    "clustering": 0.5469506292352372
+  },
+  "history": {
+    "population": [
+      127,
+      142,
+      169,
+      213,
+      291
+    ],
+    "resources": [
+      14586,
+      12119,
+      18207,
+      28603,
+      47755
+    ],
+    "cooperation": [
+      1.0,
+      0.8222222222222222,
+      0.8372881355932204,
+      0.8486956521739131,
+      0.8711943793911007
+    ],
+    "births": [
+      17,
+      15,
+      27,
+      44,
+      81
+    ],
+    "deaths": [
+      0,
+      0,
+      0,
+      0,
+      3
+    ],
+    "clustering": [
+      0.32558139534883723,
+      0.38235294117647056,
+      0.4878048780487805,
+      0.5038910505836576,
+      0.5469506292352372
+    ],
+    "shocks": [
+      null,
+      "\ud83c\udf35 DROUGHT! All 127 agents lose 50 resources",
+      null,
+      null,
+      null
+    ]
+  },
+  "god_interventions": [
+    {
+      "generation": 0,
+      "intervention_type": "welfare",
+      "reason": "\ud83e\uddec QUANTUM GOD INTERVENTION (score=6.85)\n   \ud83c\udfe5 Targeted welfare for vulnerable populations\n   Reasons: \ud83d\udcca High inequality (Gini=4.76)",
+      "parameters": {
+        "target_bottom_percent": 0.12150037415726432,
+        "amount": 152
+      },
+      "before_state": {
+        "population": 110,
+        "avg_wealth": 115.63636363636364,
+        "total_wealth": 12720,
+        "cooperation_rate": 1.0,
+        "clustering": 0.17391304347826086,
+        "tribe_diversity": 0.7727272727272727,
+        "max_tribe_dominance": 0.09090909090909091,
+        "wealth_inequality": 4.761904761904762,
+        "avg_age": 0.0
+      },
+      "after_state": {
+        "population": 110,
+        "avg_wealth": 133.6,
+        "total_wealth": 14696,
+        "cooperation_rate": 1.0,
+        "clustering": 0.17391304347826086,
+        "tribe_diversity": 0.7727272727272727,
+        "max_tribe_dominance": 0.09090909090909091,
+        "wealth_inequality": 4.761904761904762,
+        "avg_age": 0.0
+      },
+      "effectiveness": null
+    }
+  ],
+  "god_summary": {
+    "total_interventions": 1,
+    "interventions_by_type": {
+      "welfare": 1
+    },
+    "avg_effectiveness": NaN,
+    "mode": "ML_BASED"
+  }
+}

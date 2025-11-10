@@ -1,0 +1,69 @@
+{
+  "config": {
+    "initial_size": 225,
+    "grid_size": "50\u00d750",
+    "god_mode": "DISABLED",
+    "generations": 5
+  },
+  "final_stats": {
+    "population": 225,
+    "avg_wealth": 179.2488888888889,
+    "cooperation_rate": 0.8266233766233766,
+    "clustering": 0.6177184466019418
+  },
+  "history": {
+    "population": [
+      116,
+      125,
+      143,
+      173,
+      225
+    ],
+    "resources": [
+      12735,
+      15016,
+      19086,
+      26922,
+      40331
+    ],
+    "cooperation": [
+      0.7111111111111111,
+      0.7128205128205128,
+      0.7518072289156627,
+      0.7831325301204819,
+      0.8266233766233766
+    ],
+    "births": [
+      6,
+      10,
+      18,
+      31,
+      53
+    ],
+    "deaths": [
+      0,
+      1,
+      0,
+      1,
+      1
+    ],
+    "clustering": [
+      0.16129032258064516,
+      0.39215686274509803,
+      0.5050505050505051,
+      0.6155844155844156,
+      0.6177184466019418
+    ],
+    "shocks": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "god_interventions": [],
+  "god_summary": {
+    "total_interventions": 0
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "config": {
+    "generations": 50,
+    "initial_size": 300,
+    "runs_per_mode": 2
+  },
+  "results": {
+    "DISABLED": [
+      {
+        "run": 1,
+        "error": "'GodController' object has no attribute 'interventions'"
+      },
+      {
+        "run": 2,
+        "error": "'GodController' object has no attribute 'interventions'"
+      }
+    ],
+    "RULE_BASED": [
+      {
+        "run": 1,
+        "error": "'GodController' object has no attribute 'interventions'"
+      },
+      {
+        "run": 2,
+        "error": "'GodController' object has no attribute 'interventions'"
+      }
+    ],
+    "ML_BASED": [
+      {
+        "run": 1,
+        "error": "'GodController' object has no attribute 'interventions'"
+      },
+      {
+        "run": 2,
+        "error": "'GodController' object has no attribute 'interventions'"
+      }
+    ],
+    "API_BASED": [
+      {
+        "run": 1,
+        "error": "'GodController' object has no attribute 'interventions'"
+      },
+      {
+        "run": 2,
+        "error": "'GodController' object has no attribute 'interventions'"
+      }
+    ]
+  },
+  "summary": {
+    "DISABLED": {
+      "name": "No God (Baseline)",
+      "success_rate": 0,
+      "runs": 0
+    },
+    "RULE_BASED": {
+      "name": "Rule-Based God",
+      "success_rate": 0,
+      "runs": 0
+    },
+    "ML_BASED": {
+      "name": "Quantum ML God",
+      "success_rate": 0,
+      "runs": 0
+    },
+    "API_BASED": {
+      "name": "GPT-4 API God",
+      "success_rate": 0,
+      "runs": 0
+    }
+  },
+  "scores": {},
+  "winner": null
+}

@@ -1,0 +1,19 @@
+{
+  "extraction_date": "20251108_144720",
+  "total_samples": 900,
+  "train_samples": 720,
+  "val_samples": 180,
+  "num_features": 13,
+  "num_parameters": 12,
+  "num_regimes": 3,
+  "regime_labels": {
+    "volatile": 0,
+    "trending": 1,
+    "ranging": 2
+  },
+  "source_files": {
+    "volatile": "outputs/conductor_enhanced_volatile_20251108_111639.json",
+    "trending": "outputs/conductor_enhanced_trending_20251108_114301.json",
+    "ranging": "outputs/conductor_enhanced_ranging_20251108_141359.json"
+  }
+}

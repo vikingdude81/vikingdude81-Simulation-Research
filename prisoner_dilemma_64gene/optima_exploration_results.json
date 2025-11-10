@@ -1,0 +1,43 @@
+{
+  "experiment": "Multiple Optima Exploration",
+  "date": "2025-10-30T22:09:19.631284",
+  "num_runs": 5,
+  "results": [
+    {
+      "run": 1,
+      "chromosome": "DCDDDCDCCDDCDCDDDDDDDCCDDCDDDCCCDDDCCCDDDDDDDDDDCDCCDDDDDDCDDCDD",
+      "fitness": 5678.0,
+      "tft_similarity": 40.625,
+      "generation": 100
+    },
+    {
+      "run": 2,
+      "chromosome": "CDDDDDDDCDCCDDCDDCCCCCCCDDCDDDDCCCCDDDCCCDDCCDDDDDDCDCDCCDCDDCCD",
+      "fitness": 14700.0,
+      "tft_similarity": 54.6875,
+      "generation": 100
+    },
+    {
+      "run": 3,
+      "chromosome": "CDDCCDCDCDCCDCCDCDCCCCDDDDCDDDDDCDCDDDCDDDDCDDDCCDDDCCCDDDDDCCCD",
+      "fitness": 14494.0,
+      "tft_similarity": 64.0625,
+      "generation": 100
+    },
+    {
+      "run": 4,
+      "chromosome": "CDCDDCCDCCCCDDDDDDDCCDCDDDCDDDDDDCDCCDCDDDDDDDDCCCDDDDCDDDCCCDDC",
+      "fitness": 15049.0,
+      "tft_similarity": 56.25,
+      "generation": 100
+    },
+    {
+      "run": 5,
+      "chromosome": "CDDCDDDDCDDDCDDDCCDDCCDCDCDCDDDCCCDDCDDDCDDCCCCCDCDDDCDDCDCDDDCC",
+      "fitness": 14700.0,
+      "tft_similarity": 48.4375,
+      "generation": 100
+    }
+  ],
+  "tft_chromosome": "CDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCD"
+}

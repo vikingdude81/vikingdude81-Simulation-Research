@@ -1,0 +1,96 @@
+{
+  "baseline_accuracy": 0.8722222222222222,
+  "combined_accuracy": 0.8759259259259259,
+  "absolute_improvement_pct": 0.37037037037036535,
+  "relative_improvement_pct": 0.42462845010615136,
+  "feature_importance": [
+    {
+      "feature": "momentum_20",
+      "importance": 0.22713851330089058
+    },
+    {
+      "feature": "trend_slope",
+      "importance": 0.07969980514808143
+    },
+    {
+      "feature": "avg_range",
+      "importance": 0.07190535142537231
+    },
+    {
+      "feature": "returns_mean",
+      "importance": 0.07133966253129582
+    },
+    {
+      "feature": "volume_ratio",
+      "importance": 0.06339966105451635
+    },
+    {
+      "feature": "returns_std",
+      "importance": 0.06268991942464776
+    },
+    {
+      "feature": "spectral_entropy",
+      "importance": 0.06107360461431273
+    },
+    {
+      "feature": "dominant_freq_power_pct",
+      "importance": 0.058628252611028324
+    },
+    {
+      "feature": "power_concentration_top10",
+      "importance": 0.04580493950499772
+    },
+    {
+      "feature": "mid_freq_power_pct",
+      "importance": 0.03667967211469072
+    },
+    {
+      "feature": "low_high_power_ratio",
+      "importance": 0.036317048383798
+    },
+    {
+      "feature": "low_freq_power_pct",
+      "importance": 0.036150871495346855
+    },
+    {
+      "feature": "high_freq_power_pct",
+      "importance": 0.03546328061929566
+    },
+    {
+      "feature": "power_concentration_top25",
+      "importance": 0.035396864099997365
+    },
+    {
+      "feature": "total_spectral_power",
+      "importance": 0.03506062461591957
+    },
+    {
+      "feature": "low_mid_power_ratio",
+      "importance": 0.03432641076222916
+    },
+    {
+      "feature": "dominant_period_hours",
+      "importance": 0.00457900812329337
+    },
+    {
+      "feature": "dominant_freq_idx",
+      "importance": 0.004346510170286407
+    }
+  ],
+  "test_samples": 540,
+  "regime_distribution": {
+    "ranging": 1310,
+    "trending": 486,
+    "volatile": 4
+  },
+  "experiment": "2.1_regime_fft_features",
+  "timestamp": "20251109_165936",
+  "symbol": "BTC/USDT",
+  "hours": 2000,
+  "fft_window": 168,
+  "success_criteria": {
+    "target_improvement_pct": 5.0,
+    "achieved_improvement_pct": 0.37037037037036535,
+    "success": false
+  }
+}

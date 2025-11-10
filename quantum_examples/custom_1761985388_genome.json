@@ -1,0 +1,20 @@
+{
+  "genome": {
+    "mutation_rate": 1.47,
+    "oscillation_freq": 0.2,
+    "decoherence_rate": 0.022,
+    "phase_offset": 0.06
+  },
+  "export_timestamp": "2025-11-01T08:23:08.267704",
+  "metadata": {
+    "type": "custom",
+    "created": "2025-11-01T08:23:08.267691",
+    "fitness": 0.0,
+    "parameters": {
+      "mutation_rate": 1.47,
+      "oscillation_freq": 0.2,
+      "decoherence_rate": 0.022,
+      "phase_offset": 0.06
+    }
+  }
+}

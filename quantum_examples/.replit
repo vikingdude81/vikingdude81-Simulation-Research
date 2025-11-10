@@ -1,0 +1,236 @@
+entrypoint = "main.py"
+modules = ["python-3.11"]
+
+[nix]
+channel = "stable-24_05"
+packages = ["cairo", "ffmpeg-full", "freetype", "ghostscript", "glibcLocales", "gobject-introspection", "gtk3", "lcms2", "libGL", "libglvnd", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "mesa", "openjpeg", "pkg-config", "qhull", "tcl", "tk", "xsimd", "zlib"]
+
+[unitTest]
+language = "python3"
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix"]
+
+[deployment]
+run = ["sh", "-c", "python genome_deployment_server.py"]
+deploymentTarget = "cloudrun"
+
+[agent]
+expertMode = true
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Random Quantum State"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python random_quantum.py"
+
+[[workflows.workflow]]
+name = "3D Quantum State"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_3d.py"
+
+[[workflows.workflow]]
+name = "All Quantum Visualizations"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python all_visualizations.py"
+
+[[workflows.workflow]]
+name = "Hydrogen Atom Orbital"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python hydrogen_atom.py"
+
+[[workflows.workflow]]
+name = "Quantum Tunneling"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_tunneling.py"
+
+[[workflows.workflow]]
+name = "Wavepacket Evolution"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python wavepacket_evolution.py"
+
+[[workflows.workflow]]
+name = "4D Quantum Oscillator"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_4d.py"
+
+[[workflows.workflow]]
+name = "Quantum Entanglement"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_entanglement.py"
+
+[[workflows.workflow]]
+name = "Schrödinger Cat State"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python schrodinger_cat.py"
+
+[[workflows.workflow]]
+name = "Double-Slit Interference"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python double_slit.py"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Deployment Server"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Quantum Examples"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Analysis & Research"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Evolution Engine"
+
+[[workflows.workflow]]
+name = "Bloch Sphere"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python bloch_sphere.py"
+
+[[workflows.workflow]]
+name = "Quantum Gates"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_gates.py"
+
+[[workflows.workflow]]
+name = "Quantum Decoherence"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_decoherence.py"
+
+[[workflows.workflow]]
+name = "Rabi Oscillations"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python rabi_oscillations.py"
+
+[[workflows.workflow]]
+name = "Quantum Data Analysis"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_data_analysis.py"
+
+[[workflows.workflow]]
+name = "Quantum ML"
+author = 36638543
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_ml.py"
+
+[[workflows.workflow]]
+name = "Deployment Server"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python server/genome_deployment_server.py"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow]]
+name = "Quantum Examples"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python quantum_examples/schrodinger_cat.py"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow]]
+name = "Analysis & Research"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python analysis_tools/quantum_data_analysis.py"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow]]
+name = "Evolution Engine"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python evolution_engine/quantum_genetic_agents.py"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[ports]]
+localPort = 5000
+externalPort = 80

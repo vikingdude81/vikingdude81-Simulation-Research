@@ -1,0 +1,142 @@
+{
+  "config": {
+    "initial_size": 555,
+    "grid_size": "50\u00d750",
+    "god_mode": "RULE_BASED",
+    "generations": 10
+  },
+  "final_stats": {
+    "population": 555,
+    "avg_wealth": 382.236036036036,
+    "cooperation_rate": 0.8511648351648352,
+    "clustering": 0.6289659224441834
+  },
+  "history": {
+    "population": [
+      114,
+      122,
+      134,
+      156,
+      190,
+      237,
+      298,
+      373,
+      446,
+      555
+    ],
+    "resources": [
+      7085,
+      10371,
+      13519,
+      19024,
+      27902,
+      44024,
+      67862,
+      103064,
+      151563,
+      212141
+    ],
+    "cooperation": [
+      0.8,
+      0.8352941176470589,
+      0.8303030303030303,
+      0.8440677966101695,
+      0.8333333333333334,
+      0.8577319587628865,
+      0.8606153846153846,
+      0.8682170542635659,
+      0.8623888182973316,
+      0.8511648351648352
+    ],
+    "births": [
+      4,
+      8,
+      12,
+      23,
+      35,
+      48,
+      63,
+      77,
+      76,
+      110
+    ],
+    "deaths": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      3,
+      1
+    ],
+    "clustering": [
+      0.2608695652173913,
+      0.41025641025641024,
+      0.5079365079365079,
+      0.6090225563909775,
+      0.5659340659340659,
+      0.5862457722660653,
+      0.5913107511045655,
+      0.6250636780438105,
+      0.6237154150197628,
+      0.6289659224441834
+    ],
+    "shocks": [
+      "\ud83c\udf35 DROUGHT! All 110 agents lose 50 resources",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "god_interventions": [
+    {
+      "generation": 1,
+      "intervention_type": "welfare",
+      "reason": "Extreme inequality! Wealth ratio = 11.0:1",
+      "parameters": {
+        "target_bottom_percent": 0.1,
+        "amount": 100
+      },
+      "before_state": {
+        "population": 114,
+        "avg_wealth": 82.32456140350877,
+        "total_wealth": 9385,
+        "cooperation_rate": 0.8352941176470589,
+        "clustering": 0.2608695652173913,
+        "tribe_diversity": 0.7719298245614035,
+        "max_tribe_dominance": 0.12280701754385964,
+        "wealth_inequality": 11.0,
+        "avg_age": 0.9649122807017544
+      },
+      "after_state": {
+        "population": 114,
+        "avg_wealth": 91.97368421052632,
+        "total_wealth": 10485,
+        "cooperation_rate": 0.8352941176470589,
+        "clustering": 0.2608695652173913,
+        "tribe_diversity": 0.7719298245614035,
+        "max_tribe_dominance": 0.12280701754385964,
+        "wealth_inequality": 11.0,
+        "avg_age": 0.9649122807017544
+      },
+      "effectiveness": null
+    }
+  ],
+  "god_summary": {
+    "total_interventions": 1,
+    "interventions_by_type": {
+      "welfare": 1
+    },
+    "avg_effectiveness": NaN,
+    "mode": "RULE_BASED"
+  }
+}

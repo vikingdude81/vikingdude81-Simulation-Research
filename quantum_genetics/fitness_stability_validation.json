@@ -1,0 +1,245 @@
+{
+  "timestamp": "validate_fitness_stability",
+  "champion_results": [
+    {
+      "name": "Gentle",
+      "genome": [
+        2.7668,
+        0.1853,
+        0.005,
+        0.6798
+      ],
+      "environment": "gentle",
+      "final_fitness": 16522.62846829215,
+      "is_finite": true,
+      "is_reasonable": true,
+      "coherence_min": 0.0,
+      "coherence_max": 26.039463831912382,
+      "coherence_decay": -9.070918287337546,
+      "fitness_mean": 61.65940350732709,
+      "fitness_std": 81.19870978087232,
+      "has_negative_coherence": false
+    },
+    {
+      "name": "Standard",
+      "genome": [
+        2.946,
+        0.1269,
+        0.005,
+        0.2996
+      ],
+      "environment": "standard",
+      "final_fitness": 24473.63966379328,
+      "is_finite": true,
+      "is_reasonable": true,
+      "coherence_min": 0.0,
+      "coherence_max": 25.46077003378026,
+      "coherence_decay": -11.992689697935099,
+      "fitness_mean": 48.54120987071707,
+      "fitness_std": 42.68746592431299,
+      "has_negative_coherence": false
+    },
+    {
+      "name": "Chaotic",
+      "genome": [
+        3.0,
+        0.5045,
+        0.005,
+        0.4108
+      ],
+      "environment": "chaotic",
+      "final_fitness": 0.20248344121559422,
+      "is_finite": true,
+      "is_reasonable": true,
+      "coherence_min": 0.0,
+      "coherence_max": 12.180342481214833,
+      "coherence_decay": 0.6304438057841317,
+      "fitness_mean": 17.516456650103972,
+      "fitness_std": 23.516598428577296,
+      "has_negative_coherence": false
+    },
+    {
+      "name": "Oscillating",
+      "genome": [
+        3.0,
+        1.8126,
+        0.005,
+        0.0
+      ],
+      "environment": "oscillating",
+      "final_fitness": 0.1340120888159579,
+      "is_finite": true,
+      "is_reasonable": true,
+      "coherence_min": 0.0,
+      "coherence_max": 12.060749298582582,
+      "coherence_decay": 0.8154157797313486,
+      "fitness_mean": 14.75824010174526,
+      "fitness_std": 20.559041470535156,
+      "has_negative_coherence": false
+    },
+    {
+      "name": "Harsh",
+      "genome": [
+        3.0,
+        2.0,
+        0.005,
+        0.5713
+      ],
+      "environment": "harsh",
+      "final_fitness": 0.12010033144759527,
+      "is_finite": true,
+      "is_reasonable": true,
+      "coherence_min": 0.0,
+      "coherence_max": 35.592203822059695,
+      "coherence_decay": 0.9898402074474049,
+      "fitness_mean": 36.282555097975084,
+      "fitness_std": 40.72433055435296,
+      "has_negative_coherence": false
+    },
+    {
+      "name": "Island_Elite_1",
+      "genome": [
+        2.9996,
+        1.5018,
+        0.005,
+        0.7527
+      ],
+      "environment": "standard",
+      "final_fitness": 0.17712520211603514,
+      "is_finite": true,
+      "is_reasonable": true,
+      "coherence_min": 0.0,
+      "coherence_max": 38.3476817031988,
+      "coherence_decay": 0.6110157251753376,
+      "fitness_mean": 70.94259368695845,
+      "fitness_std": 117.00629846995272,
+      "has_negative_coherence": false
+    },
+    {
+      "name": "Island_Elite_2",
+      "genome": [
+        2.9813,
+        1.7393,
+        0.005,
+        0.7854
+      ],
+      "environment": "standard",
+      "final_fitness": 18818.947929367423,
+      "is_finite": true,
+      "is_reasonable": true,
+      "coherence_min": 0.0,
+      "coherence_max": 24.243026821819146,
+      "coherence_decay": -22.536494897097036,
+      "fitness_mean": 32.59025375251593,
+      "fitness_std": 37.144964969250175,
+      "has_negative_coherence": false
+    },
+    {
+      "name": "Island_Elite_3",
+      "genome": [
+        2.9979,
+        1.1872,
+        0.005,
+        0.6283
+      ],
+      "environment": "standard",
+      "final_fitness": 17606.516287749735,
+      "is_finite": true,
+      "is_reasonable": true,
+      "coherence_min": 0.0,
+      "coherence_max": 28.859537490802744,
+      "coherence_decay": -11.452352018533382,
+      "fitness_mean": 43.96473281481787,
+      "fitness_std": 54.00166345781801,
+      "has_negative_coherence": false
+    }
+  ],
+  "edge_case_results": [
+    {
+      "name": "Low_d_0.001",
+      "description": "Very low decoherence rate - previously caused explosion",
+      "genome": [
+        3.0,
+        0.5,
+        0.001,
+        0.5
+      ],
+      "final_fitness": 20963.206017829587,
+      "is_finite": true,
+      "is_reasonable": true,
+      "coherence_min": 0.0,
+      "coherence_decay": -19.021298996619798
+    },
+    {
+      "name": "High_d_0.02",
+      "description": "High decoherence rate - fast decay",
+      "genome": [
+        3.0,
+        0.5,
+        0.02,
+        0.5
+      ],
+      "final_fitness": 3.1653676156288575,
+      "is_finite": true,
+      "is_reasonable": true,
+      "coherence_min": 0.0,
+      "coherence_decay": -0.8216570942930879
+    },
+    {
+      "name": "Zero_d",
+      "description": "Zero decoherence rate - coherence should stay constant",
+      "genome": [
+        3.0,
+        0.5,
+        0.0,
+        0.5
+      ],
+      "final_fitness": 22131.119853058444,
+      "is_finite": true,
+      "is_reasonable": true,
+      "coherence_min": 0.0,
+      "coherence_decay": -14.20250870301469
+    },
+    {
+      "name": "High_omega",
+      "description": "High oscillation frequency",
+      "genome": [
+        3.0,
+        2.5,
+        0.005,
+        0.5
+      ],
+      "final_fitness": 60.72631902813297,
+      "is_finite": true,
+      "is_reasonable": true,
+      "coherence_min": 0.0,
+      "coherence_decay": -2.180033858212021
+    },
+    {
+      "name": "Extreme_mu",
+      "description": "Very high energy scale",
+      "genome": [
+        5.0,
+        0.5,
+        0.005,
+        0.5
+      ],
+      "final_fitness": 4536.488067185573,
+      "is_finite": true,
+      "is_reasonable": true,
+      "coherence_min": 0.0,
+      "coherence_decay": -4.378880316521127
+    }
+  ],
+  "type_consistency": {
+    "status": "PASSED",
+    "details": "All type checks passed"
+  },
+  "summary": {
+    "champion_passes": 8,
+    "champion_total": 8,
+    "edge_passes": 5,
+    "edge_total": 5,
+    "all_passed": true
+  }
+}

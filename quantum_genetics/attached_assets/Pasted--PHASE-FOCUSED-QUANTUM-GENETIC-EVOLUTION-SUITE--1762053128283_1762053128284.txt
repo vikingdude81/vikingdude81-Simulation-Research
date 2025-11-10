@@ -1,0 +1,147 @@
+ 🌀 PHASE-FOCUSED QUANTUM-GENETIC EVOLUTION SUITE
+================================================================================
+
+Based on strategic insights:
+  ✅ Decoherence locked at ~0.011 (universal constant)
+  ✅ Phase correlation: +0.95 (strongest predictor)
+  ✅ Mutation frontier: >3.0 (explosive growth regime)
+  ✅ Strong elitism (preserve champions intact)
+================================================================================
+
+🔬 EXPERIMENT MENU:
+  1. Phase Landscape Scan - Systematically map phase×mutation space
+  2. Mutation Frontier Exploration - Test μ=2.5 to 6.0 at key phases
+  3. Phase-First Evolution - 100-gen run with phase emphasis
+  4. Strategy Comparison - Compare elitism levels
+  5. Full Suite - Run all experiments
+
+Select experiment (1-5): 4
+
+================================================================================
+  ⚔️ STRATEGY COMPARISON
+================================================================================
+
+🧪 Running: Phase-First
+
+================================================================================
+  🌀 PHASE-FOCUSED EVOLUTION
+================================================================================
+
+📊 Configuration:
+   Population: 25
+   Generations: 50
+   Elite preservation: 10/25
+   Decoherence (LOCKED): 0.011
+   Phase correlation: +0.9532
+
+🧬 Initializing 25 agents with phase stratification...
+✓ Population initialized!
+
+🧬 Beginning phase-focused evolution...
+
+Gen    1 | Fit: 2.9127e+34 | Phase: 0.3917 | μ: 4.7140 | Diversity: 0.2103
+Gen   10 | Fit: 4.7018e+21 | Phase: 0.7961 | μ: 4.1406 | Diversity: 0.0010
+Gen   20 | Fit: 5.9393e+29 | Phase: 0.8014 | μ: 4.1406 | Diversity: 0.0302
+Gen   30 | Fit: 3.3178e+19 | Phase: 1.0100 | μ: 3.6263 | Diversity: 0.0731
+Gen   40 | Fit: 1.4192e+26 | Phase: 1.2468 | μ: 4.0773 | Diversity: 0.0400
+Gen   50 | Fit: 2.7285e+19 | Phase: 1.2566 | μ: 4.1724 | Diversity: 0.0675
+
+================================================================================
+✨ PHASE-FOCUSED EVOLUTION COMPLETE!
+================================================================================
+
+🏆 Best Genome:
+   Mutation: 4.140606
+   Oscillation: 0.784934
+   Decoherence: 0.011000 (locked)
+   Phase: 1.399333 ⭐
+   Fitness: 1.4633e+15
+   Total Score: 1.4633e+15
+
+🧪 Running: Standard
+
+================================================================================
+  🌀 PHASE-FOCUSED EVOLUTION
+================================================================================
+
+📊 Configuration:
+   Population: 25
+   Generations: 50
+   Elite preservation: 5/25
+   Decoherence (LOCKED): 0.011
+   Phase correlation: +0.9532
+
+🧬 Initializing 25 agents with phase stratification...
+✓ Population initialized!
+
+🧬 Beginning phase-focused evolution...
+
+Gen    1 | Fit: 1.8057e+10 | Phase: 0.8000 | μ: 3.7610 | Diversity: 0.2103
+Gen   10 | Fit: 6.5484e+09 | Phase: 0.9187 | μ: 3.1593 | Diversity: 0.0578
+Gen   20 | Fit: 3.2273e+21 | Phase: 0.9187 | μ: 4.8269 | Diversity: 0.0335
+Gen   30 | Fit: 5.8990e+08 | Phase: 0.8374 | μ: 4.8269 | Diversity: 0.0383
+Gen   40 | Fit: 1.7642e+33 | Phase: 1.0302 | μ: 6.5442 | Diversity: 0.0073
+Gen   50 | Fit: 1.1310e+45 | Phase: 1.0501 | μ: 5.3416 | Diversity: 0.0000
+
+================================================================================
+✨ PHASE-FOCUSED EVOLUTION COMPLETE!
+================================================================================
+
+🏆 Best Genome:
+   Mutation: 6.268897
+   Oscillation: 1.455550
+   Decoherence: 0.011000 (locked)
+   Phase: 1.050055 ⭐
+   Fitness: 3.2865e+28
+   Total Score: 3.2865e+28
+
+🧪 Running: Ultra-Elite
+
+================================================================================
+  🌀 PHASE-FOCUSED EVOLUTION
+================================================================================
+
+📊 Configuration:
+   Population: 25
+   Generations: 50
+   Elite preservation: 15/25
+   Decoherence (LOCKED): 0.011
+   Phase correlation: +0.9532
+
+🧬 Initializing 25 agents with phase stratification...
+✓ Population initialized!
+
+🧬 Beginning phase-focused evolution...
+
+Gen    1 | Fit: 1.8078e+15 | Phase: 0.1583 | μ: 4.8934 | Diversity: 0.2103
+Gen   10 | Fit: 9.8554e+06 | Phase: 0.8089 | μ: 1.1735 | Diversity: 0.0153
+Gen   20 | Fit: 6.2429e+44 | Phase: 0.8777 | μ: 4.4634 | Diversity: 0.0627
+Gen   30 | Fit: 3.3127e+29 | Phase: 1.0094 | μ: 4.4634 | Diversity: 0.0313
+Gen   40 | Fit: 6.8946e+13 | Phase: 1.0943 | μ: 4.4634 | Diversity: 0.0588
+Gen   50 | Fit: 5.8017e+32 | Phase: 1.2314 | μ: 4.4634 | Diversity: 0.0401
+
+================================================================================
+✨ PHASE-FOCUSED EVOLUTION COMPLETE!
+================================================================================
+
+🏆 Best Genome:
+   Mutation: 3.612350
+   Oscillation: 0.563954
+   Decoherence: 0.011000 (locked)
+   Phase: 1.231367 ⭐
+   Fitness: 1.6196e+18
+   Total Score: 1.6196e+18
+
+✓ Saved: visualizations/strategy_comparison.png
+
+================================================================================
+✨ PHASE-FOCUSED EXPERIMENTS COMPLETE!
+================================================================================
+
+📊 Key Findings:
+  • Phase is the primary fitness driver
+  • Decoherence ~0.011 is universal
+  • Mutation >3.0 unlocks new regimes
+  • Elitism preserves critical synergies
+================================================================================
+

@@ -1,0 +1,100 @@
+{
+  "experiment": "1.1_crypto_fft_basics",
+  "timestamp": "20251109_163227",
+  "symbol": "BTC/USDT",
+  "data_points": 500,
+  "dominant_frequencies": [
+    {
+      "rank": 1,
+      "frequency_cycles_per_hour": 0.006,
+      "period_hours": 166.66666666666666,
+      "period_days": 6.944444444444444,
+      "power": 94118.05033998411,
+      "power_pct": 75.2969511693963
+    },
+    {
+      "rank": 2,
+      "frequency_cycles_per_hour": 0.042,
+      "period_hours": 23.809523809523807,
+      "period_days": 0.992063492063492,
+      "power": 21802.12963646825,
+      "power_pct": 17.442285350109756
+    },
+    {
+      "rank": 3,
+      "frequency_cycles_per_hour": 0.04,
+      "period_hours": 25.0,
+      "period_days": 1.0416666666666667,
+      "power": 491.3689756335977,
+      "power_pct": 0.3931082893322664
+    },
+    {
+      "rank": 4,
+      "frequency_cycles_per_hour": 0.044,
+      "period_hours": 22.72727272727273,
+      "period_days": 0.9469696969696971,
+      "power": 448.29185062764475,
+      "power_pct": 0.3586454401086116
+    },
+    {
+      "rank": 5,
+      "frequency_cycles_per_hour": 0.046,
+      "period_hours": 21.73913043478261,
+      "period_days": 0.9057971014492754,
+      "power": 214.78266442014714,
+      "power_pct": 0.17183186154469357
+    },
+    {
+      "rank": 6,
+      "frequency_cycles_per_hour": 0.058,
+      "period_hours": 17.241379310344826,
+      "period_days": 0.7183908045977011,
+      "power": 184.77230167173724,
+      "power_pct": 0.1478227707243867
+    },
+    {
+      "rank": 7,
+      "frequency_cycles_per_hour": 0.134,
+      "period_hours": 7.462686567164178,
+      "period_days": 0.31094527363184077,
+      "power": 177.68040218847284,
+      "power_pct": 0.1421490619388705
+    },
+    {
+      "rank": 8,
+      "frequency_cycles_per_hour": 0.488,
+      "period_hours": 2.0491803278688523,
+      "period_days": 0.08538251366120218,
+      "power": 175.66723973881048,
+      "power_pct": 0.14053847827164923
+    },
+    {
+      "rank": 9,
+      "frequency_cycles_per_hour": 0.05,
+      "period_hours": 20.0,
+      "period_days": 0.8333333333333334,
+      "power": 159.35782369830923,
+      "power_pct": 0.12749051033386377
+    },
+    {
+      "rank": 10,
+      "frequency_cycles_per_hour": 0.036000000000000004,
+      "period_hours": 27.777777777777775,
+      "period_days": 1.1574074074074072,
+      "power": 139.4274033832654,
+      "power_pct": 0.11154564237467424
+    }
+  ],
+  "reconstruction": {
+    "rmse": 174.17271432174607,
+    "mae": 142.39608075026257,
+    "r2": 0.9556220232743917,
+    "top_n": 50
+  },
+  "summary": {
+    "top_period_hours": 166.66666666666666,
+    "top_period_days": 6.944444444444444,
+    "top_freq_power_pct": 75.2969511693963,
+    "reconstruction_r2": 0.9556220232743917
+  }
+}

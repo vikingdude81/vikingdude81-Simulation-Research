@@ -1,0 +1,172 @@
+{
+  "experiment": "mega_long_evolution_dashboard",
+  "population_size": 1000,
+  "generations": 23,
+  "total_snapshots": 4,
+  "snapshots": [
+    {
+      "generation": 0,
+      "fitness_stats": {
+        "mean": 8.709739995538258e-08,
+        "std": 1.5924942827971785e-06,
+        "min": 0.0,
+        "max": 3.0692812288179994e-05,
+        "median": 0.0,
+        "q25": 0.0,
+        "q75": 0.0,
+        "top1%": 0.0,
+        "top10%": 0.0,
+        "top5%": 0.0,
+        "bottom10%": 0.0
+      },
+      "genome_diversity": {
+        "mu": 0.06043263415832751,
+        "omega": 0.44162551396062893,
+        "d": 0.027200945226597457,
+        "phi": 0.11628294818738541,
+        "mu_mean": 0.22093353634654517,
+        "omega_mean": 1.250879908221634,
+        "d_mean": 0.050741549474786075,
+        "phi_mean": 0.2963857949494533
+      },
+      "elite_comparison": {
+        "elite_mu_mean": 0.22093353634654517,
+        "non_elite_mu_mean": NaN,
+        "elite_omega_mean": 1.250879908221634,
+        "non_elite_omega_mean": NaN,
+        "elite_d_mean": 0.050741549474786075,
+        "non_elite_d_mean": NaN
+      },
+      "mutation_rate": 0.3
+    },
+    {
+      "generation": 10,
+      "fitness_stats": {
+        "mean": 1.2048613862134517e-06,
+        "std": 2.1970895292922675e-05,
+        "min": 0.0,
+        "max": 0.00041511765448376536,
+        "median": 0.0,
+        "q25": 0.0,
+        "q75": 0.0,
+        "top1%": 0.0,
+        "top10%": 0.0,
+        "top5%": 0.0,
+        "bottom10%": 0.0
+      },
+      "genome_diversity": {
+        "mu": 0.04247987503210741,
+        "omega": 0.43448339281223547,
+        "d": 0.006202417368578938,
+        "phi": 0.109398081282637,
+        "mu_mean": 0.3320267752970055,
+        "omega_mean": 1.1555405800242469,
+        "d_mean": 0.006009579359029068,
+        "phi_mean": 0.31385304595932045
+      },
+      "elite_comparison": {
+        "elite_mu_mean": 0.3320267752970055,
+        "non_elite_mu_mean": NaN,
+        "elite_omega_mean": 1.1555405800242469,
+        "non_elite_omega_mean": NaN,
+        "elite_d_mean": 0.006009579359029068,
+        "non_elite_d_mean": NaN
+      },
+      "mutation_rate": 0.3
+    },
+    {
+      "generation": 20,
+      "fitness_stats": {
+        "mean": 1.9270567572675645e-06,
+        "std": 3.513175933651901e-05,
+        "min": 0.0,
+        "max": 0.0006485442281700671,
+        "median": 0.0,
+        "q25": 0.0,
+        "q75": 0.0,
+        "top1%": 0.0,
+        "top10%": 0.0,
+        "top5%": 0.0,
+        "bottom10%": 0.0
+      },
+      "genome_diversity": {
+        "mu": 0.045068490476779126,
+        "omega": 0.3464957566471105,
+        "d": 0.007179376840137509,
+        "phi": 0.09512710921111048,
+        "mu_mean": 0.4726569188957267,
+        "omega_mean": 0.8697195030181083,
+        "d_mean": 0.0063500487599510115,
+        "phi_mean": 0.34550923962931906
+      },
+      "elite_comparison": {
+        "elite_mu_mean": 0.4726569188957267,
+        "non_elite_mu_mean": NaN,
+        "elite_omega_mean": 0.8697195030181083,
+        "non_elite_omega_mean": NaN,
+        "elite_d_mean": 0.0063500487599510115,
+        "non_elite_d_mean": NaN
+      },
+      "mutation_rate": 0.3
+    },
+    {
+      "generation": 23,
+      "fitness_stats": {
+        "mean": 2.020964806433767e-06,
+        "std": 3.685557355444048e-05,
+        "min": 0.0,
+        "max": 0.0006957529694773257,
+        "median": 0.0,
+        "q25": 0.0,
+        "q75": 0.0,
+        "top1%": 0.0,
+        "top10%": 0.0,
+        "top5%": 0.0,
+        "bottom10%": 0.0
+      },
+      "genome_diversity": {
+        "mu": 0.04828022244514707,
+        "omega": 0.3392659164874256,
+        "d": 0.0061790878797436085,
+        "phi": 0.09627172947052029,
+        "mu_mean": 0.4985910100660558,
+        "omega_mean": 0.8206146872283901,
+        "d_mean": 0.006135231816942545,
+        "phi_mean": 0.3467833146260409
+      },
+      "elite_comparison": {
+        "elite_mu_mean": 0.4985910100660558,
+        "non_elite_mu_mean": NaN,
+        "elite_omega_mean": 0.8206146872283901,
+        "non_elite_omega_mean": NaN,
+        "elite_d_mean": 0.006135231816942545,
+        "non_elite_d_mean": NaN
+      },
+      "mutation_rate": 0.3
+    }
+  ],
+  "innovation_events": [
+    {
+      "generation": 10,
+      "prev_fitness": 3.0692812288179994e-05,
+      "new_fitness": 0.00041511765448376536,
+      "improvement_pct": 1252.4914256346262
+    },
+    {
+      "generation": 20,
+      "prev_fitness": 0.00041511765448376536,
+      "new_fitness": 0.0006485442281700671,
+      "improvement_pct": 56.23142527546505
+    }
+  ],
+  "ml_training_history": [],
+  "convergence_detected": false,
+  "convergence_generation": null,
+  "champion_genome": {
+    "mu": 0.5378540197579307,
+    "omega": 0.7147659909047394,
+    "d": 0.005,
+    "phi": 0.42229422637168174,
+    "fitness": 0.0006957529694773257
+  }
+}

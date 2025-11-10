@@ -1,0 +1,487 @@
+{
+  "timestamp": "20251104_142803",
+  "test_lengths": [
+    50,
+    100,
+    150
+  ],
+  "controllers": [
+    "Baseline (No God)",
+    "Quantum ML (50-gen trained)",
+    "Quantum ML (150-gen trained)",
+    "GPT-4 Conservative",
+    "GPT-4 Neutral"
+  ],
+  "results": {
+    "Baseline (No God)": {
+      "50_gen": {
+        "runs": [
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 4355.765,
+            "total_wealth": 4355765,
+            "cooperation_rate": 61.06533236216233,
+            "gini": 0.46770433046778237,
+            "interventions": 0,
+            "score": 43618.71533236216
+          },
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 4982.171,
+            "total_wealth": 4982171,
+            "cooperation_rate": 71.54141745948124,
+            "gini": 0.42037669622339346,
+            "interventions": 0,
+            "score": 49893.25141745948
+          }
+        ],
+        "avg_wealth": 4668.968000000001,
+        "avg_cooperation": 66.30337491082179,
+        "avg_gini": 0.4440405133455879,
+        "avg_interventions": 0.0,
+        "avg_score": 46755.98337491082,
+        "success_rate": 100.0
+      },
+      "100_gen": {
+        "runs": [
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 8420.109,
+            "total_wealth": 8420109,
+            "cooperation_rate": 54.0374716269765,
+            "gini": 0.47542295984529437,
+            "interventions": 0,
+            "score": 84255.12747162697
+          },
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 11846.061,
+            "total_wealth": 11846061,
+            "cooperation_rate": 85.91465898510242,
+            "gini": 0.38578368193444224,
+            "interventions": 0,
+            "score": 118546.5246589851
+          }
+        ],
+        "avg_wealth": 10133.085,
+        "avg_cooperation": 69.97606530603946,
+        "avg_gini": 0.4306033208898683,
+        "avg_interventions": 0.0,
+        "avg_score": 101400.82606530603,
+        "success_rate": 100.0
+      },
+      "150_gen": {
+        "runs": [
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 13603.0,
+            "total_wealth": 13603000,
+            "cooperation_rate": 59.141216353718406,
+            "gini": 0.4632566844078514,
+            "interventions": 0,
+            "score": 136089.14121635372
+          },
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 14701.087,
+            "total_wealth": 14701087,
+            "cooperation_rate": 65.82114364972406,
+            "gini": 0.44809867426810013,
+            "interventions": 0,
+            "score": 147076.69114364972
+          }
+        ],
+        "avg_wealth": 14152.0435,
+        "avg_cooperation": 62.481180001721235,
+        "avg_gini": 0.45567767933797576,
+        "avg_interventions": 0.0,
+        "avg_score": 141582.91618000172,
+        "success_rate": 100.0
+      }
+    },
+    "Quantum ML (50-gen trained)": {
+      "50_gen": {
+        "runs": [
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 4455.631,
+            "total_wealth": 4455631,
+            "cooperation_rate": 57.964790154917104,
+            "gini": 0.44277243492560325,
+            "interventions": 5,
+            "score": 44614.274790154916
+          },
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 5217.14,
+            "total_wealth": 5217140,
+            "cooperation_rate": 74.8112327403906,
+            "gini": 0.4259499495892387,
+            "interventions": 5,
+            "score": 52246.211232740396
+          }
+        ],
+        "avg_wealth": 4836.3855,
+        "avg_cooperation": 66.38801144765385,
+        "avg_gini": 0.434361192257421,
+        "avg_interventions": 5.0,
+        "avg_score": 48430.24301144766,
+        "success_rate": 100.0
+      },
+      "100_gen": {
+        "runs": [
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 11074.8,
+            "total_wealth": 11074800,
+            "cooperation_rate": 75.97841327335398,
+            "gini": 0.4291365631885,
+            "interventions": 10,
+            "score": 110823.97841327335
+          },
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 8289.75,
+            "total_wealth": 8289750,
+            "cooperation_rate": 50.34795993418408,
+            "gini": 0.4631863969359753,
+            "interventions": 10,
+            "score": 82947.84795993418
+          }
+        ],
+        "avg_wealth": 9682.275,
+        "avg_cooperation": 63.163186603769034,
+        "avg_gini": 0.44616148006223766,
+        "avg_interventions": 10.0,
+        "avg_score": 96885.91318660376,
+        "success_rate": 100.0
+      },
+      "150_gen": {
+        "runs": [
+          {
+            "success": true,
+            "final_population": 994,
+            "avg_wealth": 15329.557344064386,
+            "total_wealth": 15237580,
+            "cooperation_rate": 70.49643257976591,
+            "gini": 0.4486389468050931,
+            "interventions": 15,
+            "score": 152446.29643257975
+          },
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 16560.414,
+            "total_wealth": 16560414,
+            "cooperation_rate": 76.85760605241828,
+            "gini": 0.41591547844154153,
+            "interventions": 15,
+            "score": 165680.99760605244
+          }
+        ],
+        "avg_wealth": 15944.985672032193,
+        "avg_cooperation": 73.6770193160921,
+        "avg_gini": 0.4322772126233173,
+        "avg_interventions": 15.0,
+        "avg_score": 159063.6470193161,
+        "success_rate": 100.0
+      }
+    },
+    "Quantum ML (150-gen trained)": {
+      "50_gen": {
+        "runs": [
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 4611.346,
+            "total_wealth": 4611346,
+            "cooperation_rate": 60.60781743890217,
+            "gini": 0.46289634523195633,
+            "interventions": 5,
+            "score": 46174.0678174389
+          },
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 4616.753,
+            "total_wealth": 4616753,
+            "cooperation_rate": 67.09271400296882,
+            "gini": 0.46298642465819606,
+            "interventions": 5,
+            "score": 46234.622714002966
+          }
+        ],
+        "avg_wealth": 4614.049499999999,
+        "avg_cooperation": 63.8502657209355,
+        "avg_gini": 0.4629413849450762,
+        "avg_interventions": 5.0,
+        "avg_score": 46204.345265720935,
+        "success_rate": 100.0
+      },
+      "100_gen": {
+        "runs": [
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 8155.84,
+            "total_wealth": 8155840,
+            "cooperation_rate": 50.371226043581,
+            "gini": 0.4689731713716798,
+            "interventions": 10,
+            "score": 81608.77122604358
+          },
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 8885.752,
+            "total_wealth": 8885752,
+            "cooperation_rate": 57.22267224867706,
+            "gini": 0.47675417432311873,
+            "interventions": 10,
+            "score": 88914.74267224869
+          }
+        ],
+        "avg_wealth": 8520.796,
+        "avg_cooperation": 53.79694914612902,
+        "avg_gini": 0.4728636728473993,
+        "avg_interventions": 10.0,
+        "avg_score": 85261.75694914613,
+        "success_rate": 100.0
+      },
+      "150_gen": {
+        "runs": [
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 15606.216,
+            "total_wealth": 15606216,
+            "cooperation_rate": 70.69380857878294,
+            "gini": 0.44467809993146323,
+            "interventions": 15,
+            "score": 156132.85380857877
+          },
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 14301.514,
+            "total_wealth": 14301514,
+            "cooperation_rate": 58.176974018381685,
+            "gini": 0.4505221118547311,
+            "interventions": 15,
+            "score": 143073.3169740184
+          }
+        ],
+        "avg_wealth": 14953.865,
+        "avg_cooperation": 64.43539129858232,
+        "avg_gini": 0.4476001058930972,
+        "avg_interventions": 15.0,
+        "avg_score": 149603.08539129858,
+        "success_rate": 100.0
+      }
+    },
+    "GPT-4 Conservative": {
+      "50_gen": {
+        "runs": [
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 3711.993,
+            "total_wealth": 3711993,
+            "cooperation_rate": 48.182210851579896,
+            "gini": 0.46249809118713325,
+            "interventions": 5,
+            "score": 37168.11221085158
+          },
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 4712.642,
+            "total_wealth": 4712642,
+            "cooperation_rate": 63.59858301768161,
+            "gini": 0.441142496289767,
+            "interventions": 5,
+            "score": 47190.01858301768
+          }
+        ],
+        "avg_wealth": 4212.3175,
+        "avg_cooperation": 55.89039693463076,
+        "avg_gini": 0.4518202937384501,
+        "avg_interventions": 5.0,
+        "avg_score": 42179.06539693463,
+        "success_rate": 100.0
+      },
+      "100_gen": {
+        "runs": [
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 10676.857,
+            "total_wealth": 10676857,
+            "cooperation_rate": 73.85364155199298,
+            "gini": 0.4355528849922783,
+            "interventions": 10,
+            "score": 106842.423641552
+          },
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 11001.279,
+            "total_wealth": 11001279,
+            "cooperation_rate": 70.8554142944794,
+            "gini": 0.40072733043130726,
+            "interventions": 10,
+            "score": 110083.64541429447
+          }
+        ],
+        "avg_wealth": 10839.068,
+        "avg_cooperation": 72.35452792323619,
+        "avg_gini": 0.4181401077117928,
+        "avg_interventions": 10.0,
+        "avg_score": 108463.03452792324,
+        "success_rate": 100.0
+      },
+      "150_gen": {
+        "runs": [
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 13452.68,
+            "total_wealth": 13452680,
+            "cooperation_rate": 52.31222164218764,
+            "gini": 0.4289193356268046,
+            "interventions": 15,
+            "score": 134579.11222164216
+          },
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 16039.563,
+            "total_wealth": 16039563,
+            "cooperation_rate": 72.56832096316312,
+            "gini": 0.4261066482297555,
+            "interventions": 15,
+            "score": 160468.19832096316
+          }
+        ],
+        "avg_wealth": 14746.121500000001,
+        "avg_cooperation": 62.44027130267538,
+        "avg_gini": 0.4275129919282801,
+        "avg_interventions": 15.0,
+        "avg_score": 147523.65527130268,
+        "success_rate": 100.0
+      }
+    },
+    "GPT-4 Neutral": {
+      "50_gen": {
+        "runs": [
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 4632.291,
+            "total_wealth": 4632291,
+            "cooperation_rate": 67.22334139135107,
+            "gini": 0.4200628913425346,
+            "interventions": 5,
+            "score": 46390.13334139135
+          },
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 4671.601,
+            "total_wealth": 4671601,
+            "cooperation_rate": 56.84633853541416,
+            "gini": 0.4089162248659508,
+            "interventions": 5,
+            "score": 46772.856338535414
+          }
+        ],
+        "avg_wealth": 4651.946,
+        "avg_cooperation": 62.034839963382616,
+        "avg_gini": 0.4144895581042427,
+        "avg_interventions": 5.0,
+        "avg_score": 46581.49483996339,
+        "success_rate": 100.0
+      },
+      "100_gen": {
+        "runs": [
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 9267.816,
+            "total_wealth": 9267816,
+            "cooperation_rate": 60.91448867750516,
+            "gini": 0.4508854077379181,
+            "interventions": 10,
+            "score": 92739.0744886775
+          },
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 10608.145,
+            "total_wealth": 10608145,
+            "cooperation_rate": 68.71462770408424,
+            "gini": 0.3986439190829312,
+            "interventions": 10,
+            "score": 106150.16462770409
+          }
+        ],
+        "avg_wealth": 9937.980500000001,
+        "avg_cooperation": 64.8145581907947,
+        "avg_gini": 0.4247646634104246,
+        "avg_interventions": 10.0,
+        "avg_score": 99444.6195581908,
+        "success_rate": 100.0
+      },
+      "150_gen": {
+        "runs": [
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 14904.141,
+            "total_wealth": 14904141,
+            "cooperation_rate": 63.06315522917194,
+            "gini": 0.4268604736764099,
+            "interventions": 15,
+            "score": 149104.47315522918
+          },
+          {
+            "success": true,
+            "final_population": 1000,
+            "avg_wealth": 16717.264,
+            "total_wealth": 16717264,
+            "cooperation_rate": 75.31195586250074,
+            "gini": 0.4241452863339361,
+            "interventions": 15,
+            "score": 167247.95195586252
+          }
+        ],
+        "avg_wealth": 15810.7025,
+        "avg_cooperation": 69.18755554583635,
+        "avg_gini": 0.425502880005173,
+        "avg_interventions": 15.0,
+        "avg_score": 158176.21255554585,
+        "success_rate": 100.0
+      }
+    }
+  },
+  "retrained_genome": [
+    0.4742636050317877,
+    0.08985730801351484,
+    126.24589578003476,
+    1695.4599158098017,
+    0.8455612031363591,
+    58.325820392679795,
+    0.7890208644599008,
+    15.03267212596562
+  ]
+}

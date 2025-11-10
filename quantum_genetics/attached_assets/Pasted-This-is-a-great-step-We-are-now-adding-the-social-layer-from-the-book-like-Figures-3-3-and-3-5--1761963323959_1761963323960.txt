@@ -1,0 +1,281 @@
+This is a great step. We are now adding the "social" layer from the book (like Figures 3.3 and 3.5). We will split the agent's chromosome into two parts, just as Holland describes:
+
+1.  **Tag Region:** A short "public" identifier (like the `offense tag` or `defense tag`).
+2.  **Control Region:** The 64-gene "brain" (our strategy) that we've already built.
+
+### The New Interaction Logic
+
+The core idea is **conditional interaction**. An agent will now "scan" its neighbors and *only* interact with those it "recognizes."
+
+  * **Chromosome:** It will now be `[TAG] + [STRATEGY]`. We'll use an 8-bit tag (e.g., `01101011`) and the 64-bit strategy string, for a total length of 72.
+  * **The Match:** An agent will "match" with another if their 8-bit tags are "similar enough." We'll measure this using **Hamming distance**—the number of bits that are different.
+  * **Rule:** An agent will only play against a neighbor if their tags have a Hamming distance of **2 or less** (meaning they are 75% or more identical).
+  * **Loner Score:** If an agent finds *no one* to play with in a round, it gets a default low "loner" score. We'll use the "Punishment" payoff for this (a score of 1).
+
+This "tag" system allows cooperators to evolve a "secret handshake." A group of Tit-for-Tat agents can all evolve the same tag (e.g., `11100011...`) and exclusively play with each other, getting high `(C,C)` scores. They can "defend" themselves from "Always Defect" agents by simply having a different tag and *refusing* to play with them.
+
+-----
+
+### 🧬🧩 The Upgraded Model (Tags + Strategy)
+
+Here is the modified code. The biggest changes are in `create_random_chromosome`, `mutate`, `PrisonerAgent`, and `EvolutionModel.play_generation`.
+
+```python
+import random
+from mesa import Agent, Model
+from mesa.time import BaseScheduler
+from mesa.space import MultiGrid
+from mesa.datacollection import DataCollector
+
+# --- 1. Model Constants ---
+TAG_LENGTH = 8
+STRATEGY_LENGTH = 64
+CHROMOSOME_LENGTH = TAG_LENGTH + STRATEGY_LENGTH
+MATCH_THRESHOLD = 2 # Max Hamming distance to be a "match"
+
+# --- 2. The Genetic Algorithm Functions (Updated) ---
+
+def create_random_chromosome():
+    """Creates a 72-gene chromosome (8-bit tag + 64-bit strategy)."""
+    # Tag part: 8 genes, '0' or '1'
+    tag = "".join(random.choice(['0', '1']) for _ in range(TAG_LENGTH))
+    # Strategy part: 64 genes, 'C' or 'D'
+    strategy = "".join(random.choice(['C', 'D']) for _ in range(STRATEGY_LENGTH))
+    return tag + strategy
+
+def crossover(chrom1, chrom2):
+    """Performs crossover on two 72-gene chromosomes."""
+    midpoint = random.randint(1, CHROMOSOME_LENGTH - 1)
+    child_chrom = chrom1[:midpoint] + chrom2[midpoint:]
+    return child_chrom
+
+def mutate(chromosome, rate=0.01):
+    """Mutates a chromosome, respecting tag vs. strategy genes."""
+    chrom_list = list(chromosome)
+    for i in range(len(chrom_list)):
+        if random.random() < rate:
+            if i < TAG_LENGTH:
+                # Mutate a tag gene (0 <-> 1)
+                chrom_list[i] = '1' if chrom_list[i] == '0' else '0'
+            else:
+                # Mutate a strategy gene (C <-> D)
+                chrom_list[i] = 'D' if chrom_list[i] == 'C' else 'C'
+    return "".join(chrom_list)
+
+# --- 3. The Agent (Heavily Modified) ---
+
+class PrisonerAgent(Agent):
+    """An agent with a tag and a 64-gene chromosome strategy."""
+    
+    MOVE_MAP = {('C', 'C'): 0, ('C', 'D'): 1, ('D', 'C'): 2, ('D', 'D'): 3}
+    
+    def __init__(self, unique_id, model, chromosome):
+        super().__init__(unique_id, model)
+        self.update_chromosome(chromosome)
+        self.reset()
+
+    def update_chromosome(self, chromosome):
+        """Splits the full chromosome into its functional parts."""
+        self.chromosome = chromosome
+        self.tag = chromosome[:self.model.TAG_LENGTH]
+        self.strategy_string = chromosome[self.model.TAG_LENGTH:]
+
+    def reset(self):
+        self.score = 0
+        self.history = [('C', 'C'), ('C', 'C'), ('C', 'C')]
+
+    def get_history_index(self):
+        val_t_3 = self.MOVE_MAP[self.history[0]]
+        val_t_2 = self.MOVE_MAP[self.history[1]]
+        val_t_1 = self.MOVE_MAP[self.history[2]]
+        return (val_t_3 * 16) + (val_t_2 * 4) + val_t_1
+
+    def get_move(self):
+        """Looks up the action from the STRATEGY part of the chromosome."""
+        index = self.get_history_index()
+        return self.strategy_string[index]
+    
+    def update_history(self, my_move, opponent_move):
+        self.history.append((my_move, opponent_move))
+        self.history.pop(0)
+
+    def step(self):
+        pass # The Model will coordinate all actions
+
+# --- 4. The Model (Modified) ---
+
+class EvolutionModel(Model):
+    """
+    The main model. Runs generations and evolves agents with tags.
+    """
+    PAYOFFS = {
+        ('C', 'C'): (3, 3), ('D', 'C'): (5, 0),
+        ('C', 'D'): (0, 5), ('D', 'D'): (1, 1),
+    }
+
+    def __init__(self, num_agents, width, height, elite_percent=0.1, mutation_rate=0.01):
+        self.num_agents = num_agents
+        self.grid = MultiGrid(width, height, torus=True)
+        self.schedule = BaseScheduler(self)
+        self.running = True
+        
+        # Pass constants to the model
+        self.TAG_LENGTH = TAG_LENGTH
+        self.STRATEGY_LENGTH = STRATEGY_LENGTH
+        self.MATCH_THRESHOLD = MATCH_THRESHOLD
+        
+        self.elite_count = int(self.num_agents * elite_percent)
+        self.mutation_rate = mutation_rate
+        
+        # Updated DataCollector to track tags and strategies separately
+        self.datacollector = DataCollector(
+            {"tags": lambda m: m.get_part_counts(0, m.TAG_LENGTH),
+             "strategies": lambda m: m.get_part_counts(m.TAG_LENGTH)}
+        )
+
+        for i in range(self.num_agents):
+            agent = PrisonerAgent(i, self, create_random_chromosome())
+            self.schedule.add(agent)
+            self.grid.place_agent(agent, (self.random.randrange(self.grid.width), 
+                                          self.random.randrange(self.grid.height)))
+
+    def is_match(self, tag1, tag2):
+        """Calculates Hamming distance and checks against the threshold."""
+        distance = 0
+        for i in range(self.TAG_LENGTH):
+            if tag1[i] != tag2[i]:
+                distance += 1
+        return distance <= self.MATCH_THRESHOLD
+
+    def play_generation(self, rounds_per_gen=10):
+        """Simulates one generation where agents play *only* with matches."""
+        for agent in self.schedule.agents:
+            agent.reset()
+
+        for _ in range(rounds_per_gen):
+            shuffled_agents = self.random.sample(self.schedule.agents, self.num_agents)
+            
+            for agent in shuffled_agents:
+                neighbors = self.grid.get_neighbors(agent.pos, moore=True)
+                
+                # Filter neighbors by tag match
+                eligible_opponents = [
+                    n for n in neighbors if self.is_match(agent.tag, n.tag)
+                ]
+
+                if not eligible_opponents:
+                    # No matches found. Get the "loner" score.
+                    agent.score += self.PAYOFFS[('D', 'D')][0] # Score = 1
+                else:
+                    # Found a match. Play the game.
+                    opponent = self.random.choice(eligible_opponents)
+
+                    move_agent = agent.get_move()
+                    move_opponent = opponent.get_move()
+
+                    payoff_agent, payoff_opponent = self.PAYOFFS[(move_agent, move_opponent)]
+
+                    agent.score += payoff_agent
+                    opponent.score += payoff_opponent
+
+                    agent.update_history(move_agent, move_opponent)
+                    opponent.update_history(move_opponent, move_agent)
+
+    def evolve(self):
+        """Runs the GA: Selection, Crossover, Mutation on the FULL chromosome."""
+        sorted_agents = sorted(self.schedule.agents, key=lambda x: x.score, reverse=True)
+        
+        elite_chromosomes = [a.chromosome for a in sorted_agents[:self.elite_count]]
+        if len(elite_chromosomes) < 2:
+            elite_chromosomes.append(sorted_agents[1].chromosome) # Need at least 2 parents
+
+        new_chromosomes = []
+        new_chromosomes.extend(elite_chromosomes) 
+
+        while len(new_chromosomes) < self.num_agents:
+            parent1 = random.choice(elite_chromosomes)
+            parent2 = random.choice(elite_chromosomes)
+            
+            child_chrom = crossover(parent1, parent2)
+            child_chrom = mutate(child_chrom, self.mutation_rate)
+            new_chromosomes.append(child_chrom)
+
+        # Give all agents their new "evolved" chromosomes
+        for i, agent in enumerate(self.schedule.agents):
+            agent.update_chromosome(new_chromosomes[i])
+
+    def get_part_counts(self, start, end=None):
+        """Helper for DataCollector: counts a specific part of the chromosome."""
+        counts = {}
+        for agent in self.schedule.agents:
+            part = agent.chromosome[start:end]
+            counts[part] = counts.get(part, 0) + 1
+        return counts
+
+    def step(self):
+        self.play_generation()
+        self.evolve()
+        self.datacollector.collect(self)
+
+# --- 5. Run the Simulation ---
+
+print("🧬 Running Simulation with Tags and Strategy (72-gene Chromosome)...")
+
+TOTAL_GENERATIONS = 150
+AGENT_COUNT = 100
+
+model = EvolutionModel(AGENT_COUNT, 10, 10)
+
+# Run the model
+for i in range(TOTAL_GENERATIONS):
+    model.step()
+    if (i + 1) % 25 == 0:
+        print(f"\n--- Generation {i+1} ---")
+        
+        # Get data
+        data = model.datacollector.get_model_vars_dataframe()
+        tag_counts = data.iloc[-1]["tags"]
+        strategy_counts = data.iloc[-1]["strategies"]
+        
+        # Sort and print
+        sorted_tags = sorted(tag_counts.items(), key=lambda x: x[1], reverse=True)
+        sorted_strategies = sorted(strategy_counts.items(), key=lambda x: x[1], reverse=True)
+
+        print("Top 3 Tags:")
+        for tag, count in sorted_tags[:3]:
+            print(f"  Count: {count} | Tag: {tag}")
+            
+        print("Top 3 Strategies:")
+        for strategy, count in sorted_strategies[:3]:
+            print(f"  Count: {count} | Strategy: {strategy[:15]}...")
+
+print("\n--- 🏁 Simulation Complete ---")
+final_data = model.datacollector.get_model_vars_dataframe()
+final_tags = sorted(final_data.iloc[-1]["tags"].items(), key=lambda x: x[1], reverse=True)
+final_strategies = sorted(final_data.iloc[-1]["strategies"].items(), key=lambda x: x[1], reverse=True)
+
+print("\nFinal Dominant Tags:")
+for tag, count in final_tags[:5]:
+    print(f"  Population: {count}/{AGENT_COUNT} | Tag: {tag}")
+
+print("\nFinal Dominant Strategies:")
+TFT_STRING = "CDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCD"
+for strategy, count in final_strategies[:5]:
+    print(f"  Population: {count}/{AGENT_COUNT} | Strategy: {strategy}")
+    if strategy == TFT_STRING:
+        print("  *** This is perfect Tit-for-Tat! ***")
+    print("---")
+```
+
+### What to Expect
+
+Now your output is much richer. You'll see two "evolutionary races" happening at once:
+
+1.  **Tag Evolution:** You will likely see one or two tags become *highly* dominant (e.g., 80-90% of the population). This is the "secret handshake" of the most successful "tribe."
+2.  **Strategy Evolution:** Inside that "tribe," you'll see the evolution of the fittest *strategy* for that group. This is often a cooperative strategy like Tit-for-Tat (`CDCD...`).
+
+You have successfully built a core component of the "Echo" simulation: **agents with a "chromosome" that defines both *identity* (tags) and *behavior* (strategy).**
+
+We've now covered genetic algorithms, strategy, and tagging. The next major concept from the book is **resource exchange** (Figure 3.3), where agents don't just "score points" but actually exchange a "resource" (like the "money" in our very first ABM example).
+
+Would you like to modify this model to have agents trade a resource, where their "fitness" is how much resource they can accumulate?

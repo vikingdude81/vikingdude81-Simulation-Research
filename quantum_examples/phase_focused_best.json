@@ -1,0 +1,17 @@
+{
+  "genome": {
+    "mutation_rate": 2.9728063377429286,
+    "oscillation_freq": 0.744230651015316,
+    "decoherence_rate": 0.011,
+    "phase_offset": 3.186390367247121
+  },
+  "export_timestamp": "2025-11-02T03:11:28.444379",
+  "metadata": {
+    "fitness": 2731862341688.894,
+    "phase": 3.186390367247121,
+    "mutation": 2.9728063377429286,
+    "decoherence": 0.011,
+    "type": "phase_focused",
+    "strategy": "strong_elitism"
+  }
+}

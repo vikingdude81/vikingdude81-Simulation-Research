@@ -1,0 +1,51 @@
+{
+  "genome": [
+    5.0,
+    0.1,
+    0.0001,
+    6.283185307179586
+  ],
+  "timestamp": "2025-11-03T18:44:26.774940",
+  "environments": {
+    "standard": {
+      "fitness": 19017.36256677466,
+      "timesteps": 100
+    },
+    "gentle": {
+      "fitness": 0.15469727689057755,
+      "timesteps": 100
+    },
+    "harsh": {
+      "fitness": 18482.755929509687,
+      "timesteps": 100
+    },
+    "chaotic": {
+      "fitness": 0.12259282103044472,
+      "timesteps": 100
+    },
+    "oscillating": {
+      "fitness": 15855.419503571507,
+      "timesteps": 100
+    },
+    "unstable": {
+      "fitness": 20606.612822469513,
+      "timesteps": 100
+    },
+    "extreme": {
+      "fitness": 20496.860484422134,
+      "timesteps": 100
+    },
+    "mixed": {
+      "fitness": 17106.610414743045,
+      "timesteps": 100
+    }
+  },
+  "statistics": {
+    "min": 0.12259282103044472,
+    "max": 20606.612822469513,
+    "mean": 13945.737376448558,
+    "median": 17794.683172126366,
+    "std": 8186.786970868171,
+    "range": 20606.490229648483
+  }
+}

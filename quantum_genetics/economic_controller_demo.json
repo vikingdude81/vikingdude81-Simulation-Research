@@ -1,0 +1,70 @@
+[
+  {
+    "scenario": {
+      "name": "High Inequality",
+      "avg_wealth": 120,
+      "gini_coefficient": 0.55,
+      "cooperation_rate": 0.6,
+      "growth_rate": 0.02
+    },
+    "intervention": {
+      "type": "wealth_redistribution",
+      "magnitude": 0.8018874683891922,
+      "target": "bottom_20_percent",
+      "reasoning": [
+        "High inequality (Gini=0.55) + structured governance (coherence=5.35)"
+      ]
+    }
+  },
+  {
+    "scenario": {
+      "name": "Low Cooperation",
+      "avg_wealth": 100,
+      "gini_coefficient": 0.35,
+      "cooperation_rate": 0.25,
+      "growth_rate": 0.01
+    },
+    "intervention": {
+      "type": "economic_stimulus",
+      "magnitude": 0.9399854425093124,
+      "target": "all_agents",
+      "reasoning": [
+        "Low cooperation (0.25) + innovative approach (creativity=3.13)"
+      ]
+    }
+  },
+  {
+    "scenario": {
+      "name": "Recession",
+      "avg_wealth": 75,
+      "gini_coefficient": 0.4,
+      "cooperation_rate": 0.5,
+      "growth_rate": -0.08
+    },
+    "intervention": {
+      "type": "infrastructure_investment",
+      "magnitude": 1.4080234537679472,
+      "target": "public_goods",
+      "reasoning": [
+        "Negative growth (-8.00%) + long-term focus (longevity=5.87)"
+      ]
+    }
+  },
+  {
+    "scenario": {
+      "name": "Stable Economy",
+      "avg_wealth": 110,
+      "gini_coefficient": 0.32,
+      "cooperation_rate": 0.65,
+      "growth_rate": 0.03
+    },
+    "intervention": {
+      "type": "no_intervention",
+      "magnitude": 0.0,
+      "target": null,
+      "reasoning": [
+        "Economy stable (wealth=110, Gini=0.32, coop=0.65)"
+      ]
+    }
+  }
+]
