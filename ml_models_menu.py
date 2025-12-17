@@ -69,6 +69,12 @@ def print_menu():
     print("18. Performance Dashboard  - All models visualized on one screen")
     
     print("\n" + "=" * 80)
+    print("🚀 RESEARCH EXPERIMENTS")
+    print("=" * 80)
+    print("19. Multiscale Dynamics   - Multi-timeframe market analysis")
+    print("20. SNN Trading Agent     - Spiking neural network trading")
+    
+    print("\n" + "=" * 80)
     print("0. Exit")
     print("=" * 80)
 
@@ -1644,6 +1650,78 @@ print("=" * 80)
     
     input("\\nPress Enter to return to menu...")
 
+def run_multiscale_experiments():
+    """Run multiscale dynamics experiments"""
+    print("\n" + "=" * 80)
+    print("🌐 MULTISCALE DYNAMICS EXPERIMENTS")
+    print("=" * 80)
+    print("\nSelect experiment to run:")
+    print("1. Timeframe Encoder Test")
+    print("2. Missing Data Trading")
+    print("3. Real-time Regime Detection")
+    print("4. Nonlinear Price Dynamics")
+    print("5. Run All Experiments")
+    print("0. Back to menu")
+    
+    choice = input("\n👉 Select experiment (0-5): ").strip()
+    
+    experiments = {
+        '1': 'multiscale_experiments/exp1_timeframe_encoder.py',
+        '2': 'multiscale_experiments/exp2_missing_data_trading.py',
+        '3': 'multiscale_experiments/exp3_realtime_regime_detection.py',
+        '4': 'multiscale_experiments/exp4_nonlinear_price_dynamics.py'
+    }
+    
+    if choice == '0':
+        return
+    elif choice == '5':
+        print("\n🚀 Running all multiscale experiments...")
+        for exp_file in experiments.values():
+            print(f"\n▶️  Running {exp_file}...")
+            os.system(f"python {exp_file}")
+    elif choice in experiments:
+        exp_file = experiments[choice]
+        print(f"\n🚀 Running {exp_file}...")
+        os.system(f"python {exp_file}")
+    else:
+        print("\n❌ Invalid choice")
+
+def run_snn_experiments():
+    """Run SNN trading experiments"""
+    print("\n" + "=" * 80)
+    print("🧠 SNN TRADING EXPERIMENTS")
+    print("=" * 80)
+    print("\nSelect experiment to run:")
+    print("1. SNN Price Prediction")
+    print("2. Pathway Reuse Multi-Asset")
+    print("3. Dynamic Growth Adaptation")
+    print("4. Neuromorphic Trading Bot")
+    print("5. Run All Experiments")
+    print("0. Back to menu")
+    
+    choice = input("\n👉 Select experiment (0-5): ").strip()
+    
+    experiments = {
+        '1': 'snn_trading_experiments/exp1_snn_price_prediction.py',
+        '2': 'snn_trading_experiments/exp2_pathway_reuse_multiasset.py',
+        '3': 'snn_trading_experiments/exp3_dynamic_growth_adaptation.py',
+        '4': 'snn_trading_experiments/exp4_neuromorphic_trading_bot.py'
+    }
+    
+    if choice == '0':
+        return
+    elif choice == '5':
+        print("\n🚀 Running all SNN experiments...")
+        for exp_file in experiments.values():
+            print(f"\n▶️  Running {exp_file}...")
+            os.system(f"python {exp_file}")
+    elif choice in experiments:
+        exp_file = experiments[choice]
+        print(f"\n🚀 Running {exp_file}...")
+        os.system(f"python {exp_file}")
+    else:
+        print("\n❌ Invalid choice")
+
 def main():
     """Main menu loop"""
     while True:
@@ -1652,7 +1730,7 @@ def main():
         print_menu()
         
         try:
-            choice = input("\n👉 Select an option (0-18): ").strip()
+            choice = input("\n👉 Select an option (0-20): ").strip()
             
             if choice == '0':
                 print("\n✅ Exiting ML Models Menu. Happy testing! 🚀\n")
@@ -1693,8 +1771,12 @@ def main():
                 model_ensemble_builder()
             elif choice == '18':
                 performance_dashboard()
+            elif choice == '19':
+                run_multiscale_experiments()
+            elif choice == '20':
+                run_snn_experiments()
             else:
-                print("\n❌ Invalid choice. Please select 0-18.")
+                print("\n❌ Invalid choice. Please select 0-20.")
             
             if choice != '0':
                 input("\n✅ Press Enter to return to menu...")
