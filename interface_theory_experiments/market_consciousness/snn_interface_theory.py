@@ -156,9 +156,13 @@ def evaluate_trading_performance(
         else:
             predictions = model(inputs).squeeze()
             # Convert predictions to trading signals
-            price_changes = predictions[1:] - predictions[:-1]
-            decisions = torch.tanh(price_changes)
-            decisions = torch.cat([torch.tensor([0.0]).to(device), decisions])
+            if len(predictions) > 1:
+                price_changes = predictions[1:] - predictions[:-1]
+                decisions = torch.tanh(price_changes)
+                # Pad to match input length
+                decisions = torch.cat([torch.zeros(1, device=device), decisions])
+            else:
+                decisions = torch.zeros_like(predictions)
         
         # Calculate cumulative returns
         returns_tensor = torch.FloatTensor(returns).to(device)

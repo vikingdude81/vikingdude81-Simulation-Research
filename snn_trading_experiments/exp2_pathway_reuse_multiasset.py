@@ -21,7 +21,10 @@ from models.snn_trading_agent import SpikingTradingAgent
 
 def load_mock_asset_data(asset='BTC', num_samples=1000, input_dim=50):
     """Generate mock asset-specific data."""
-    np.random.seed(hash(asset) % 2**32)
+    # Use stable seed mapping for reproducibility
+    asset_seeds = {'BTC': 42, 'ETH': 43, 'SOL': 44}
+    seed = asset_seeds.get(asset, 45)
+    np.random.seed(seed)
     
     # Generate synthetic features with asset-specific patterns
     data = np.random.randn(num_samples, input_dim) * 10 + 100

@@ -166,7 +166,8 @@ def calculate_spike_rate(
         start = max(0, t - time_window + 1)
         end = t + 1
         window_spikes = spikes[:, start:end, :]
-        rates[:, t, :] = window_spikes.mean(axis=1) / (dt / 1000.0)  # Convert to Hz
+        # Calculate rate: average spikes in window * 1000 / dt to convert to Hz
+        rates[:, t, :] = (window_spikes.mean(axis=1) * 1000.0) / dt
     
     return rates
 

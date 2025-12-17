@@ -86,9 +86,9 @@ def interpolate_missing_data(
     if method == 'linear':
         interpolated = df.interpolate(method='linear', limit_direction='both')
     elif method == 'forward':
-        interpolated = df.fillna(method='ffill').fillna(method='bfill')
+        interpolated = df.ffill().bfill()
     elif method == 'backward':
-        interpolated = df.fillna(method='bfill').fillna(method='ffill')
+        interpolated = df.bfill().ffill()
     else:
         raise ValueError(f"Unknown interpolation method: {method}")
     

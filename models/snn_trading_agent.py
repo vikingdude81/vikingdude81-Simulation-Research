@@ -380,14 +380,14 @@ class SpikingTradingAgent(nn.Module):
         Returns:
             stats: Dictionary with pathway statistics
         """
-        usage_counts = torch.tensor([
+        usage_counts = [
             pathway.usage_count.item()
             for pathway in self.pathways
-        ])
+        ]
         
         return {
             'num_pathways': len(self.pathways),
-            'usage_counts': usage_counts,
+            'usage_counts': torch.tensor(usage_counts),
             'total_growth_events': self.growth_counter
         }
 
