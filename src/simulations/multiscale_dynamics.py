@@ -229,12 +229,11 @@ class MultiscaleModel:
         This ensures information flows both up (aggregation) and down (disaggregation)
         to maintain consistency across scales.
         """
-        # Upscale from micro to meso
-        meso_data = self.upscale(ScaleLevel.MICRO, ScaleLevel.MESO)
-        for key, value in meso_data.items():
-            self.meso_state.set_variable(key, value)
+        # Note: For GovernmentMultiscaleModel, we don't overwrite meso state
+        # because communities have their own persistent properties (cohesion, resources)
+        # that shouldn't be replaced by upscaling
         
-        # Upscale from meso to macro
+        # Upscale from meso to macro (safe to overwrite)
         macro_data = self.upscale(ScaleLevel.MESO, ScaleLevel.MACRO)
         for key, value in macro_data.items():
             self.macro_state.set_variable(key, value)
@@ -412,6 +411,34 @@ class GovernmentMultiscaleModel(MultiscaleModel):
             # Update policy effectiveness based on average satisfaction
             avg_satisfaction = np.mean([a['state'] for a in agents])
             self.macro_state.set_variable('policy_effectiveness', avg_satisfaction / 100)
+    
+    def _meso_to_macro(self) -> Dict[str, Any]:
+        """
+        Override to aggregate government-specific meso data to macro
+        """
+        communities = self.meso_state.get_variable('groups', [])
+        agents = self.micro_state.get_variable('agents', [])
+        
+        if not communities or not agents:
+            return {'global_mean': 0, 'global_variance': 0}
+        
+        # Calculate community-level averages
+        community_satisfactions = []
+        for community in communities:
+            community_id = community['id']
+            community_agents = [a for a in agents if a.get('community_id') == community_id]
+            if community_agents:
+                avg_sat = np.mean([a['state'] for a in community_agents])
+                community_satisfactions.append(avg_sat)
+        
+        if not community_satisfactions:
+            return {'global_mean': 0, 'global_variance': 0}
+        
+        return {
+            'global_mean': np.mean(community_satisfactions),
+            'global_variance': np.var(community_satisfactions),
+            'total_groups': len(communities)
+        }
 
 
 def analyze_scale_separation(model: MultiscaleModel, 
