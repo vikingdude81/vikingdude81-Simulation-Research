@@ -1,0 +1,86 @@
+name: Push Migrated Branches
+
+on:
+  workflow_dispatch:  # Manual trigger
+  push:
+    branches:
+      - copilot/migrate-government-simulation-research-another-one
+
+permissions:
+  contents: write  # Required to push branches
+
+jobs:
+  push-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches
+          token: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token for authentication
+      
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Add source remote
+        run: |
+          git remote add source https://github.com/vikingdude81/crypto-ml-trading-system.git || true
+          git fetch source
+      
+      - name: Create and push government-simulation-research branch
+        run: |
+          # Check if branch already exists remotely
+          if git ls-remote --heads origin government-simulation-research | grep -q government-simulation-research; then
+            echo "Branch government-simulation-research already exists remotely"
+          else
+            # Create branch from source
+            git checkout -b government-simulation-research source/government-simulation-research
+            
+            # Update references
+            find . -type f \( -name "*.py" -o -name "*.md" -o -name "*.txt" -o -name "*.yaml" -o -name "*.yml" -o -name "*.json" -o -name "*.toml" -o -name "*.cfg" -o -name "*.ini" \) -not -path "./.git/*" -exec sed -i 's/crypto-ml-trading-system/vikingdude81-Simulation-Research/g' {} +
+            
+            # Commit if there are changes
+            if ! git diff --quiet || ! git diff --staged --quiet; then
+              git add -A
+              git commit -m "Update repository references from crypto-ml-trading-system to vikingdude81-Simulation-Research"
+            fi
+            
+            # Push the branch
+            git push origin government-simulation-research
+            echo "✅ Successfully created and pushed government-simulation-research"
+          fi
+      
+      - name: Create and push copilot/integrate-multiscale-dynamics branch
+        run: |
+          # Check if branch already exists remotely
+          if git ls-remote --heads origin copilot/integrate-multiscale-dynamics | grep -q integrate-multiscale-dynamics; then
+            echo "Branch copilot/integrate-multiscale-dynamics already exists remotely"
+          else
+            # Create branch from source
+            git checkout -b copilot/integrate-multiscale-dynamics source/copilot/integrate-multiscale-dynamics
+            
+            # Update references
+            find . -type f \( -name "*.py" -o -name "*.md" -o -name "*.txt" -o -name "*.yaml" -o -name "*.yml" -o -name "*.json" -o -name "*.toml" -o -name "*.cfg" -o -name "*.ini" \) -not -path "./.git/*" -exec sed -i 's/crypto-ml-trading-system/vikingdude81-Simulation-Research/g' {} +
+            
+            # Commit if there are changes
+            if ! git diff --quiet || ! git diff --staged --quiet; then
+              git add -A
+              git commit -m "Update repository references from crypto-ml-trading-system to vikingdude81-Simulation-Research"
+            fi
+            
+            # Push the branch
+            git push origin copilot/integrate-multiscale-dynamics
+            echo "✅ Successfully created and pushed copilot/integrate-multiscale-dynamics"
+          fi
+      
+      - name: Summary
+        run: |
+          echo "=== Branch Migration Complete ==="
+          echo ""
+          echo "Migrated branches:"
+          echo "1. government-simulation-research"
+          echo "2. copilot/integrate-multiscale-dynamics"
+          echo ""
+          echo "Verify at: https://github.com/vikingdude81/vikingdude81-Simulation-Research/branches"
