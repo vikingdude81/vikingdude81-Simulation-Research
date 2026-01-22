@@ -47,5 +47,12 @@ fi
 echo ""
 echo "=== Push Complete ==="
 echo ""
-echo "Verify branches on GitHub:"
-echo "https://github.com/vikingdude81/vikingdude81-Simulation-Research/branches"
+
+# Get remote URL dynamically
+REMOTE_URL=$(git config --get remote.origin.url | sed 's/\.git$//')
+if [ -n "$REMOTE_URL" ]; then
+    echo "Verify branches on GitHub:"
+    echo "${REMOTE_URL}/branches"
+else
+    echo "Could not determine remote URL. Check branches manually with: git branch -r"
+fi

@@ -64,7 +64,7 @@ python examples/multiscale_example.py
 ### Requirements
 
 Both frameworks use standard Python libraries:
-- Python 3.7+
+- Python 3.8+ (Python 3.7 reached end-of-life in June 2023)
 - No external dependencies for core functionality
 - Optional: numpy, matplotlib for advanced analysis and visualization
 
