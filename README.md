@@ -6,30 +6,38 @@ This repository contains advanced simulation frameworks for studying government 
 
 The simulation research focuses on understanding emergent behaviors in complex social, economic, and political systems through computational modeling.
 
-## Branch: government-simulation-research
+## Branch: copilot/integrate-multiscale-dynamics
 
-This branch contains comprehensive tools for simulating government policy decisions and their impacts on populations.
+This branch integrates multiscale modeling capabilities with government policy simulation, enabling analysis at micro (individual), meso (community), and macro (national) levels simultaneously.
 
 ### Key Features
 
 - **Agent-Based Modeling**: Sophisticated agent models representing citizens with diverse characteristics
 - **Policy Simulation**: Framework for testing different policy interventions and measuring outcomes
+- **Multiscale Dynamics**: Simultaneous modeling at micro, meso, and macro scales
+- **Scale Coupling**: Automatic aggregation (upscaling) and disaggregation (downscaling) between levels
+- **Cross-Scale Analysis**: Tools to analyze correlations and dynamics across scales
 - **Economic Modeling**: Economic agents that make rational decisions based on market conditions
 - **Social Network Dynamics**: Social agents that form opinions through network interactions
 - **Adaptive Behavior**: Agents that learn and adapt strategies based on experience
+- **Integrated Framework**: Seamless integration of single-scale and multiscale approaches
 
 ## Project Structure
 
 ```
 src/
 ├── simulations/        # Core simulation engines
-│   └── government_simulation.py
+│   ├── government_simulation.py      # Base government policy simulation
+│   ├── multiscale_dynamics.py        # Multiscale modeling framework
+│   └── integrated_multiscale.py      # Integration layer
 ├── models/            # Agent-based models
 │   └── agent_based_models.py
 ├── analysis/          # Analysis and visualization tools
 │   └── simulation_analyzer.py
 └── utils/             # Utility functions
     └── simulation_utils.py
+docs/
+└── MULTISCALE_INTEGRATION.md         # Detailed multiscale documentation
 ```
 
 ## Installation
@@ -39,14 +47,37 @@ src/
 git clone https://github.com/vikingdude81/vikingdude81-Simulation-Research.git
 cd vikingdude81-Simulation-Research
 
-# Checkout the government simulation branch
-git checkout government-simulation-research
+# Checkout the multiscale dynamics branch
+git checkout copilot/integrate-multiscale-dynamics
 
 # Install dependencies
 pip install -r requirements.txt
 ```
 
 ## Quick Start
+
+### Running an Integrated Multiscale Simulation
+
+```python
+from src.simulations.integrated_multiscale import IntegratedGovernmentModel
+from src.simulations.government_simulation import create_example_policies
+
+# Initialize integrated model
+model = IntegratedGovernmentModel(
+    population_size=5000,
+    n_communities=20,
+    time_steps=100
+)
+
+# Create and implement policies
+policies = create_example_policies()
+history = model.run(policies)
+
+# Analyze cross-scale dynamics
+analysis = model.analyze_cross_scale_dynamics()
+print(analysis['correlations'])  # See how scales relate
+print(analysis['volatility'])     # Compare scale volatility
+```
 
 ### Running a Basic Government Simulation
 
@@ -67,6 +98,27 @@ history = sim.run_simulation(policies)
 # Get results
 summary = sim.get_summary_statistics()
 print(summary)
+```
+
+### Running a Pure Multiscale Model
+
+```python
+from src.simulations.multiscale_dynamics import GovernmentMultiscaleModel
+
+# Initialize multiscale model
+model = GovernmentMultiscaleModel(
+    n_agents=1000,
+    n_communities=10
+)
+
+# Run simulation
+history = model.run(n_steps=50)
+
+# Analyze results at each scale
+final_state = history[-1]
+print(f"Micro: {final_state['micro']}")
+print(f"Meso: {final_state['meso']}")
+print(f"Macro: {final_state['macro']}")
 ```
 
 ### Analyzing Results
