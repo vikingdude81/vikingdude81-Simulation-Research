@@ -70,16 +70,21 @@ def generate_network_topology(n_nodes: int,
             # Calculate degree distribution
             degrees = [0] * i
             for edge in edges:
-                degrees[edge[0]] += 1
-                degrees[edge[1]] += 1
+                if edge[0] < i:
+                    degrees[edge[0]] += 1
+                if edge[1] < i:
+                    degrees[edge[1]] += 1
             
             # Preferential attachment
             total_degree = sum(degrees)
-            if total_degree > 0:
+            if total_degree > 0 and i > 0:
                 probs = np.array(degrees) / total_degree
-                targets = np.random.choice(i, size=min(m, i), replace=False, p=probs)
-                for target in targets:
-                    edges.append((i, target))
+                # Ensure we don't try to choose more nodes than available
+                num_targets = min(m, i)
+                if num_targets > 0:
+                    targets = np.random.choice(i, size=num_targets, replace=False, p=probs)
+                    for target in targets:
+                        edges.append((i, target))
     
     return edges
 
@@ -186,10 +191,15 @@ def calculate_gini_coefficient(values: List[float]) -> float:
     sorted_values = sorted(values)
     n = len(sorted_values)
     cumsum = np.cumsum(sorted_values)
+    total = sum(sorted_values)
+    
+    # Guard against zero or negative total
+    if total <= 0:
+        return 0.0
     
     # Calculate Gini coefficient
     return (2 * sum((i + 1) * v for i, v in enumerate(sorted_values)) - 
-            (n + 1) * sum(sorted_values)) / (n * sum(sorted_values))
+            (n + 1) * total) / (n * total)
 
 
 def generate_simulation_id(config: Dict[str, Any]) -> str:

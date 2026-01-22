@@ -61,7 +61,7 @@ class SimulationAnalyzer:
                 'initial': values[0],
                 'final': values[-1],
                 'change': values[-1] - values[0],
-                'percent_change': ((values[-1] - values[0]) / values[0] * 100) if values[0] != 0 else 0,
+                'percent_change': ((values[-1] - values[0]) / abs(values[0]) * 100) if abs(values[0]) > 1e-10 else 0,
                 'mean': np.mean(values),
                 'std': np.std(values)
             }

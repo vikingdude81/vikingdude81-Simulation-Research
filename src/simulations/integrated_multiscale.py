@@ -220,9 +220,9 @@ class IntegratedGovernmentModel:
         macro_effectiveness = [h['macro_metrics']['policy_effectiveness'] for h in self.history]
         
         # Calculate correlations
-        corr_micro_meso = np.corrcoef(micro_satisfaction, meso_cohesion)[0, 1] if len(micro_satisfaction) > 1 else 0
-        corr_meso_macro = np.corrcoef(meso_cohesion, macro_effectiveness)[0, 1] if len(meso_cohesion) > 1 else 0
-        corr_micro_macro = np.corrcoef(micro_satisfaction, macro_effectiveness)[0, 1] if len(micro_satisfaction) > 1 else 0
+        corr_micro_meso = np.corrcoef(micro_satisfaction, meso_cohesion)[0, 1] if len(micro_satisfaction) > 1 and np.std(micro_satisfaction) > 0 and np.std(meso_cohesion) > 0 else 0
+        corr_meso_macro = np.corrcoef(meso_cohesion, macro_effectiveness)[0, 1] if len(meso_cohesion) > 1 and np.std(meso_cohesion) > 0 and np.std(macro_effectiveness) > 0 else 0
+        corr_micro_macro = np.corrcoef(micro_satisfaction, macro_effectiveness)[0, 1] if len(micro_satisfaction) > 1 and np.std(micro_satisfaction) > 0 and np.std(macro_effectiveness) > 0 else 0
         
         # Calculate volatility at each scale
         micro_volatility = np.std(np.diff(micro_satisfaction)) if len(micro_satisfaction) > 1 else 0

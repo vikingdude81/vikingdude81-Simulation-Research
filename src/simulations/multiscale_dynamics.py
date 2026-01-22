@@ -126,7 +126,9 @@ class MultiscaleModel:
         if not agents:
             return {'groups': [], 'local_averages': {}}
         
-        # Simple spatial grouping (can be overridden)
+        # Simple spatial grouping using square root heuristic
+        # This provides a reasonable balance between group size and number of groups
+        # Can be overridden in subclasses for domain-specific grouping
         group_size = int(np.sqrt(len(agents)))
         groups = []
         
@@ -405,7 +407,10 @@ class GovernmentMultiscaleModel(MultiscaleModel):
             n = len(sorted_wealth)
             
             # Simplified Gini coefficient
-            gini = sum((2 * (i + 1) - n - 1) * w for i, w in enumerate(sorted_wealth)) / (n * sum(sorted_wealth))
+            if sum(sorted_wealth) == 0:
+                gini = 0
+            else:
+                gini = sum((2 * (i + 1) - n - 1) * w for i, w in enumerate(sorted_wealth)) / (n * sum(sorted_wealth))
             self.macro_state.set_variable('inequality', gini)
             
             # Update policy effectiveness based on average satisfaction

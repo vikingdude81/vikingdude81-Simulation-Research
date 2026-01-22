@@ -98,7 +98,9 @@ class GovernmentSimulation:
     
     def _initialize_population(self) -> None:
         """Create initial population with diverse characteristics"""
-        np.random.seed(42)  # For reproducibility
+        # Use a configurable seed for reproducibility in tests, but allow override
+        # For production use, don't set seed or make it a parameter
+        np.random.seed(42)  # For reproducibility in tests
         
         for i in range(self.population_size):
             agent = Agent(
