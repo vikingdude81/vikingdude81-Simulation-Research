@@ -610,7 +610,7 @@ class EnhancedGovernmentStyle(Enum):
 
 ## 📞 CONTACT & SUPPORT
 
-**Repository:** crypto-ml-trading-system  
+**Repository:** vikingdude81-Simulation-Research  
 **Branch:** `government-simulation-research`  
 **Owner:** vikingdude81  
 **Status:** ✅ Complete, Ready for Review/Merge

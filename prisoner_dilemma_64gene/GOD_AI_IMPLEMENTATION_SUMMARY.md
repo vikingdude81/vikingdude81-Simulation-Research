@@ -249,7 +249,7 @@ This is the **first implementation** (to my knowledge) of:
 ## 📞 Contact
 
 For questions, extensions, or collaborations:
-- Repository: crypto-ml-trading-system
+- Repository: vikingdude81-Simulation-Research
 - Branch: ml-pipeline-full (will create god-ai-controller branch)
 - Files: prisoner_dilemma_64gene/prisoner_echo_god.py
 

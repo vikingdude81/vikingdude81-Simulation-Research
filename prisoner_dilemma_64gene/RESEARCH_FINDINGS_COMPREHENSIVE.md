@@ -388,5 +388,5 @@ The comparison between 100-run and 1,000-run datasets provides a cautionary tale
 ---
 
 *Generated: October 31, 2025*  
-*Project: crypto-ml-trading-system*  
+*Project: vikingdude81-Simulation-Research*  
 *Branch: ml-pipeline-full*

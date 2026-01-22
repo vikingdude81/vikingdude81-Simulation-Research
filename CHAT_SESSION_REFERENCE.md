@@ -216,7 +216,7 @@ All your questions and our solutions are documented in these files!
 
 ## 💾 Git Information
 
-**Repository:** vikingdude81/crypto-ml-trading-system  
+**Repository:** vikingdude81/vikingdude81-Simulation-Research  
 **Branch:** ml-pipeline-full  
 **Latest Commit:** bf21932  
 **Commit Message:** "feat: Add advanced ML features - hyperparameter tuning, ensemble building, dashboard"

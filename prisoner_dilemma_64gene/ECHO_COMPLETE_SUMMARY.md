@@ -3,7 +3,7 @@
 
 **Date:** October 31, 2025  
 **Status:** ✅ Complete - All Models Tested & Working  
-**Repository:** crypto-ml-trading-system (branch: ml-pipeline-full)
+**Repository:** vikingdude81-Simulation-Research (branch: ml-pipeline-full)
 
 ---
 
@@ -466,7 +466,7 @@ The **Ultimate Echo Model** represents a complete realization of Holland's visio
 ---
 
 **Status:** Ready for publication, demonstration, or further research  
-**Contact:** Available in repository `crypto-ml-trading-system`  
+**Contact:** Available in repository `vikingdude81-Simulation-Research`  
 **License:** Available for educational and research use  
 
 ---
