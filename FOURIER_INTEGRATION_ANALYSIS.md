@@ -1,7 +1,7 @@
 # FTTF-Fournier Project Analysis: Applications to Crypto Trading System
 
 **Date**: November 9, 2025  
-**Analyst**: Integration assessment for crypto-ml-trading-system  
+**Analyst**: Integration assessment for vikingdude81-Simulation-Research  
 **Status**: 🔥 **HIGHLY RELEVANT - GAME CHANGING POTENTIAL**
 
 ---

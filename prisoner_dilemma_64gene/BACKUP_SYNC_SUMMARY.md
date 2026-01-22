@@ -2,7 +2,7 @@
 
 ## ✅ Successfully Synced to GitHub
 
-**Repository**: crypto-ml-trading-system  
+**Repository**: vikingdude81-Simulation-Research  
 **Branch**: ml-pipeline-full  
 **Commit**: f309a1e  
 **Push Date**: October 31, 2025
@@ -68,8 +68,8 @@ Anyone with the Git repository can fully reproduce the analysis:
 
 ### Step 1: Clone Repository
 ```bash
-git clone https://github.com/vikingdude81/crypto-ml-trading-system.git
-cd crypto-ml-trading-system
+git clone https://github.com/vikingdude81/vikingdude81-Simulation-Research.git
+cd vikingdude81-Simulation-Research
 git checkout ml-pipeline-full
 cd prisoner_dilemma_64gene
 ```
@@ -202,4 +202,4 @@ python compare_100_vs_1000.py
 
 *Generated: October 31, 2025*  
 *Last Sync: ml-pipeline-full @ f309a1e*  
-*Repository: github.com/vikingdude81/crypto-ml-trading-system*
+*Repository: github.com/vikingdude81/vikingdude81-Simulation-Research*

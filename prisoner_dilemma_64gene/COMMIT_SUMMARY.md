@@ -354,7 +354,7 @@ prisoner_dilemma_64gene/government_tradeoffs_scatter.png                # Scatte
 
 ## 📞 CONTACT & QUESTIONS
 
-**Repository:** crypto-ml-trading-system  
+**Repository:** vikingdude81-Simulation-Research  
 **Branch:** `government-simulation-research`  
 **Owner:** vikingdude81  
 **Status:** ✅ Complete, Ready for Review/Merge

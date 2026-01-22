@@ -225,7 +225,7 @@ device = torch.device('cpu')
 ### Import Errors
 Ensure you're running from the repository root:
 ```bash
-cd /path/to/crypto-ml-trading-system
+cd /path/to/vikingdude81-Simulation-Research
 python multiscale_experiments/exp1_timeframe_encoder.py
 ```
 
