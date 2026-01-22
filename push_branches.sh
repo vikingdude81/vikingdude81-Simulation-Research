@@ -1,9 +1,11 @@
 #!/bin/bash
 
-# Push Migrated Branches Script
-# This script pushes the locally created migration branches to the remote repository
+# Branch Migration Script
+# This script creates and pushes the migrated branches to the remote repository
 
-echo "=== Branch Migration - Push Script ==="
+set -e  # Exit on error
+
+echo "=== Branch Migration Script ==="
 echo ""
 
 # Check if we're in a git repository
@@ -12,47 +14,87 @@ if [ ! -d .git ]; then
     exit 1
 fi
 
-echo "Current branches:"
-git branch -v
+# Save current branch
+CURRENT_BRANCH=$(git branch --show-current)
+echo "Current branch: $CURRENT_BRANCH"
 echo ""
 
-# Push government-simulation-research branch
-echo "Pushing government-simulation-research branch..."
-if git show-ref --verify --quiet refs/heads/government-simulation-research; then
-    git push origin government-simulation-research
-    if [ $? -eq 0 ]; then
-        echo "✅ Successfully pushed government-simulation-research"
-    else
-        echo "❌ Failed to push government-simulation-research"
-    fi
-else
-    echo "⚠️  Branch government-simulation-research not found locally"
+# Add source remote if it doesn't exist
+if ! git remote | grep -q "^source$"; then
+    echo "Adding source remote..."
+    git remote add source https://github.com/vikingdude81/crypto-ml-trading-system.git
 fi
 
+echo "Fetching from source repository..."
+git fetch source
 echo ""
 
-# Push copilot/integrate-multiscale-dynamics branch
-echo "Pushing copilot/integrate-multiscale-dynamics branch..."
-if git show-ref --verify --quiet refs/heads/copilot/integrate-multiscale-dynamics; then
-    git push origin copilot/integrate-multiscale-dynamics
-    if [ $? -eq 0 ]; then
-        echo "✅ Successfully pushed copilot/integrate-multiscale-dynamics"
-    else
-        echo "❌ Failed to push copilot/integrate-multiscale-dynamics"
+# Function to create and push a branch
+create_and_push_branch() {
+    local branch_name=$1
+    local source_branch=$2
+    
+    echo "Processing branch: $branch_name"
+    echo "----------------------------------------"
+    
+    # Check if branch already exists remotely
+    if git ls-remote --heads origin "$branch_name" | grep -q "$branch_name"; then
+        echo "⚠️  Branch $branch_name already exists remotely - skipping"
+        return 0
     fi
-else
-    echo "⚠️  Branch copilot/integrate-multiscale-dynamics not found locally"
-fi
+    
+    # Check if branch exists locally
+    if git show-ref --verify --quiet "refs/heads/$branch_name"; then
+        echo "Branch exists locally, checking it out..."
+        git checkout "$branch_name"
+    else
+        echo "Creating branch from source..."
+        git checkout -b "$branch_name" "$source_branch"
+        
+        # Update references
+        echo "Updating repository references..."
+        find . -type f \( -name "*.py" -o -name "*.md" -o -name "*.txt" -o -name "*.yaml" -o -name "*.yml" -o -name "*.json" -o -name "*.toml" -o -name "*.cfg" -o -name "*.ini" \) -not -path "./.git/*" -exec sed -i 's/crypto-ml-trading-system/vikingdude81-Simulation-Research/g' {} + 2>/dev/null || true
+        
+        # Commit if there are changes
+        if ! git diff --quiet || ! git diff --staged --quiet; then
+            git add -A
+            git commit -m "Update repository references from crypto-ml-trading-system to vikingdude81-Simulation-Research"
+            echo "✓ Committed reference updates"
+        fi
+    fi
+    
+    # Push the branch
+    echo "Pushing branch to origin..."
+    if git push -u origin "$branch_name"; then
+        echo "✅ Successfully pushed $branch_name"
+    else
+        echo "❌ Failed to push $branch_name"
+        return 1
+    fi
+    
+    echo ""
+}
+
+# Migrate branches
+create_and_push_branch "government-simulation-research" "source/government-simulation-research"
+create_and_push_branch "copilot/integrate-multiscale-dynamics" "source/copilot/integrate-multiscale-dynamics"
+
+# Return to original branch
+echo "Returning to original branch: $CURRENT_BRANCH"
+git checkout "$CURRENT_BRANCH"
 
 echo ""
-echo "=== Push Complete ==="
+echo "=== Branch Migration Complete ==="
 echo ""
 
 # Get remote URL dynamically
 REMOTE_URL=$(git config --get remote.origin.url | sed 's/\.git$//')
 if [ -n "$REMOTE_URL" ]; then
-    echo "Verify branches on GitHub:"
-    echo "${REMOTE_URL}/branches"
+    echo "Migrated branches:"
+    echo "  1. government-simulation-research"
+    echo "  2. copilot/integrate-multiscale-dynamics"
+    echo ""
+    echo "Verify at: ${REMOTE_URL}/branches"
 else
-    echo "Could not determine remote URL. Check branches manually with: git branch -r"
+    echo "Check branches with: git branch -r"
 fi

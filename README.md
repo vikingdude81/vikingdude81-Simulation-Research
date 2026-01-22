@@ -2,6 +2,23 @@
 
 This repository contains advanced simulation frameworks for studying government policy impacts, complex systems dynamics, and agent-based modeling.
 
+## 🚀 Branch Migration Available
+
+This repository now includes two important research branches migrated from `crypto-ml-trading-system`:
+
+1. **`government-simulation-research`** - Advanced government systems and policy dynamics research
+2. **`copilot/integrate-multiscale-dynamics`** - Multiscale modeling integration
+
+### To Access Migrated Branches
+
+After the migration PR is merged, these branches can be created by:
+
+- **Automatic**: GitHub Actions workflow will create the branches automatically
+- **Manual**: Run `./push_branches.sh` to create and push the branches  
+- **Manual Git**: See `BRANCH_MIGRATION_STATUS.md` for detailed instructions
+
+For more information, see [`BRANCH_MIGRATION_STATUS.md`](BRANCH_MIGRATION_STATUS.md).
+
 ## Overview
 
 The simulation research focuses on understanding emergent behaviors in complex social, economic, and political systems through computational modeling.
